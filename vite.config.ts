@@ -8,23 +8,16 @@ export default defineConfig({
     alias: {
       "@willow/ui-kit": path.resolve(
         __dirname,
-        "../willow-vercel-migration/packages/ui-kit/dist/ui-kit.es.js"
+        "vendor/ui-kit/ui-kit.es.js"
       ),
       "@willow/icons": path.resolve(
         __dirname,
-        "../willow-vercel-migration/packages/icons/dist/index.js"
+        "vendor/icons/index.js"
       ),
       "@willow/types": path.resolve(__dirname, "./src/types"),
     },
   },
-  server: {
-    fs: {
-      // Allow serving files from the parent directory (for ui-kit/icons dist)
-      allow: [
-        path.resolve(__dirname, ".."),
-      ],
-    },
-  },
+  server: {},
   css: {
     // Import ui-kit styles
   },

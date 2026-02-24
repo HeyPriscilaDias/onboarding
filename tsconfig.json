@@ -16,8 +16,8 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@willow/ui-kit": ["../willow-vercel-migration/packages/ui-kit/dist/index.d.ts"],
-      "@willow/icons": ["../willow-vercel-migration/packages/icons/dist/index.d.ts"],
+      "@willow/ui-kit": ["./vendor/ui-kit/index.d.ts"],
+      "@willow/icons": ["./vendor/icons/index.d.ts"],
       "@willow/types": ["./src/types"]
     }
   },
