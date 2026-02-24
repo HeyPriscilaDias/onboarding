@@ -1,0 +1,60 @@
+[
+  {
+    "id": "trending",
+    "name": "Trending",
+    "description": "This job is currently gaining popularity and has strong interest from employers."
+  },
+  {
+    "id": "no_degree_needed",
+    "name": "No degree needed",
+    "description": "This job does not require a college degree to get started.",
+    "imageName": "no-degree.jpg"
+  },
+  {
+    "id": "high_growth",
+    "name": "High growth",
+    "description": "This career field is expected to grow quickly over the next decade, creating new job opportunities."
+  },
+  {
+    "id": "high_paying",
+    "name": "High paying",
+    "description": "This job offers a salary that is well above the national average."
+  },
+  {
+    "id": "high_demand",
+    "name": "High demand",
+    "description": "Employers are actively looking for workers in this field due to a shortage of skilled professionals."
+  },
+  {
+    "id": "green_economy",
+    "name": "Green economy",
+    "description": "This job focuses on sustainability, renewable energy, or helping the environment."
+  },
+  {
+    "id": "often_remote",
+    "name": "Often remote",
+    "description": "This job can frequently be done from home or another location outside of an office.",
+    "imageName": "remote.jpg"
+  },
+  {
+    "id": "creative",
+    "name": "Creative",
+    "description": "This job involves imagination, artistic skills, or designing new ideas and solutions."
+  },
+  {
+    "id": "hands_on",
+    "name": "Hands on",
+    "description": "This job involves physical work, building, fixing, or operating tools and equipment.",
+    "imageName": "hands-on.jpg"
+  },
+  {
+    "id": "works_outdoors",
+    "name": "Works outdoors",
+    "description": "This job is primarily done outside rather than in an office or indoor environment."
+  },
+  {
+    "id": "fast_advancement",
+    "name": "Fast advancement",
+    "description": "This career has opportunities to move up quickly with the right skills and experience."
+  }
+]

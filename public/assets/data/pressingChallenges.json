@@ -1,0 +1,155 @@
+[
+    {
+      "id": "climate",
+      "title": "Protect Our Planet",
+      "tag": "Climate Action",
+      "guidingQuestion": "How can we protect the environment and create thriving, sustainable communities?",
+      "focus": ["Climate action", "Renewable energy", "Conservation", "Sustainable agriculture", "Circular economy models"],
+      "sampleCareers": [
+        "Environmental Scientist or Specialist",
+        "Solar Photovoltaic Installer",
+        "Urban and Regional Planner",
+        "Conservation Scientist",
+        "Sustainability Specialist",
+        "Climate Change Policy Analyst"
+      ],
+      "imageName": "environmental.jpg"
+    },
+    {
+      "id": "health",
+      "title": "Strengthen Health & Well-Being for All",
+      "tag": "Healthcare",
+      "guidingQuestion": "How can we ensure every individual has the care, resources, and support to lead a healthy life?",
+      "focus": [
+        "Public health",
+        "Preventive medicine",
+        "Mental health awareness",
+        "Healthcare equity",
+        "Fitness",
+        "Nutrition"
+      ],
+      "sampleCareers": [
+        "Family and General Practitioner",
+        "Registered Nurse",
+        "Mental Health Counselor",
+        "Health Educator",
+        "Dietitian and Nutritionist",
+        "Athletic Trainer",
+        "Physical Therapist"
+      ],
+      "imageName": "nurse.jpg"
+    },
+    {
+      "id": "education",
+      "title": "Empower Lives Through Education",
+      "tag": "Education",
+      "guidingQuestion": "How can we empower people through education to achieve their full potential in a changing world?",
+      "focus": ["Education access", "Career readiness", "Workforce development"],
+      "sampleCareers": [
+        "Elementary School Teacher",
+        "Career Counselor",
+        "Education Administrator",
+        "Instructional Designer",
+        "Tutor"
+      ],
+      "imageName": "teacher.jpg"
+    },
+    {
+      "id": "business",
+      "title": "Expand Economic Opportunity & Entrepreneurship",
+      "tag": "Business",
+      "guidingQuestion": "How can we foster stable, meaningful work and financial security for people around the globe?",
+      "focus": ["Entrepreneurship", "Financial literacy", "Small business development", "Economic growth"],
+      "sampleCareers": [
+        "Personal Financial Advisor",
+        "Training and Development Specialist",
+        "General and Operations Manager",
+        "Sales Representative",
+        "Marketing Specialist",
+        "Advertising Sales Agent"
+      ],
+      "imageName": "business.jpg"
+    },
+    {
+      "id": "tech",
+      "title": "Harness Technology & Science Ethically",
+      "tag": "Tech",
+      "guidingQuestion": "How can we leverage innovation responsibly to improve lives while safeguarding ethics, privacy, and social well-being?",
+      "focus": ["Ethical AI", "Cybersecurity", "Digital equity", "Data privacy", "Tech-driven problem-solving"],
+      "sampleCareers": [
+        "Software Developer",
+        "Biochemist",
+        "Cybersecurity Analyst",
+        "Data Scientist",
+        "UX Designer",
+        "Compliance Officer",
+        "Robotics Engineer"
+      ],
+      "imageName": "tech.jpg"
+    },
+    {
+      "id": "justice",
+      "title": "Build Strong, Just Communities",
+      "tag": "Social Justice",
+      "guidingQuestion": "How can we ensure fairness, respect, and equal opportunities in every community?",
+      "focus": [
+        "Civil and human rights",
+        "Community-building",
+        "Equity in education and healthcare",
+        "Diversity and inclusion efforts"
+      ],
+      "sampleCareers": [
+        "Lawyer",
+        "Legislator",
+        "Community Service Manager",
+        "Social Worker",
+        "Equal Opportunity Representative and Officer",
+        "Political Scientist",
+        "Mediator"
+      ],
+      "imageName": "protect.jpg"
+    },
+    {
+      "id": "culture",
+      "title": "Enrich Lives Through Arts, Culture, & Entertainment",
+      "tag": "Culture",
+      "guidingQuestion": "How can creativity, cultural heritage, and shared experiences bring people together and foster understanding?",
+      "focus": [
+        "Artistic expression",
+        "Cultural preservation",
+        "Creative industries",
+        "Community arts initiatives",
+        "Media literacy",
+        "Sports",
+        "Hospitality"
+      ],
+      "sampleCareers": [
+        "Fine Artist",
+        "Musician",
+        "Filmmaker",
+        "Museum Curator",
+        "Art Therapist",
+        "Athlete",
+        "Tour Guide"
+      ],
+      "imageName": "culture.jpg"
+    },
+    {
+      "id": "transit",
+      "title": "Keep Society Moving & Connected",
+      "tag": "Infrastructure",
+      "guidingQuestion": "How can we design, build, and maintain the infrastructure and services people rely on every day?",
+      "focus": ["Construction", "Logistics", "Transportation", "Essential services"],
+      "sampleCareers": [
+        "Electrician",
+        "Construction Manager",
+        "Truck Driver",
+        "Warehouse Manager",
+        "Maintenance Technician",
+        "Supply Chain Specialist",
+        "Flight Attendant"
+      ],
+      "imageName": "transit.jpg"
+    }
+  ]
+  
