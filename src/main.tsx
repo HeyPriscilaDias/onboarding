@@ -11,7 +11,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 // Import ui-kit styles (from dist)
-import "../../willow-vercel-migration/packages/ui-kit/dist/style.css";
+import "../vendor/ui-kit/style.css";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
