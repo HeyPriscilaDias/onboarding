@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid, WillowTypography } from "@willow/ui-kit";
-import { Slate, neutral, essentials } from "@willow/ui-kit";
-import { Star, PersonalityType } from "@willow/icons";
+import { Slate, neutral } from "@willow/ui-kit";
+import { Star } from "@willow/icons";
 import { useRecoilValue } from "recoil";
 import { recommendationStageAtom } from "../../state/prototypeAtoms";
 import { useStaticPersonalityData } from "../../hooks/useStaticPersonalityData";
@@ -17,51 +17,9 @@ const SuperpowersSection: React.FC = () => {
     recStage !== "interest-only" ? typeKey : undefined
   );
 
-  // Empty state for interest-only
+  // Nothing to show until quiz is completed
   if (recStage === "interest-only" || !personalityData) {
-    return (
-      <Box
-        sx={{
-          bgcolor: Slate[600],
-          borderRadius: "12px",
-          p: 3,
-          mb: 4,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Star size={24} color={essentials.white} />
-          <WillowTypography variant="subheading" sx={{ color: essentials.white }}>
-            Unlock your superpowers
-          </WillowTypography>
-        </Box>
-        <WillowTypography variant="body-lg" sx={{ color: essentials.white, opacity: 0.9 }}>
-          Everyone has unique strengths that make them stand out. Complete the personality quiz
-          to discover yours — and see how they connect to careers you'll love.
-        </WillowTypography>
-        <Box
-          component="button"
-          sx={{
-            alignSelf: "flex-start",
-            bgcolor: essentials.white,
-            color: Slate[700],
-            border: "none",
-            borderRadius: "8px",
-            px: 3,
-            py: 1,
-            fontWeight: 600,
-            fontSize: 14,
-            cursor: "pointer",
-            fontFamily: "inherit",
-            "&:hover": { bgcolor: neutral[100] },
-          }}
-        >
-          Take Quiz
-        </Box>
-      </Box>
-    );
+    return null;
   }
 
   // Populated state
