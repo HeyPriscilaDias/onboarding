@@ -60,12 +60,12 @@ const useCareerInterestTagsStep = () => {
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
         careerInterestTags: tagsToSave,
         onboardingStage: 7,
-        onboardingState: "quiz-start",
+        onboardingState: "onboarding-complete",
       });
 
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/personality-quiz/start", { replace: true });
+      navigate("/student/home", { replace: true });
     } catch (error) {
       console.error("Error saving career interest tags:", error);
     } finally {
