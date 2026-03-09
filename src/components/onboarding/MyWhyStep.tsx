@@ -12,16 +12,13 @@ const MyWhyStep: React.FC = () => {
       <Box component="form" sx={{ textAlign: "left" }}>
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
           <WillowTypography variant="display" color="primary">
-            {studentName ? `${studentName}, w` : "W"}hy is it important to you to make a great next step after high school?
-          </WillowTypography>
-          <WillowTypography variant="body" color="muted" sx={{ mt: 1.5 }}>
-            For example, to find a great career, to make a difference in the world, to support your family, etc.
+            Why is it important to you to make a great next step after high school?
           </WillowTypography>
         </Box>
 
         <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2, width: "100%", maxWidth: 500, mx: "auto" }}>
           <TextField
-            placeholder="Explain why this matters..."
+            placeholder="For example, to find a great career, to make a difference in the world, to support your family, etc."
             multiline rows={6} variant="outlined" fullWidth
             value={myWhy} onChange={(e) => setMyWhy(e.target.value)}
             onBlur={handleBlur} error={error}
