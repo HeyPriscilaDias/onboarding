@@ -38,18 +38,15 @@ const JOURNEY_MOMENTS: {
       const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
       Object.assign(data, {
         onboardingState: "quiz-start",
-        onboardingStage: 7,
-        setupComplete: false,
+        onboardingStage: 8,
+        setupComplete: true,
         quizComplete: false,
         firstName: "Test",
         lastName: "Student",
         schoolId: "school-1",
         gradeLevel: "11th Grade",
         myWhy: "I want to find a career that lets me help people and be creative.",
-        personalFeedback: [
-          { questionText: "Career clarity", score: 6, submittedOn: new Date().toISOString(), questionId: 1 },
-          { questionText: "Preparedness", score: 5, submittedOn: new Date().toISOString(), questionId: 2 },
-        ],
+        careerInterestTags: ["Healthcare", "Technology", "Science"],
       });
       localStorage.setItem(`mock_student_${studentId}`, JSON.stringify(data));
     },
@@ -75,6 +72,7 @@ const JOURNEY_MOMENTS: {
         schoolId: "school-1",
         gradeLevel: "11th Grade",
         myWhy: "I want to find a career that lets me help people and be creative.",
+        careerInterestTags: ["Healthcare", "Technology", "Science"],
       });
       localStorage.setItem(`mock_student_${studentId}`, JSON.stringify(data));
     },
@@ -100,6 +98,7 @@ const JOURNEY_MOMENTS: {
         schoolId: "school-1",
         gradeLevel: "11th Grade",
         myWhy: "I want to find a career that lets me help people and be creative.",
+        careerInterestTags: ["Healthcare", "Technology", "Science"],
       });
       localStorage.setItem(`mock_student_${studentId}`, JSON.stringify(data));
     },
@@ -130,6 +129,7 @@ const JOURNEY_MOMENTS: {
         schoolId: "school-1",
         gradeLevel: "11th Grade",
         myWhy: "I want to find a career that lets me help people and be creative.",
+        careerInterestTags: ["Healthcare", "Technology", "Science"],
       });
       localStorage.setItem(`mock_student_${studentId}`, JSON.stringify(data));
     },
@@ -197,13 +197,9 @@ const PrototypeHomepage: React.FC = () => {
 
   return (
     <div style={styles.page}>
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <img
-            src="/static/images/branding/willow-bare-icon.svg"
-            alt="Willow"
-            style={{ width: 40, height: 40, marginBottom: 12 }}
-          />
+      <div style={styles.twoCol}>
+        {/* Left column — intro text */}
+        <div style={styles.leftCol}>
           <h1 style={styles.title}>Willow Onboarding Prototype</h1>
           <p style={styles.subtitle}>
             Select a journey moment to preview. Each option drops you into a specific point in the
@@ -212,7 +208,8 @@ const PrototypeHomepage: React.FC = () => {
           </p>
         </div>
 
-        <div style={styles.grid}>
+        {/* Right column — scrollable moments list */}
+        <div style={styles.rightCol}>
           {/* Onboarding Lessons */}
           <div style={styles.section}>
             <div style={styles.sectionLabel}>Onboarding Lessons</div>
@@ -277,43 +274,46 @@ const PrototypeHomepage: React.FC = () => {
 
 const styles: Record<string, React.CSSProperties> = {
   page: {
-    minHeight: "100vh",
+    height: "100vh",
     background: "#fafafa",
     display: "flex",
     justifyContent: "center",
-    paddingTop: 92,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingBottom: 48,
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
-  container: {
-    maxWidth: 860,
+  twoCol: {
+    display: "flex",
+    maxWidth: 1000,
     width: "100%",
+    height: "100%",
   },
-  header: {
-    textAlign: "center" as const,
-    marginBottom: 48,
+  leftCol: {
+    width: "40%",
+    paddingTop: 80,
+    paddingRight: 32,
+  },
+  rightCol: {
+    width: "60%",
+    overflowY: "auto" as const,
+    paddingTop: 80,
+    paddingBottom: 48,
+    paddingLeft: 24,
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: 36,
   },
   title: {
     fontSize: 28,
     fontWeight: 700,
     color: "#111",
-    margin: "0 0 8px 0",
+    margin: "0 0 12px 0",
     letterSpacing: "-0.02em",
   },
   subtitle: {
     fontSize: 15,
     color: "#666",
     lineHeight: 1.6,
-    maxWidth: 560,
-    margin: "0 auto",
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: 36,
+    margin: 0,
   },
   section: {
     display: "flex",
