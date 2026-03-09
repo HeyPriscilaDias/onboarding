@@ -8,7 +8,7 @@ const MyWhyStep: React.FC = () => {
   const { myWhy, setMyWhy, error, handleContinue, handleBack, handleBlur, studentName, isLoading } = useMyWhyStep();
 
   return (
-    <OnboardingLayout currentStep={4} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading}>
+    <OnboardingLayout currentStep={3} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading}>
       <Box component="form" sx={{ textAlign: "left" }}>
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
           <WillowTypography variant="display" color="primary">

@@ -44,14 +44,14 @@ const useMyWhyStep = () => {
 
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
         myWhy: mockMyWhy,
-        onboardingStage: 5,
-        onboardingState: "feedback",
+        onboardingStage: 6,
+        onboardingState: "career-interests",
       });
 
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
       logMyWhySubmitted({ studentId: loggedInStudent.id });
-      navigate("/student/onboarding/feedback", { replace: true });
+      navigate("/student/onboarding/career-interests", { replace: true });
     } catch (error) {
       logMyWhyError({ error });
     } finally {
@@ -63,12 +63,12 @@ const useMyWhyStep = () => {
     try {
       if (!loggedInStudent?.id) return;
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 3,
-        onboardingState: "school-info",
+        onboardingStage: 4,
+        onboardingState: "basic-info",
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/school-info", { replace: true });
+      navigate("/student/onboarding/basic-info", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { useOnboarding } from "./useOnboarding";
 import { formatPhoneNumber } from "../../utils/formatUtils";
 import { useCurrentStudent } from "../useCurrentStudent";
 import { AddressComponents } from "../../types";
 import { useOnboardingLogging } from "../../mock/mockLogging";
+import { studentService } from "../../mock/mockServices";
 
 const usePersonalInfoStep = () => {
   const navigate = useNavigate();
@@ -35,8 +37,9 @@ const usePersonalInfoStep = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const queryClient = useQueryClient();
   const { updateStudentData } = useOnboarding();
-  const { data: loggedInStudent } = useCurrentStudent();
+  const { data: loggedInStudent, refetch } = useCurrentStudent();
 
   useEffect(() => {
     if (loggedInStudent && !hasInitialized) {
@@ -197,11 +200,27 @@ const usePersonalInfoStep = () => {
     updateStudentData,
   ]);
 
+  const handleBack = useCallback(async () => {
+    try {
+      if (!loggedInStudent?.id) return;
+      await studentService.updateStudentGoldenPath(loggedInStudent.id, {
+        onboardingStage: 1,
+        onboardingState: "signup",
+      });
+      await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
+      await refetch();
+      navigate("/signup", { replace: true });
+    } catch (error) {
+      console.error("Error updating onboarding stage:", error);
+    }
+  }, [loggedInStudent, queryClient, refetch, navigate]);
+
   return {
     handleTextChange,
     handleBirthdayChange,
     handlePhoneChange,
     handleContinue,
+    handleBack,
     handleBlur,
     setAddress,
     handleAddressChange,

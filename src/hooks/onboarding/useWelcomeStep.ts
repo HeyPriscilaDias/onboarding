@@ -1,57 +1,54 @@
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useCurrentStudent } from "../useCurrentStudent";
 import { studentService } from "../../mock/mockServices";
-import { useOnboardingLogging } from "../../mock/mockLogging";
 
-const useThankYouStep = () => {
+const useWelcomeStep = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+
   const { data: loggedInStudent, refetch } = useCurrentStudent();
   const queryClient = useQueryClient();
-  const { logOnboardingCompleted } = useOnboardingLogging();
+  const navigate = useNavigate();
 
-  const handleExplore = useCallback(async () => {
+  const handleContinue = useCallback(async () => {
     try {
       if (!loggedInStudent?.id) return;
       setIsLoading(true);
 
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 8,
-        onboardingState: "complete",
-        setupComplete: true,
+        onboardingStage: 3,
+        onboardingState: "meet-alma",
       });
 
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      logOnboardingCompleted({ studentId: loggedInStudent.id });
-
-      navigate("/student/home");
+      navigate("/student/onboarding/meet-alma", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
-      navigate("/student/home");
     } finally {
       setIsLoading(false);
     }
-  }, [navigate, loggedInStudent, queryClient, refetch, logOnboardingCompleted]);
+  }, [loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(async () => {
     try {
       if (!loggedInStudent?.id) return;
+
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 6,
-        onboardingState: "career-interests",
+        onboardingStage: 1,
+        onboardingState: "signup",
       });
+
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
+      navigate("/signup", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }
-    navigate("/student/onboarding/career-interests");
-  }, [navigate, loggedInStudent, queryClient, refetch]);
+  }, [loggedInStudent, queryClient, refetch, navigate]);
 
-  return { handleExplore, handleBack, isLoading };
+  return { handleContinue, handleBack, isLoading };
 };
 
-export default useThankYouStep;
+export default useWelcomeStep;

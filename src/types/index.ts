@@ -54,9 +54,12 @@ export type PersonalFeedback = {
 };
 
 export type OnboardingState =
+  | "signup"
+  | "basic-info"
   | "personal-info"
   | "school-info"
   | "my-why"
+  | "career-interests"
   | "feedback"
   | "quiz-start"
   | "quiz-in-progress"
@@ -119,6 +122,7 @@ export type Student = {
   includeOnlineOnly: boolean;
   programTypeForRecommendations: string;
   bookmarkedACareer: boolean;
+  careerInterestTags: string[];
   personalFeedback: PersonalFeedback[];
   active?: boolean;
   incomeBracket?: "lower" | "middle" | "higher" | null;

@@ -3,12 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../components/auth/LoginPage";
 import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep";
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
-import SchoolInfoStep from "../components/onboarding/SchoolInfoStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
-import FeedbackStep from "../components/onboarding/FeedbackStep";
-import ThankYouStep from "../components/onboarding/ThankYouStep";
+import CareerInterestTagsStep from "../components/onboarding/CareerInterestTagsStep";
 import QuizPlaceholder from "../components/onboarding/QuizPlaceholder";
 import PersonalizationStep from "../components/onboarding/PersonalizationStep";
+import FeedbackStep from "../components/onboarding/FeedbackStep";
 import CompletionPage from "../components/CompletionPage";
 import StudentHomeRouter from "../components/platform/StudentHomeRouter";
 import ExploreCareersPage from "../components/platform/ExploreCareersPage";
@@ -29,19 +28,26 @@ const AppRoutes: React.FC = () => {
       {/* Prototype testing layer */}
       <Route path="/prototype" element={<PrototypeHomepage />} />
 
-      {/* Original routes */}
+      {/* Auth routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<EmailAndPasswordStep />} />
 
-      <Route path="/student/onboarding/personal-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/school-info" element={<ProtectedRoute><SchoolInfoStep /></ProtectedRoute>} />
+      {/* Lesson 1: Onboarding flow */}
+      <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/thank-you" element={<ProtectedRoute><ThankYouStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerInterestTagsStep /></ProtectedRoute>} />
+
+      {/* Lesson 2: Personality quiz (separate session) */}
       <Route path="/student/onboarding/quiz-placeholder" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
       <Route path="/student/onboarding/personality-quiz/*" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
+
+      {/* Legacy routes (kept for backward compat with prototype toolbar) */}
+      <Route path="/student/onboarding/personal-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/recommendation-preferences" element={<ProtectedRoute><CompletionPage /></ProtectedRoute>} />
+
+      {/* Platform */}
       <Route path="/student/home" element={<ProtectedRoute><StudentHomeRouter /></ProtectedRoute>} />
       <Route path="/student/explore-careers" element={<ProtectedRoute><ExploreCareersPage /></ProtectedRoute>} />
 
