@@ -1,6 +1,6 @@
 # Prototype Audit: Documents vs. Implementation
 
-Date: 2026-03-09
+Last updated: 2026-03-09
 
 ## Source Documents
 
@@ -11,424 +11,186 @@ Date: 2026-03-09
 
 ---
 
-## MISSING from the prototype
-
-### 1. ~~Welcome / "What is Willow?" screen~~ — REMOVED
-- **Source:** Proposal Step 2, Jaime transcript
-- **Expected:** Purpose-setting screen — "What is Willow? Why are you here?" Brief, visual.
-- **Status:** Removed from the onboarding flow. This informational-only step doesn't seem necessary as a standalone screen — it adds a click without collecting data or meaningfully advancing the user. The content ("What is Willow? Why are you here?") could be better delivered as a slide in the curriculum or folded into the Meet Alma step.
-
-### 2. ~~Meet Alma screen~~ — REMOVED
-- **Source:** Proposal Step 3, Ryan summary
-- **Expected:** Introduce the AI assistant, set expectations for what Alma can help with.
-- **Status:** Removed from the onboarding flow. Like the Welcome step, this informational-only screen doesn't seem necessary as a standalone onboarding step. It adds a click without collecting data. The Alma introduction could be better delivered as a curriculum slide.
-
-### 3. Career interest tags
-- **Source:** Proposal Step 6, Jaime transcript, Ryan summary
-- **Expected:** Multi-select clickable tags (science, engineering, healthcare, writing, technology, etc.). No typing required. Can be changed later in settings. These power initial career recommendations.
-- **Status:** Not implemented. This is a central feature of the redesign — the mechanism that gives students immediate value (recommendations) after Lesson 1.
-
-### 4. Platform overview / orientation
-- **Source:** Jaime transcript
-- **Expected:** After onboarding, a quick tour/orientation of key platform areas (careers, portfolio, Alma, lessons, etc.). Jaime: "we might as well tell them what they're clicking around in."
-- **Status:** Not implemented. Prototype ends at a completion page.
-
-### 5. GPA field
-- **Source:** Proposal (Basic info step)
-- **Expected:** GPA collected as part of basic info alongside city/state and grade.
-- **Status:** Not collected anywhere in the prototype.
-
-### 6. City/State fields
-- **Source:** Proposal
-- **Expected:** City/state only (not full address) for location-based data.
-- **Status:** Prototype collects a full `address` field instead.
-
----
-
-## WRONG / Contradicts the documents
-
-### 1. Full address collected (FERPA violation concern)
-- **Documents say:** "No full address (FERPA)" — only city/state
-- **Prototype does:** Collects full `address` text field in PersonalInfoStep
-- **File:** `src/components/onboarding/PersonalInfoStep.tsx`, `src/hooks/onboarding/usePersonalInfoStep.ts`
-
-### 2. Phone number collected
-- **Documents say:** Not mentioned anywhere as a required field
-- **Prototype does:** Collects phone number with (XXX) XXX-XXXX formatting and validation
-- **File:** `src/components/onboarding/PersonalInfoStep.tsx`, `src/hooks/onboarding/usePersonalInfoStep.ts`
-
-### 3. Birthday collected
-- **Documents say:** Not mentioned in any document as needed data
-- **Prototype does:** Collects birthday with age validation (must be 10-20 years old)
-- **File:** `src/components/onboarding/PersonalInfoStep.tsx`, `src/hooks/onboarding/usePersonalInfoStep.ts`
-
-### 4. School selection dropdown
-- **Documents say:** Schools are set up by admins (Clever/Google integration); proposal says collect city/state and grade
-- **Prototype does:** Has a school picker dropdown with 8 mock schools
-- **File:** `src/components/onboarding/SchoolInfoStep.tsx`, `src/hooks/onboarding/useSchoolInfoStep.ts`
-
-### 5. Personality quiz still in the onboarding flow
-- **Documents say:** The entire redesign is about separating the quiz into Lesson 2. Jaime: "those should be two separate things." Proposal defines Lesson 1 (setup) and Lesson 2 (quiz) as distinct curriculum-integrated lessons.
-- **Prototype does:** Quiz placeholder is Step 8, still in the same continuous flow after Thank You screen. The flow is: signup → personal info → school → my why → feedback → thank you → quiz → personalization → completion.
-- **File:** `src/components/onboarding/QuizPlaceholder.tsx`, routing in `src/routes/Routes.tsx`
-
-### 6. Feedback/Likert questions still in onboarding
-- **Documents say:** GPC and feedback questions should be removed from onboarding entirely. GPC ratings move to after the 9-lesson GPC curriculum unit. Jaime: the post-quiz questions "cause more consternation with people than any other thing."
-- **Prototype does:** Two 1-10 scale feedback questions (career clarity, life preparedness) are Steps 5-6 in the onboarding flow.
-- **File:** `src/components/onboarding/FeedbackStep.tsx`, `src/hooks/onboarding/useFeedbackStep.ts`
-- **Note:** The proposal's feedback questions ("How clear are you..." / "How prepared do you feel...") are arguably different from the GPC Likert scales. However, the proposal does NOT include these in Lesson 1's step list. They may belong in a pre/post measurement context rather than onboarding.
-
-### 7. Income bracket as an onboarding step
-- **Documents say:** Proposal mentions "My Why / ROI" as Step 5 — "Personalized ROI setup. Why postsecondary exploration matters to them." Ryan summary mentions "personalized ROI" as part of setup.
-- **Prototype does:** Has a full income bracket selection screen with 3 cards (lower/middle/higher), "prefer not to answer" checkbox, and a confirmation modal. This is a separate step after the quiz.
-- **File:** `src/components/onboarding/PersonalizationStep.tsx`, `src/components/onboarding/IncomeConfirmationModal.tsx`
-- **Note:** The income bracket concept may be what "personalized ROI" refers to, but the implementation is more heavyweight than what the proposal describes and is placed after the quiz rather than as part of Lesson 1 setup.
-
-### 8. Flow doesn't end at the platform
-- **Documents say:** "Student lands on the platform. Career recommendations visible based on interest tags. Platform overview: quick orientation of key areas."
-- **Prototype does:** Flow goes through Thank You → Quiz → Personalization → Completion page (a summary/restart screen). Student never lands on a real platform view with recommendations.
-- **File:** `src/components/CompletionPage.tsx`
-
----
-
-## FLOW ORDER mismatch
-
-### Proposal (Lesson 1) — as adjusted:
-1. Sign in
-2. ~~Welcome (What is Willow?)~~ — removed (unnecessary standalone step; content may become a curriculum slide)
-3. ~~Meet Alma~~ — removed (same rationale as Welcome; content may become a curriculum slide)
-4. Basic info (city/state, grade, GPA)
-5. My Why / ROI
-6. Career interest tags
-7. Done → land on platform with recommendations
-
-### Prototype (current):
-1. Sign up (email/password — disabled)
-2. Personal info (first name, last name, birthday, address, phone)
-3. School info (school dropdown, grade level, school ID)
-4. My Why (essay question)
-5. Feedback Q1: career clarity (1-10 scale)
-6. Feedback Q2: preparedness (1-10 scale)
-7. Thank You
-8. Quiz placeholder (skipped)
-9. Personalization (income bracket)
-10. Completion page
-
----
-
-## What the prototype got RIGHT
-
-- **My Why step exists** — Content is close to what's proposed, though placement in the flow differs
-- **Grade level collection** — Collected in SchoolInfoStep
-- **Mock/prototype mode** — Auto-fill for testing, prototype homepage with journey moments
-- **OnboardingLayout** — Clean layout with progress dots, back/continue navigation, responsive design
-- **PLAN.md platform concept** — Progressive refinement model (interest-only → interest+personality → interest+personality+GPC) aligns well with the proposal's recommendation strategy
-- **Separation concern acknowledged** — The prototype has a "pending" student path where school is pre-set by admin, showing awareness of the admin-setup flow
-
----
-
-## Structural Summary
-
-The prototype appears to be based on the **old onboarding flow** (or a slight iteration of it) rather than the **proposed redesign**. The core redesign ideas are largely not implemented:
-
-- Separating quiz from setup into distinct lessons
-- Adding career interest tags as the primary first-session value driver
-- Removing FERPA-sensitive fields (full address)
-- Adding Welcome and Meet Alma screens
-- Landing on a real platform with recommendations after Lesson 1
-- Removing feedback/Likert questions from the onboarding flow
-
----
-
-## Implementation Plan
-
-### Target Flow (Lesson 1)
+## Current Lesson 1 Flow (implemented)
 
 ```
-Stage 1: Sign in (/signup)                          — existing, minor tweaks
-Stage 2: (removed — Welcome step deemed unnecessary, content may become a curriculum slide)
-Stage 3: (removed — Meet Alma step deemed unnecessary, content may become a curriculum slide)
-Stage 4: Basic info (/student/onboarding/basic-info) — REWRITE of PersonalInfoStep
-Stage 5: My Why (/student/onboarding/my-why)         — existing, minor tweaks
-Stage 6: Career interests (/student/onboarding/career-interests) — NEW
-Stage 7: Done → land on platform (/student/home)     — ThankYouStep removed (unnecessary extra click; career-interests now completes onboarding and navigates directly to /student/home)
+Step 1: Sign up (/signup)                               — EmailAndPasswordStep (currentStep=1)
+Step 2: Basic info (/student/onboarding/basic-info)      — PersonalInfoStep (currentStep=2)
+Step 3: My Why (/student/onboarding/my-why)              — MyWhyStep (currentStep=3)
+Step 4: Career interests (/student/onboarding/career-interests) — CareerInterestTagsStep (currentStep=4)
+  → navigates to /student/home (PlatformHomepage)
 ```
 
-Progress dots: 4 (stages 4-7, sign-in excluded from dots, welcome and meet-alma removed)
+Progress dots: 4 segments, shown on steps 1–4. Navigation: Back goes to previous step, Continue goes to next.
 
-### Target Flow (Lesson 2 — separate session)
+### Stage numbers used in code
 
-```
-Quiz context-setting → Personality quiz → Results → Exploration
-```
+| Step | `onboardingStage` on enter | `onboardingStage` on continue |
+|------|---------------------------|-------------------------------|
+| Sign up | 1 | 4 (navigates to basic-info) |
+| Basic info | 4 | 5 (navigates to my-why) |
+| My Why | 5 | 6 (navigates to career-interests) |
+| Career interests | 6 | 8 + `setupComplete: true` (navigates to /student/home) |
 
-Lesson 2 is out of scope for this plan. The prototype should cleanly end Lesson 1 at the platform. QuizPlaceholder, PersonalizationStep, and IncomeConfirmationModal stay in the codebase but are disconnected from the Lesson 1 flow. They become entry points from the PrototypeHomepage's "Lesson 2" journey moment.
-
----
-
-### Phase 1: Remove contradictions (fix what's wrong)
-
-**Goal:** Strip fields and steps that contradict the proposal. After this phase the flow is shorter but not yet complete.
-
-#### 1a. Rewrite PersonalInfoStep → BasicInfoStep
-
-**What changes:**
-- Remove: `birthday`, `address` (full), `phoneNumber`
-- Keep: `firstName`, `lastName`
-- Add: `city` (text), `state` (dropdown, US states), `gradeLevel` (move from SchoolInfoStep), `gpa` (text input, optional)
-- Rename component to `BasicInfoStep` for clarity
-- Heading changes from "A little bit about you" to something like "Let's get to know you"
-
-**Files to modify:**
-- `src/components/onboarding/PersonalInfoStep.tsx` → rename to `BasicInfoStep.tsx`
-  - Remove birthday date field, address text field, phone field
-  - Add city text input, state dropdown (US states list), GPA text input
-  - Move gradeLevel dropdown here from SchoolInfoStep
-  - Update heading text
-- `src/hooks/onboarding/usePersonalInfoStep.ts` → rename to `useBasicInfoStep.ts`
-  - Remove `birthday`, `address`, `phoneNumber` state and validation
-  - Remove `validateBirthday()`, phone formatting logic
-  - Add `city`, `usState`, `gpa` state fields
-  - Update mock auto-fill defaults
-  - Change navigation: continue goes to `/student/onboarding/my-why` (Stage 5)
-  - Change back: goes to Meet Alma step (Stage 3)
-- `src/utils/formatUtils.ts` — `formatPhoneNumber` can stay (unused is fine) or be removed
-
-**Files to delete (or leave unused):**
-- `src/components/onboarding/SchoolInfoStep.tsx` — school selection removed from Lesson 1
-- `src/hooks/onboarding/useSchoolInfoStep.ts` — same
-- `src/utils/schoolUtils.ts` — school/grade helpers (grade level utils may still be needed)
-
-**Type changes (`src/types/index.ts`):**
-- Add to Student type: `city: string`, `usState: string`, `gpa: string`
-- `address` field can remain in the type (existing data compat) but won't be collected in Lesson 1
-- Add: `careerInterestTags: string[]` (needed for Phase 2)
-
-**Mock data (`src/mock/mockData.ts`):**
-- Update `createEmptyStudent()` defaults: add `city: ""`, `usState: ""`, `gpa: ""`, `careerInterestTags: []`
-- Update mock auto-fill in hook: city → "Springfield", usState → "IL", gpa → "3.5"
-
-#### 1b. Remove FeedbackStep from Lesson 1 flow
-
-**What changes:**
-- Remove feedback steps (stages 5-6) from the onboarding navigation chain
-- FeedbackStep component stays in the codebase (may be used elsewhere later)
-- MyWhyStep now continues directly to Career Interest Tags (Phase 2) or to ThankYou (interim)
-
-**Files to modify:**
-- `src/hooks/onboarding/useMyWhyStep.ts`
-  - Change continue navigation: skip feedback, go to career interests route (Phase 2) or thank-you (interim)
-  - Update `onboardingStage` increment accordingly
-
-**Files to leave in place (not deleted, just disconnected):**
-- `src/components/onboarding/FeedbackStep.tsx`
-- `src/hooks/onboarding/useFeedbackStep.ts`
-- `src/utils/onboardingUtils.ts` (feedback entry utils)
-
-#### 1c. Disconnect quiz + personalization from Lesson 1
-
-**What changes:**
-- ThankYouStep removed entirely — it was an unnecessary extra click between career interests and the platform. Career interests step now completes onboarding (sets `onboardingStage: 8`, `setupComplete: true`) and navigates directly to `/student/home`.
-- Lesson 1 ends at the platform landing
-- `ThankYouStep.tsx` and `useThankYouStep.ts` are now dead code (can be deleted)
-- Quiz/personalization routes remain accessible via PrototypeHomepage Lesson 2
-
-#### 1d. Restage the flow
-
-**What changes:**
-After removing SchoolInfo (old stage 3) and Feedback (old stages 5-6), renumber:
-
-| New Stage | Step | Old Stage |
-|-----------|------|-----------|
-| 1 | Sign in | 1 |
-| 2 | Basic info (was PersonalInfo) | 2 |
-| 3 | My Why | 4 |
-| 4 | Done / Thank You → platform | 7 |
-
-This is an interim numbering. Phase 2 adds Welcome, Meet Alma, and Career Interests, which will expand to the full 7-stage target.
-
-**Files to modify:**
-- All hooks that reference `onboardingStage` numbers
-- `OnboardingLayout.tsx` — update progress dot count from 6 to match interim step count
-- `PrototypeHomepage.tsx` — update `setupStudentForMoment` stage numbers
+Note: Stage numbers skip 2, 3, and 7 — leftovers from removed steps (Welcome, Meet Alma, ThankYou). This is cosmetic (the numbers are internal), but worth knowing if you're reading the code.
 
 ---
 
-### Phase 2: Add missing screens (build what's new)
+## DONE — Previously identified issues that are now fixed
 
-**Goal:** Add the three new screens that the proposal requires. After this phase the Lesson 1 flow matches the proposal.
+These were flagged in the original audit and have since been resolved:
 
-#### 2a. ~~Welcome step — "What is Willow?"~~ — REMOVED
-
-This step has been removed from the onboarding flow. It was an informational-only screen with no form fields — just static text explaining what Willow is. It doesn't seem necessary as a standalone onboarding step and adds friction without collecting data. The "What is Willow?" content could be better delivered as a curriculum slide or folded into the Meet Alma introduction. The WelcomeStep component and useWelcomeStep hook files remain in the codebase but are disconnected from routing and navigation.
-
-#### 2b. ~~Meet Alma step~~ — REMOVED
-
-Same rationale as Welcome. This was an informational-only screen introducing the AI assistant. It doesn't need to be a standalone onboarding step — the Alma introduction could be delivered as a curriculum slide. The MeetAlmaStep component and useMeetAlmaStep hook files remain in the codebase but are disconnected from routing and navigation.
-
-#### 2c. Career Interest Tags step
-
-**New files:**
-- `src/components/onboarding/CareerInterestTagsStep.tsx`
-- `src/hooks/onboarding/useCareerInterestTagsStep.ts`
-
-**Content (from proposal):**
-- Heading: "What kind of careers interest you?" or similar
-- Subtext: "Pick as many as you like — you can always change these later"
-- Grid of clickable tag chips/buttons (multi-select, toggle on/off)
-- No typing required
-
-**Tag list (broad career categories):**
-- Science, Technology, Engineering, Healthcare, Education, Business, Arts & Design, Writing & Communication, Law & Government, Social Services, Trades & Construction, Agriculture & Environment, Media & Entertainment, Sports & Fitness, Military & Public Safety
-- (Final list TBD — should align with whatever tag taxonomy maps to career recommendations)
-
-**Implementation:**
-- Uses `OnboardingLayout` with `currentStep={6}`
-- Hook manages `selectedTags: string[]` state
-- Tags rendered as a flex-wrap grid of toggle buttons/chips
-- Selected state: filled/highlighted; unselected: outlined
-- Continue: saves `careerInterestTags` to student record, sets `onboardingStage: 7`, navigates to done/platform
-- Back: sets `onboardingStage: 5`, navigates to `/student/onboarding/my-why`
-- Mock auto-fill: pre-select ["Healthcare", "Technology"] if empty
-
-**Data:**
-- Saved to `student.careerInterestTags: string[]`
-- Used by post-onboarding platform to power initial career recommendations (per PLAN.md)
-
-**Route:** `/student/onboarding/career-interests`
-
-#### 2d. Update stage numbering to final target
-
-| Stage | Step | Route |
-|-------|------|-------|
-| 1 | Sign in | `/signup` |
-| 4 | Basic info | `/student/onboarding/basic-info` |
-| 5 | My Why | `/student/onboarding/my-why` |
-| 6 | Career interests | `/student/onboarding/career-interests` |
-| 7 | Done → platform | `/student/home` |
-
-**Progress dots:** 4 dots (stages 4-7). Stage 1 (sign-in) is excluded from progress visualization. Stages 2 (Welcome) and 3 (Meet Alma) were removed.
-
-**Files to modify:**
-- `src/components/onboarding/OnboardingLayout.tsx` — progress dots array becomes `[2, 3, 4, 5, 6, 7]` or renumbered `[1, 2, 3, 4, 5, 6]` for display
-- `src/routes/Routes.tsx` — add routes for `/welcome`, `/meet-alma`, `/basic-info`, `/career-interests`
-- `src/hooks/onboarding/useEmailAndPasswordStep.ts` — continue navigates to `/student/onboarding/welcome` (stage 2)
-- All hook files — update stage numbers and navigation targets
-- `src/components/prototype/PrototypeHomepage.tsx` — update journey moment setup with new stages
+- ~~Full address / phone / birthday collected~~ — BasicInfoStep now collects only: firstName, lastName, city, state, gradeLevel, GPA (optional)
+- ~~SchoolInfoStep in Lesson 1~~ — Removed from routing. Files still exist but are dead code.
+- ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 14 tags, toggle chips, saves to `student.careerInterestTags`
+- ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route at `/student/onboarding/feedback` still exists.
+- ~~Quiz in continuous Lesson 1 flow~~ — Quiz is now a separate "Lesson 2" entry point via PrototypeHomepage
+- ~~Flow ends at CompletionPage~~ — Career interests now navigates directly to `/student/home` → PlatformHomepage
+- ~~ThankYouStep as extra click~~ — Removed from flow (career interests goes straight to platform). Files still exist as dead code.
+- ~~Welcome / Meet Alma screens~~ — Intentionally removed. Deemed unnecessary as standalone onboarding steps; content better as curriculum slides.
 
 ---
 
-### Phase 3: Update flow endpoints (land on platform)
+## REMAINING ISSUES
 
-**Goal:** After Lesson 1, student lands on the platform with career recommendations visible. Replace or bypass the CompletionPage.
+### Contradictions (code vs. documents)
 
-#### 3a. Replace ThankYouStep with a transitional "You're all set" moment
+#### 1. Career recommendations missing from PlatformHomepage
+- **PLAN.md says:** Career recommendations are the primary content — first section after the welcome heading. The layout diagram shows `[Career Recs]` prominently.
+- **Code does:** `PlatformHomepage.tsx` does NOT render `CareerRecommendations`. The component exists and works (used in `ExploreCareersPage`), but the homepage — the first thing a student sees — has no career cards.
+- **Impact:** High. This is the entire thesis of the redesign: students get immediate value (recommendations) after Lesson 1.
+- **Fix:** Add `<CareerRecommendations />` to `PlatformHomepage.tsx`, likely as the first section after the welcome heading.
+- **Files:** `src/components/platform/PlatformHomepage.tsx`
 
-**Option A — Keep as a brief screen:**
-- Heading: "You're all set!"
-- Brief message: "Based on your interests, we've started building career recommendations for you."
-- Button: "Explore Willow"
-- Navigate to `/student/home`
+#### 2. "Welcome back" copy for first-time visitors
+- **Context:** After finishing onboarding, a student lands on PlatformHomepage for the first time.
+- **Code says:** "Welcome back, {firstName}!" (`PlatformHomepage.tsx:25`)
+- **Problem:** They're not "back" — they just arrived. Should say "Welcome, {firstName}!" or vary based on visit count.
+- **Impact:** Low. Copy issue.
+- **Fix:** Change heading text. Consider differentiating first visit vs. return.
+- **Files:** `src/components/platform/PlatformHomepage.tsx`
 
-**Option B — Skip entirely:**
-- Career Interest Tags step's Continue goes directly to `/student/home`
-- No transitional screen
-- Simpler, but less ceremonial
-
-**Recommendation:** Option A — the brief "you're all set" moment gives closure to the onboarding and sets up the platform landing.
-
-#### 3b. Platform landing (depends on PLAN.md implementation)
-
-The PLAN.md describes a full `PlatformHomepage` with career recommendations, personality empty states, sidebar nav, and Alma placeholder. That work is tracked separately.
-
-**Interim approach:** The existing `CompletionPage` at `/student/home` can be updated to:
-- Show a simplified view with career interest tags the student selected
-- Show a "Take the Personality Quiz" prompt as an empty state card (not a blocking step)
-- Remove the "Restart Onboarding" flow that resets everything
-
-**Full approach (PLAN.md):** Build the `PlatformHomepage` with all sections described in PLAN.md. This is the larger effort and can be phased separately.
+#### 3. Progress dots include signup step
+- **AUDIT plan said:** "Progress dots: 4 dots (stages 4-7). Stage 1 (sign-in) is excluded from progress visualization."
+- **Code does:** 4 dots starting at step 1. Signup (step 1) shows the first dot filled.
+- **Impact:** Low. Design decision, but contradicts the documented plan.
+- **Fix:** Decide which is correct and align. If signup should be excluded, show dots starting at step 2.
+- **Files:** `src/components/onboarding/OnboardingLayout.tsx`, all step components' `currentStep` props
 
 ---
 
-### Phase 4: Prototype infrastructure updates
+### Missing features
 
-**Goal:** Keep the prototype testing tools (PrototypeHomepage, PrototypeToolbar) working with the new flow.
+#### 5. Platform overview / orientation after onboarding
+- **Source:** Jaime transcript — "we might as well tell them what they're clicking around in."
+- **Status:** Not implemented. No tooltip tour, no orientation overlay, no quick-start guide.
+- **Impact:** Medium. First-time users land on a full platform UI with no guidance.
+- **Fix:** Could be a lightweight tooltip tour, a dismissable overlay, or a first-visit banner. Needs design decision.
+- **Files:** New component needed, integrate into `PlatformHomepage.tsx`
 
-#### 4a. Update PrototypeHomepage journey moments
+#### 6. City/state collected but unused downstream
+- **Source:** Proposal says city/state are for "location-based data" (presumably local career/program recommendations).
+- **Status:** Fields are collected in BasicInfoStep and saved to `student.address.city` / `student.address.state`, but nothing in the recommendation logic uses them.
+- **Impact:** Low for prototype. The fields exist; wiring them into recommendations is a future concern.
+- **Fix:** No action needed now, but document that location-based filtering is not yet implemented.
 
-**Lesson 1: Setup + Introduction**
-- Route: `/signup` (unchanged)
-- No student setup needed (fresh flow)
-
-**Lesson 2: Personality Quiz**
-- Route: `/student/onboarding/quiz-placeholder` (keep existing)
-- Setup student with: completed Lesson 1 data (name, city, state, grade, gpa, myWhy, careerInterestTags)
-- `onboardingStage: 7` (Lesson 1 complete), `onboardingState: "complete"`
-- `quizComplete: false`
-
-**Post-onboarding states** (interest-only, interest-personality, interest-personality-gpc):
-- Keep as-is but ensure `careerInterestTags` are populated in setup data
-
-#### 4b. Update mock auto-fill data
-
-All hooks with mock auto-fill need updated defaults:
-- `useBasicInfoStep`: firstName="Jane", lastName="Doe", city="Springfield", usState="IL", gradeLevel="9th Grade", gpa="3.5"
-- `useCareerInterestTagsStep`: ["Healthcare", "Technology"]
+#### 7. "My Why / ROI" conflation unresolved
+- **Source:** Proposal Step 5 is "My Why / ROI — Personalized ROI setup."
+- **Status:** MyWhyStep is just an essay question. Income bracket (the ROI piece) is only in PersonalizationStep, which is a Lesson 2 step.
+- **Impact:** Low. The proposal may have intended these as separate or combined; neither document clarifies.
+- **Fix:** No action needed unless stakeholders want ROI in Lesson 1.
 
 ---
 
-### Phase 5: Cleanup
+### Unfounded design decisions (in code but not in any document)
 
-**Goal:** Remove dead code and unused references.
+#### 8. SMART Goals section on homepage
+- `PlatformHomepage.tsx` renders three "Set a SMART Goal" placeholder cards.
+- No document mentions goals as part of the post-onboarding experience.
+- **Action needed:** Either add design rationale to PLAN.md or remove from PlatformHomepage.
 
-#### Files to delete:
-- `src/components/onboarding/SchoolInfoStep.tsx` (school selection no longer in Lesson 1)
-- `src/hooks/onboarding/useSchoolInfoStep.ts`
+#### 9. Career Readiness + Durable Skills Assessment placeholders
+- Two placeholder cards on PlatformHomepage: "Career Readiness" and "Durable Skills Assessment."
+- Neither is mentioned in PLAN.md or any proposal document.
+- **Action needed:** Either add design rationale to PLAN.md or remove from PlatformHomepage.
 
-#### Files to rename:
-- `PersonalInfoStep.tsx` → `BasicInfoStep.tsx`
-- `usePersonalInfoStep.ts` → `useBasicInfoStep.ts`
+#### 10. LessonCodeSection on post-onboarding homepage
+- A "Today's lesson code" card with input boxes appears on the homepage.
+- No document explains why lesson code entry belongs on the post-onboarding landing. The student just finished Lesson 1 — when would they use this?
+- **Action needed:** Either justify placement (e.g., it's how students join Lesson 2) and document it, or relocate/remove.
 
-#### Files to keep but disconnect from Lesson 1:
-- `FeedbackStep.tsx` / `useFeedbackStep.ts` — may be reused for pre/post measurement
-- `QuizPlaceholder.tsx` — used by Lesson 2 journey moment
-- `PersonalizationStep.tsx` / `IncomeConfirmationModal.tsx` — used by Lesson 2 or later flow
-- `src/utils/formatUtils.ts` — phone formatting no longer needed in Lesson 1 but harmless
+#### 11. "Military & Public Safety" tag removed without explanation
+- AUDIT plan listed 15 career tags including "Military & Public Safety."
+- Implementation has 14 tags — that one is missing. No documented rationale.
+- **Action needed:** Either add it back or document why it was dropped.
 
-#### Type cleanup (`src/types/index.ts`):
-- Ensure `careerInterestTags`, `city`, `usState`, `gpa` are added
-- Keep legacy fields (`address`, `phone`, `birthday`) in the type for backward compat with existing mock data
-
----
-
-### Summary: Files changed per phase
-
-| Phase | New Files | Modified Files | Deleted Files |
-|-------|-----------|----------------|---------------|
-| 1a | 0 | 3 (PersonalInfoStep→BasicInfoStep, hook, types) | 2 (SchoolInfoStep, hook) |
-| 1b | 0 | 1 (useMyWhyStep navigation) | 0 |
-| 1c | 0 | 2 (ThankYouStep, hook) | 0 |
-| 1d | 0 | 4 (all hooks, OnboardingLayout, PrototypeHomepage) | 0 |
-| 2a | 2 | 1 (Routes.tsx) | 0 |
-| 2b | 2 | 1 (Routes.tsx — same edit) | 0 |
-| 2c | 2 | 2 (Routes.tsx, types) | 0 |
-| 2d | 0 | 5 (OnboardingLayout, Routes, all hooks, PrototypeHomepage) | 0 |
-| 3 | 0 | 2 (ThankYouStep or removal, CompletionPage) | 0 |
-| 4 | 0 | 2 (PrototypeHomepage, mockData) | 0 |
-| 5 | 0 | 0 | 2 (SchoolInfoStep, hook — if not already) |
-
-**Total: ~6 new files, ~12-15 modified files, ~2 deleted files**
+#### 12. Alma sidebar takes ~25% of viewport with zero functionality
+- MockAlmaSidebar is 324px wide on every platform page. Non-functional (visual only).
+- For a prototype meant to demonstrate the recommendation model, dedicating a quarter of the screen to a chat placeholder is a trade-off.
+- **Action needed:** This is acceptable if the goal is visual fidelity to the real product. But if screen real estate matters for demonstrating recommendations, consider making it collapsible or narrower.
 
 ---
 
-### Execution order recommendation
+### Dead code to clean up
 
-Phases 1 and 2 are tightly coupled — removing old steps and adding new ones affects the same stage numbering and routing. The most practical approach:
+#### 13. ThankYouStep files (orphaned)
+- `src/components/onboarding/ThankYouStep.tsx` and `src/hooks/onboarding/useThankYouStep.ts` exist but are not routed or referenced.
+- **Action:** Delete both files.
 
-1. **Do Phase 1a + 1b + 1c together** — gut the wrong stuff, get a shorter but working flow
-2. **Do Phase 2a + 2b + 2c + 2d together** — add all new screens and restage at once
-3. **Do Phase 1d as part of 2d** — restaging only happens once, at the end
-4. **Phase 3** — update endpoints after the flow is stable
-5. **Phase 4 + 5** — cleanup after everything works
+#### 14. SchoolInfoStep files (orphaned)
+- `src/components/onboarding/SchoolInfoStep.tsx` and `src/hooks/onboarding/useSchoolInfoStep.ts` exist but are not routed in Lesson 1.
+- **Action:** Delete both files.
 
-This avoids restaging twice and keeps the prototype functional at each checkpoint.
+#### 15. WelcomeStep and MeetAlmaStep files (orphaned)
+- `src/components/onboarding/WelcomeStep.tsx`, `src/hooks/onboarding/useWelcomeStep.ts`
+- `src/components/onboarding/MeetAlmaStep.tsx`, `src/hooks/onboarding/useMeetAlmaStep.ts`
+- Not routed, intentionally removed from flow.
+- **Action:** Delete all four files.
+
+#### 16. Legacy routes in Routes.tsx
+- `/student/onboarding/personal-info` — duplicate of `/student/onboarding/basic-info`
+- `/student/onboarding/feedback` — disconnected FeedbackStep
+- `/student/onboarding/recommendation-preferences` — points to CompletionPage
+- **Action:** Remove these three legacy routes.
+
+---
+
+## Task List (for delegation)
+
+Ordered by impact and dependency. Each task is self-contained.
+
+### High priority
+
+| # | Task | Files | Dependencies |
+|---|------|-------|-------------|
+| T1 | Add `<CareerRecommendations />` to PlatformHomepage as first section after welcome heading | `src/components/platform/PlatformHomepage.tsx` | None |
+| T2 | Fix "Welcome back" → "Welcome" for first-time landing | `src/components/platform/PlatformHomepage.tsx` | None |
+
+### Medium priority
+
+| # | Task | Files | Dependencies |
+|---|------|-------|-------------|
+| T3 | Decide: keep or remove SMART Goals, Career Readiness, Durable Skills, LessonCode from PlatformHomepage. If keeping, add rationale to PLAN.md. If removing, delete the JSX. | `src/components/platform/PlatformHomepage.tsx`, `documents/PLAN.md` | Design decision needed |
+| T4 | Decide: add "Military & Public Safety" back to tag list, or document why it was dropped | `src/hooks/onboarding/useCareerInterestTagsStep.ts` | Design decision needed |
+| T5 | Decide: should progress dots include signup step or start at basic-info? Align code with decision. | `src/components/onboarding/OnboardingLayout.tsx`, all step components | Design decision needed |
+
+### Low priority
+
+| # | Task | Files | Dependencies |
+|---|------|-------|-------------|
+| T6 | Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files) | See item 13–15 above | None |
+| T7 | Remove legacy routes from Routes.tsx | `src/routes/Routes.tsx` | None |
+| T8 | (Future) Add platform orientation/tour for first-time visitors | New component + `PlatformHomepage.tsx` | Design needed |
+| T9 | (Future) Wire city/state into location-based recommendation filtering | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
+
+---
+
+## What the prototype gets right
+
+- **Lesson 1 flow matches the proposal** — Sign up → Basic info (city/state/grade/GPA) → My Why → Career interest tags → Platform landing
+- **Quiz separated into Lesson 2** — Accessible via PrototypeHomepage, not part of Lesson 1
+- **Progressive refinement model** — Three recommendation stages (interest-only → interest+personality → interest+personality+GPC) with corresponding platform states
+- **Prototype testing infrastructure** — PrototypeHomepage with jump-to-moment cards, PrototypeToolbar with stage switcher, auto-login, mock data setup
+- **PlatformHomepage layout** — 3-column layout matching real product (sidebar nav, main content, Alma sidebar)
+- **Personality + Superpowers sections** — Empty states when quiz not done, populated states when done, driven by `recommendationStageAtom`
+- **Clean onboarding UI** — OnboardingLayout with progress dots, card-based form, responsive design, auto-fill for testing
