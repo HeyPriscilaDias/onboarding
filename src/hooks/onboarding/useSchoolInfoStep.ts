@@ -80,20 +80,21 @@ const useSchoolInfoStep = () => {
   }, [school, gradeLevel]);
 
   const handleContinue = useCallback(async () => {
-    const validation = validateSchoolInfo(school, gradeLevel);
-    if (!validation.isValid) {
-      setErrors(validation.errors);
-      return;
-    }
+    // Prototype mode: fill mock data for missing fields
+    const mockSchool = school || (schools.length > 0 ? schools[0]!.id : "mock-school-id");
+    const mockGradeLevel = gradeLevel || "9th";
+
+    if (!school) setFormState((prev) => ({ ...prev, school: mockSchool }));
+    if (!gradeLevel) setFormState((prev) => ({ ...prev, gradeLevel: mockGradeLevel }));
 
     try {
       if (!loggedInStudent?.id) return;
       setIsLoading(true);
 
-      const districtId = findDistrictIdBySchoolId(schools, school);
+      const districtId = findDistrictIdBySchoolId(schools, mockSchool);
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        schoolId: school,
-        gradeLevel: gradeLevel as GradeLevel,
+        schoolId: mockSchool,
+        gradeLevel: mockGradeLevel as GradeLevel,
         externalId,
         onboardingStage: 4,
         onboardingState: "my-why",

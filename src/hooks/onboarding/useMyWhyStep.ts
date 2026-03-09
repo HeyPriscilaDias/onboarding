@@ -34,13 +34,16 @@ const useMyWhyStep = () => {
   }, [validateForm]);
 
   const handleContinue = useCallback(async () => {
-    if (!validateForm()) return;
+    // Prototype mode: fill mock data if empty
+    const mockMyWhy = myWhy.trim() || "I want to explore my future options.";
+    if (!myWhy.trim()) setMyWhy(mockMyWhy);
+
     try {
       if (!loggedInStudent?.id) return;
       setIsLoading(true);
 
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        myWhy,
+        myWhy: mockMyWhy,
         onboardingStage: 5,
         onboardingState: "feedback",
       });

@@ -135,10 +135,10 @@ const useEmailAndPasswordStep = (): EmailAndPasswordStepHook => {
     setIsLoading(true);
 
     try {
-      if (!validationResult.isValid) {
-        setError(validationResult.errorMessage || "Validation failed");
-        return;
-      }
+      // Prototype mode: fill mock data if fields are missing
+      if (!formState.email) setEmail("test@prototype.com");
+      if (!formState.password) setPassword("test123");
+      if (!formState.confirmPassword) setConfirmPassword("test123");
 
       const result = await performSignup();
       if (!result.success) {
@@ -148,7 +148,7 @@ const useEmailAndPasswordStep = (): EmailAndPasswordStepHook => {
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, validationResult, performSignup, logSignupError]);
+  }, [isLoading, formState, performSignup, logSignupError, setEmail, setPassword, setConfirmPassword]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {

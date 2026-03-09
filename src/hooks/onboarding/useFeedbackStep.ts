@@ -63,10 +63,12 @@ const useFeedbackStep = () => {
   );
 
   const submitFeedback = useCallback(async () => {
-    const currentAnswer = currentStep === 5 ? clarity : preparedness;
+    // Prototype mode: use mock answer (5) if none selected
+    let currentAnswer = currentStep === 5 ? clarity : preparedness;
     if (currentAnswer === null) {
-      setError(true);
-      return false;
+      currentAnswer = 5;
+      if (currentStep === 5) setClarity(5);
+      else setPreparedness(5);
     }
     await processFeedbackSubmission(currentStep, currentAnswer);
     return true;

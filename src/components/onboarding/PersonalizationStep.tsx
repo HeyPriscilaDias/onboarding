@@ -87,10 +87,14 @@ const PersonalizationStep: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    if (!selectedBracket && !preferNotToAnswer) return;
+    // Prototype mode: default to "middle" if nothing selected
+    if (!selectedBracket && !preferNotToAnswer) {
+      setSelectedBracket("middle");
+    }
+    const bracketToUse = selectedBracket || "middle";
     if (!loggedInStudent?.id) return;
     setIsSubmitting(true);
-    const incomeBracketToSubmit = preferNotToAnswer ? null : selectedBracket;
+    const incomeBracketToSubmit = preferNotToAnswer ? null : (selectedBracket || bracketToUse);
 
     updatePersonalization(
       { studentId: loggedInStudent.id, incomeBracket: incomeBracketToSubmit },
@@ -155,7 +159,7 @@ const PersonalizationStep: React.FC = () => {
                   </Box>
                 </Box>
 
-                <TextButton variant="primary" fullWidth onClick={handleContinue} disabled={isSubmitting || (!selectedBracket && !preferNotToAnswer)} sx={{ mt: 4 }}>
+                <TextButton variant="primary" fullWidth onClick={handleContinue} disabled={isSubmitting} sx={{ mt: 4 }}>
                   {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "Continue"}
                 </TextButton>
               </Box>

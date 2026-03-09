@@ -148,27 +148,32 @@ const usePersonalInfoStep = () => {
   }, []);
 
   const handleContinue = useCallback(async () => {
-    const isBirthdayValid = displayBirthday ? validateBirthday(displayBirthday) : false;
+    // Prototype mode: fill mock data for missing fields
+    const mockFirstName = firstName || "Jane";
+    const mockLastName = lastName || "Doe";
+    const mockBirthday = birthday || new Date(2010, 0, 15).toISOString();
+    const mockAddress = address.address
+      ? address
+      : { address: "123 Main St", city: "Springfield", state: "IL", zip: "62701", county: "Sangamon", lat: 39.78, lon: -89.65 };
+    const mockPhone = phoneNumber.length === 16 ? phoneNumber : "(555) 555-0100";
 
-    if (!firstName || !lastName || !isBirthdayValid || !address.address || phoneNumber.length !== 16) {
-      setErrors({
-        firstName: !firstName,
-        lastName: !lastName,
-        birthday: !isBirthdayValid,
-        address: !address.address,
-        phoneNumber: phoneNumber.length !== 16,
-      });
-      return;
+    if (!firstName) setFirstName(mockFirstName);
+    if (!lastName) setLastName(mockLastName);
+    if (!birthday) {
+      setBirthday(mockBirthday);
+      setDisplayBirthday("2010-01-15");
     }
+    if (!address.address) setAddress(mockAddress);
+    if (phoneNumber.length !== 16) setPhoneNumber(mockPhone);
 
     try {
       setIsLoading(true);
       await updateStudentData({
-        firstName,
-        lastName,
-        birthday,
-        address,
-        phone: phoneNumber,
+        firstName: mockFirstName,
+        lastName: mockLastName,
+        birthday: mockBirthday,
+        address: mockAddress,
+        phone: mockPhone,
         onboardingStage: 3,
         onboardingState: "school-info",
       });
@@ -190,8 +195,6 @@ const usePersonalInfoStep = () => {
     navigate,
     phoneNumber,
     updateStudentData,
-    displayBirthday,
-    validateBirthday,
   ]);
 
   return {
