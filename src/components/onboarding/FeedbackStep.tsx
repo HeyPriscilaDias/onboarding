@@ -53,15 +53,11 @@ const FeedbackStep: React.FC = () => {
     <OnboardingLayout currentStep={currentStep} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading}>
       <Box component="form" sx={{ textAlign: "left" }}>
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
-          <WillowTypography variant="display" color="primary">Feedback</WillowTypography>
-          <WillowTypography variant="body" color="muted" sx={{ mt: 1.5 }}>
-            Your feedback helps us understand how you're feeling about your future.
-          </WillowTypography>
+          <WillowTypography variant="display" color="primary">{currentQuestionText}</WillowTypography>
         </Box>
 
         <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 3, width: "100%", maxWidth: 500, mx: "auto" }}>
           <Box>
-            <WillowTypography variant="body" weight="semibold">{currentQuestionText}</WillowTypography>
             {renderButtons(currentValue, currentSetter)}
             <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <WillowTypography variant="body" color="secondary">{helperText.left}</WillowTypography>
