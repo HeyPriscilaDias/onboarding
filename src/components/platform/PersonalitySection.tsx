@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, WillowTypography } from "@willow/ui-kit";
 import { Slate, neutral, essentials } from "@willow/ui-kit";
 import { PersonalityType } from "@willow/icons";
@@ -10,6 +11,7 @@ import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
 const PERSONALITY_TYPE_KEY = "SOCIAL_AGREEABLENESS";
 
 const PersonalitySection: React.FC = () => {
+  const navigate = useNavigate();
   const recStage = useRecoilValue(recommendationStageAtom);
   const { student } = useCurrentStudentData();
   const typeKey = student?.personalityType || PERSONALITY_TYPE_KEY;
@@ -44,6 +46,7 @@ const PersonalitySection: React.FC = () => {
         </WillowTypography>
         <Box
           component="button"
+          onClick={() => navigate("/student/onboarding/personality-quiz/start")}
           sx={{
             alignSelf: "flex-start",
             bgcolor: essentials.white,

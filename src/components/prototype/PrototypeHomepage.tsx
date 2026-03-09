@@ -53,7 +53,7 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-lesson1",
-    title: "Platform: After Lesson 1 Only",
+    title: "After Lesson 1",
     description:
       "Interest-tag-based career recommendations. Empty states for personality results and superpowers with prompts to take the quiz.",
     route: "/student/home",
@@ -79,7 +79,7 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-lesson2",
-    title: "Platform: After Lesson 2",
+    title: "After Lesson 2",
     description:
       "Full recommendations powered by interest tags + personality type. Populated personality results and superpowers sections.",
     route: "/student/home",
@@ -105,7 +105,7 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-gpc",
-    title: "Platform: After GPC Unit",
+    title: "After GPC Unit",
     description:
       "The full picture — recommendations refined by interest tags + personality type + GPC ratings. Most complete view of the personalized experience.",
     route: "/student/home",
