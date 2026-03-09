@@ -7,6 +7,7 @@ import {
   recommendationStageAtom,
   prototypeActiveAtom,
   miniplayerOpenAtom,
+  stickyNotesVisibleAtom,
   JourneyMoment,
   RecommendationStage,
 } from "../../state/prototypeAtoms";
@@ -126,6 +127,7 @@ const PrototypeToolbar: React.FC = () => {
   const [recStage, setRecStage] = useRecoilState(recommendationStageAtom);
   const [prototypeActive, setPrototypeActive] = useRecoilState(prototypeActiveAtom);
   const [miniplayerOpen, setMiniplayerOpen] = useRecoilState(miniplayerOpenAtom);
+  const [stickyNotesVisible, setStickyNotesVisible] = useRecoilState(stickyNotesVisibleAtom);
   const queryClient = useQueryClient();
 
   const isHomepage = location.pathname === "/prototype";
@@ -176,6 +178,15 @@ const PrototypeToolbar: React.FC = () => {
             }}
           >
             Curriculum Slides
+          </button>
+          <button
+            onClick={() => setStickyNotesVisible(!stickyNotesVisible)}
+            style={{
+              ...styles.resetBtn,
+              ...(stickyNotesVisible ? { borderColor: "#fbbf24", color: "#fbbf24" } : {}),
+            }}
+          >
+            Sticky Notes
           </button>
         </div>
 

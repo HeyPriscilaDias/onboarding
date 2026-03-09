@@ -63,3 +63,9 @@ export const miniplayerSlideUrlAtom = atom<string>({
   default: "",
   effects: [localStorageEffect<string>("proto_miniplayerSlideUrl")],
 });
+
+export const stickyNotesVisibleAtom = atom<boolean>({
+  key: "stickyNotesVisibleAtom",
+  default: true,
+  effects: [localStorageEffect<boolean>("proto_stickyNotesVisible")],
+});

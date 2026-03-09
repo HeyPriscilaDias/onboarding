@@ -7,6 +7,7 @@ import { createWillowTheme } from "@willow/ui-kit";
 import { MockAuthProvider } from "./mock/MockAuthProvider";
 import AppRoutes from "./routes/Routes";
 import PrototypeToolbar from "./components/prototype/PrototypeToolbar";
+import StickyNote from "./components/prototype/StickyNote";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <BrowserRouter>
             <MockAuthProvider>
               <PrototypeToolbar />
+              <StickyNote />
               <AppRoutes />
             </MockAuthProvider>
           </BrowserRouter>
