@@ -150,50 +150,6 @@ const PrototypeToolbar: React.FC = () => {
     window.location.href = MOMENT_ROUTES[moment];
   };
 
-  const handleRecStageChange = async (stage: RecommendationStage) => {
-    setRecStage(stage);
-
-    // Also update student data to match
-    const currentUser = JSON.parse(localStorage.getItem("mock_current_user") || "null");
-    if (!currentUser) return;
-
-    const data = JSON.parse(localStorage.getItem(`mock_student_${currentUser.uid}`) || "{}");
-
-    switch (stage) {
-      case "interest-only":
-        Object.assign(data, {
-          quizComplete: false,
-          pressingChallengesComplete: false,
-          personalityType: "",
-          pressingChallengeScores: [],
-        });
-        break;
-      case "interest-personality":
-        Object.assign(data, {
-          quizComplete: true,
-          pressingChallengesComplete: false,
-          personalityType: "SOCIAL_AGREEABLENESS",
-          pressingChallengeScores: [],
-        });
-        break;
-      case "interest-personality-gpc":
-        Object.assign(data, {
-          quizComplete: true,
-          pressingChallengesComplete: true,
-          personalityType: "SOCIAL_AGREEABLENESS",
-          pressingChallengeScores: [
-            { id: "gpc-1", score: 4 },
-            { id: "gpc-2", score: 3 },
-            { id: "gpc-3", score: 5 },
-          ],
-        });
-        break;
-    }
-
-    localStorage.setItem(`mock_student_${currentUser.uid}`, JSON.stringify(data));
-    await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-  };
-
   const handleReset = () => {
     setJourneyMoment(null);
     setRecStage("interest-only");
@@ -209,11 +165,6 @@ const PrototypeToolbar: React.FC = () => {
         {/* Left: Current state + Reset */}
         <div style={styles.leftGroup}>
           <div style={styles.logo}>PROTOTYPE</div>
-          {journeyMoment && (
-            <div style={styles.currentBadge}>
-              {MOMENT_LABELS[journeyMoment]}
-            </div>
-          )}
           <button onClick={handleReset} style={styles.resetBtn}>
             Reset
           </button>
@@ -224,7 +175,7 @@ const PrototypeToolbar: React.FC = () => {
               ...(miniplayerOpen ? { borderColor: "#6366f1", color: "#6366f1" } : {}),
             }}
           >
-            Slides
+            Curriculum Slides
           </button>
         </div>
 
@@ -247,22 +198,26 @@ const PrototypeToolbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Recommendation stage selector */}
+        {/* Right: Recommendation source info */}
         <div style={styles.rightGroup}>
-          <span style={styles.groupLabel}>Rec data:</span>
-          <div style={styles.recSwitcher}>
+          <span style={styles.groupLabel}>Recommendation source:</span>
+          <div style={styles.recInfo}>
             {REC_STAGES.map((stage) => (
-              <button
+              <span
                 key={stage.id}
-                onClick={() => handleRecStageChange(stage.id)}
                 style={{
-                  ...styles.recBtn,
-                  ...(recStage === stage.id ? styles.recBtnActive : {}),
+                  ...styles.recTag,
+                  ...(recStage === stage.id
+                    ? styles.recTagActive
+                    : REC_STAGES.indexOf(stage) <
+                      REC_STAGES.findIndex((s) => s.id === recStage)
+                    ? styles.recTagIncluded
+                    : {}),
                 }}
                 title={stage.label}
               >
                 {stage.short}
-              </button>
+              </span>
             ))}
           </div>
         </div>
@@ -307,15 +262,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 10,
     letterSpacing: "0.1em",
     textTransform: "uppercase" as const,
-  },
-  currentBadge: {
-    background: "#6366f1",
-    color: "#fff",
-    padding: "2px 10px",
-    borderRadius: 100,
-    fontSize: 11,
-    fontWeight: 600,
-    whiteSpace: "nowrap" as const,
   },
   resetBtn: {
     background: "transparent",
@@ -375,30 +321,27 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 8,
     flexShrink: 0,
   },
-  recSwitcher: {
+  recInfo: {
     display: "flex",
-    background: "#222",
-    borderRadius: 6,
-    padding: 2,
-    gap: 1,
-    border: "1px solid #f59e0b44",
+    alignItems: "center",
+    gap: 4,
   },
-  recBtn: {
-    background: "transparent",
-    border: "none",
-    color: "#999",
-    padding: "4px 10px",
+  recTag: {
+    color: "#555",
+    padding: "3px 8px",
     borderRadius: 4,
-    cursor: "pointer",
     fontSize: 11,
     fontFamily: "inherit",
     whiteSpace: "nowrap" as const,
-    transition: "background 0.12s, color 0.12s",
   },
-  recBtnActive: {
-    background: "#f59e0b",
-    color: "#000",
+  recTagActive: {
+    background: "#f59e0b33",
+    color: "#f59e0b",
     fontWeight: 600,
+    border: "1px solid #f59e0b66",
+  },
+  recTagIncluded: {
+    color: "#f59e0b99",
   },
 };
 
