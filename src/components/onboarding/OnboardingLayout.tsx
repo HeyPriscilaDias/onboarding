@@ -16,9 +16,10 @@ type OnboardingLayoutProps = {
   handleBack?: () => void;
   isLoading?: boolean;
   disableContinue?: boolean;
+  continueLabel?: string;
 };
 
-const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false }: OnboardingLayoutProps) => {
+const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false, continueLabel = "Continue" }: OnboardingLayoutProps) => {
   const { mobile } = useWindowDimensions();
   const { logout } = useLogout();
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: currentStep <= 7 ? "calc(100vh - 96px - 120px - 40px)" : "calc(100vh - 96px)",
+          height: currentStep <= 5 ? "calc(100vh - 96px - 120px - 40px)" : "calc(100vh - 96px)",
           py: 0,
         }}
       >
@@ -110,7 +111,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
         )}
       </Box>
 
-      {currentStep <= 7 && (
+      {currentStep <= 5 && (
         <Box
           sx={{
             position: "fixed",
@@ -134,13 +135,13 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
               maxWidth: "613px",
             }}
           >
-            <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap", flex: 1 }}>
-              {[2, 3, 4, 5, 6, 7].map((step) => (
+            <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap" }}>
+              {[1, 2, 3, 4].map((step) => (
                 <Box
                   key={step}
                   sx={{
-                    flex: 1,
-                    minWidth: mobile ? 20 : 30,
+                    width: mobile ? 60 : 100,
+                    flexShrink: 0,
                     height: 8,
                     borderRadius: "4px",
                     bgcolor: step <= currentStep ? Slate[700] : hexToRgba(Slate[700], 0.15),
@@ -156,16 +157,16 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
                   </TextButton>
                 )}
                 {handleContinue && (
-                  <TextButton variant="primary" onClick={handleContinue} disabled={isLoading || disableContinue} sx={{ flex: 1, minWidth: 100 }}>
-                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
+                  <TextButton variant="primary" onClick={handleContinue} disabled={isLoading || disableContinue} sx={{ flex: 2, minWidth: 100, whiteSpace: "nowrap" }}>
+                    {isLoading ? <CircularProgress size={20} color="inherit" /> : continueLabel}
                   </TextButton>
                 )}
               </Box>
             ) : (
               <Box>
                 {handleContinue && (
-                  <TextButton variant="primary" onClick={handleContinue} disabled={isLoading || disableContinue} fullWidth sx={{ mt: 2, minHeight: 42 }}>
-                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
+                  <TextButton variant="primary" onClick={handleContinue} disabled={isLoading || disableContinue} fullWidth sx={{ mt: 2, minHeight: 42, whiteSpace: "nowrap" }}>
+                    {isLoading ? <CircularProgress size={20} color="inherit" /> : continueLabel}
                   </TextButton>
                 )}
                 {currentStep > 1 && (
