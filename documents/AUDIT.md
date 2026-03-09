@@ -131,19 +131,9 @@ These were flagged in the original audit and have since been resolved:
 
 ### Dead code to clean up
 
-#### 13. ThankYouStep files (orphaned)
-- `src/components/onboarding/ThankYouStep.tsx` and `src/hooks/onboarding/useThankYouStep.ts` exist but are not routed or referenced.
-- **Action:** Delete both files.
-
-#### 14. SchoolInfoStep files (orphaned)
-- `src/components/onboarding/SchoolInfoStep.tsx` and `src/hooks/onboarding/useSchoolInfoStep.ts` exist but are not routed in Lesson 1.
-- **Action:** Delete both files.
-
-#### 15. WelcomeStep and MeetAlmaStep files (orphaned)
-- `src/components/onboarding/WelcomeStep.tsx`, `src/hooks/onboarding/useWelcomeStep.ts`
-- `src/components/onboarding/MeetAlmaStep.tsx`, `src/hooks/onboarding/useMeetAlmaStep.ts`
-- Not routed, intentionally removed from flow.
-- **Action:** Delete all four files.
+#### ~~13. ThankYouStep files (orphaned)~~ — DELETED
+#### ~~14. SchoolInfoStep files (orphaned)~~ — DELETED
+#### ~~15. WelcomeStep and MeetAlmaStep files (orphaned)~~ — DELETED
 
 #### 16. Legacy routes in Routes.tsx
 - `/student/onboarding/personal-info` — duplicate of `/student/onboarding/basic-info`
@@ -176,7 +166,7 @@ Ordered by impact and dependency. Each task is self-contained.
 
 | # | Task | Files | Dependencies |
 |---|------|-------|-------------|
-| T6 | Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files) | See item 13–15 above | None |
+| ~~T6~~ | ~~Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files)~~ — Done. | — | — |
 | T7 | Remove legacy routes from Routes.tsx | `src/routes/Routes.tsx` | None |
 | T8 | (Future) Add platform orientation/tour for first-time visitors | New component + `PlatformHomepage.tsx` | Design needed |
 | T9 | (Future) Wire city/state into location-based recommendation filtering | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
