@@ -45,7 +45,7 @@ These were flagged in the original audit and have since been resolved:
 - ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 14 tags, toggle chips, saves to `student.careerInterestTags`
 - ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route at `/student/onboarding/feedback` still exists.
 - ~~Quiz in continuous Lesson 1 flow~~ — Quiz is now a separate "Lesson 2" entry point via PrototypeHomepage
-- ~~Flow ends at CompletionPage~~ — Career interests now navigates directly to `/student/home` → PlatformHomepage
+- ~~Flow ends at CompletionPage~~ — CompletionPage deleted. `StudentHomeRouter` now always renders `PlatformHomepage` (no conditional on prototype/journey state).
 - ~~ThankYouStep as extra click~~ — Removed from flow (career interests goes straight to platform). Files still exist as dead code.
 - ~~Welcome / Meet Alma screens~~ — Intentionally removed. Deemed unnecessary as standalone onboarding steps; content better as curriculum slides.
 
@@ -139,7 +139,7 @@ These were flagged in the original audit and have since been resolved:
 #### 16. Legacy routes in Routes.tsx
 - `/student/onboarding/personal-info` — duplicate of `/student/onboarding/basic-info`
 - `/student/onboarding/feedback` — disconnected FeedbackStep
-- `/student/onboarding/recommendation-preferences` — points to CompletionPage
+- `/student/onboarding/recommendation-preferences` — pointed to now-deleted CompletionPage
 - **Action:** Remove these three legacy routes.
 
 ---
