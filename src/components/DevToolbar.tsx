@@ -13,7 +13,6 @@ const STEPS: { label: string; state: OnboardingState; stage: number; route: stri
   { label: "My Why", state: "my-why", stage: 4, route: "/student/onboarding/my-why" },
   { label: "Feedback 1", state: "feedback", stage: 5, route: "/student/onboarding/feedback" },
   { label: "Feedback 2", state: "feedback", stage: 6, route: "/student/onboarding/feedback" },
-  { label: "Thank You", state: "quiz-start", stage: 7, route: "/student/onboarding/thank-you" },
   { label: "Quiz (Skip)", state: "quiz-start", stage: 8, route: "/student/onboarding/quiz-placeholder" },
   { label: "Personalization", state: "personalization", stage: 8, route: "/student/onboarding/personalization" },
   { label: "Complete", state: "complete", stage: 8, route: "/student/home" },

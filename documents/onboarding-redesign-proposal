@@ -1,0 +1,218 @@
+**Onboarding Redesign Proposal**
+
+For Ryan --- Async Review
+
+Priscila • February 2025
+
+**What this is**
+
+A proposal for redesigning the student onboarding flow. I've synthesized
+our conversations and Jaime's input into a concrete direction. I need
+your feedback on the approach before I prototype.
+
+**What's wrong today**
+
+The current onboarding tries to do too much in a single flow: account
+setup, personality quiz, and global pressing challenges rating. This
+creates three problems:
+
+1.  **Setup and quiz are tangled together.** Students can't tell where
+    account setup ends and the personality quiz begins. After finishing
+    the quiz, they're hit with GPC Likert scale questions before seeing
+    results. The most common questions Jaime hears during onboarding:
+    "Do I have to answer these right now?" and "Where do I see my
+    results?"
+
+2.  **GPC questions are asked without context.** Students are rating
+    their interest in global pressing challenges before they know what
+    those challenges are. A 14-year-old who's never heard of "climate
+    careers" as a concept is just clicking random numbers to move
+    forward. The curriculum doesn't cover GPCs until mid-sophomore year
+    --- that's a year and a half of those ratings being uninformed.
+
+3.  **The payoff is buried.** Career recommendations are the main value
+    students get from onboarding. But the current flow puts barriers
+    (GPC questions) between the quiz and the results. Students complete
+    the task without experiencing the reward.
+
+**Separate issue:** Students using Google sign-in frequently log in with
+personal Gmail instead of school accounts, creating duplicate accounts
+that can't be merged. This generates a wave of support tickets at the
+start of every semester. This is an engineering problem outside this
+redesign's scope, but worth noting as part of the broader first-time
+experience.
+
+**Proposed direction**
+
+Break onboarding into curriculum-integrated lessons. Each lesson has a
+clear purpose, and students get value at each step rather than
+front-loading everything into one overwhelming session.
+
+**Recommendation model: progressive refinement**
+
+Each new data input refines career recommendations rather than replacing
+them. Students always have something relevant to explore ---
+recommendations just get better over time.
+
+  ---------------- --------------------------- ---------------------------
+  **Stage**        **Data available**          **Recommendation quality**
+
+  **After Lesson   Career interest tags        Broad --- based on
+  1**                                          self-reported interests
+
+  **After Lesson   Interest tags + personality Personalized --- interests
+  2**              type                        refined by personality
+
+  **After GPC      Interest tags +             Full picture --- informed
+  unit**           personality + GPC ratings   by curriculum context
+  ---------------- --------------------------- ---------------------------
+
+**Lesson 1: Setup + Introduction**
+
+Goal: Students create their account, understand what Willow is, and
+select career interests. They leave this session with basic career
+recommendations.
+
+  ---------- ------------------ ---------------------------------------------
+  **Step**   **Screen**         **Details**
+
+  **1**      **Sign in**        Student logs in with school account. (Google
+                                sign-in guardrail issue noted but out of
+                                scope for this redesign.)
+
+  **2**      **Welcome**        What is Willow? Why are you here? Brief,
+                                visual, purpose-setting.
+
+  **3**      **Meet Alma**      What Alma is, what it can help you with. Sets
+                                expectations for the AI assistant.
+
+  **4**      **Basic info**     City/state, grade, GPA. No full address
+                                (FERPA). Only fields the student can later
+                                change in settings.
+
+  **5**      **My Why / ROI**   Personalized ROI setup. Why postsecondary
+                                exploration matters to them.
+
+  **6**      **Career interest  Multi-select broad topics: science,
+             tags**             engineering, healthcare, writing, technology,
+                                etc. Clickable tags --- no typing required.
+                                Can be changed later in settings.
+
+  **7**      **Done**           Student lands on the platform. Career
+                                recommendations visible based on interest
+                                tags. Platform overview: quick orientation of
+                                key areas.
+  ---------- ------------------ ---------------------------------------------
+
+**Lesson 2: Personality Quiz**
+
+Goal: Students take the personality quiz and see their results
+immediately. No barriers between completing the quiz and seeing the
+payoff.
+
+  ---------- --------------------- -------------------------------------------
+  **Step**   **Screen**            **Details**
+
+  **1**      **Context-setting**   Why you're taking this quiz. What your
+                                   personality type will help you understand
+                                   about yourself.
+
+  **2**      **Personality quiz**  The existing quiz, unchanged.
+
+  **3**      **Results**           Immediate display of personality type,
+                                   superpowers, overview. No GPC questions
+                                   blocking this. Career recommendations now
+                                   refined by personality type + interest
+                                   tags.
+
+  **4**      **Initial             Time to review results individually before
+             exploration**         the next lesson's group reflection.
+  ---------- --------------------- -------------------------------------------
+
+**Lesson 3: Personality Reflection**
+
+Already exists in Jaime's curriculum. Activities to process results +
+extended Alma reflection. No product changes needed.
+
+**GPC Rating: After Global Pressing Challenges Unit**
+
+The GPC Likert scale questions move from onboarding to the end of the
+9-lesson GPC curriculum unit. By this point, students understand what
+each challenge actually is and can rate their interest meaningfully.
+These ratings become the third refinement layer for career
+recommendations.
+
+Jaime is building an extended Alma reflection at the end of this unit.
+The GPC rating questions could be integrated into or placed immediately
+after that reflection.
+
+**Empty states between lessons**
+
+Instead of hard-locking features, surfaces that require data the student
+hasn't provided yet show empty states with a prompt to take the relevant
+action.
+
+  -------------------- ------------------------- -------------------------
+  **Surface**          **Before personality      **After personality
+                       quiz**                    quiz**
+
+  **Career             Interest-tag-based        Full recommendations
+  recommendations**    recommendations + prompt: (interest tags +
+                       "Take the personality     personality type)
+                       quiz for personalized     
+                       matches"                  
+
+  **Personality        Empty state: "Discover    Fully populated
+  results**            your personality type"    
+                       with prompt to take quiz  
+
+  **Superpowers /      Empty state with quiz     Fully populated
+  personality-linked   prompt                    
+  features**                                     
+  -------------------- ------------------------- -------------------------
+
+Note: GPC-driven empty states are not in scope for this phase since GPC
+ratings don't currently change the recommendation output. If that
+changes, we'll need to revisit.
+
+**Alternative: Quiz in Lesson 1**
+
+If keeping the personality quiz in the first session is a hard
+requirement (likely James's preference), Lesson 1 would include steps
+1--6 above plus the full personality quiz. GPC questions would still be
+removed. Students would still see results immediately.
+
+The tradeoff: Jaime's experience is that getting students logged in and
+set up takes \~20 minutes of a class period. Adding the personality quiz
+to that same session makes it very tight and risks the quiz feeling
+rushed rather than intentional. Separating them lets the teacher set a
+distinct intention for each lesson.
+
+I recommend the two-lesson approach, but this is a viable fallback.
+
+**Open questions for you**
+
+1.  **Interest tags → recommendations:** Can career interest tags power
+    basic recommendations before the personality quiz? Does this require
+    backend work, or can it plug into the existing recommendation logic?
+
+2.  **Progressive refinement:** When personality quiz results come in,
+    how should they relate to interest tags? Should personality refine
+    within the interest territory, or does it replace it? The UX needs
+    recommendations to feel consistent, not like they reset after Lesson
+    2.
+
+3.  **Existing interest tags:** There's already an interest tags feature
+    in the student portfolio that doesn't serve a functional purpose.
+    Should the new career interest tags consolidate with that, replace
+    it, or coexist?
+
+4.  **GPC impact:** Jaime observed that every student with the same
+    personality type gets the same recommended careers regardless of GPC
+    answers. Do GPC ratings actually influence recommendations today? If
+    not, what's the plan for making them matter?
+
+5.  **Approaching James:** I believe James will push back on moving the
+    personality quiz out of the first session. What's the best way to
+    bring this to him? Do I need his buy-in on the problem first, or do
+    I lead with the prototype? Your read on this would be very helpful.

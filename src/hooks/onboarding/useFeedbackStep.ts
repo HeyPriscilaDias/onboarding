@@ -53,7 +53,7 @@ const useFeedbackStep = () => {
         logFeedbackSubmitted({ studentId, questionId: step });
 
         if (step === 6) {
-          navigate("/student/onboarding/thank-you", { replace: true });
+          navigate("/student/home", { replace: true });
         }
       } catch (_error) {
         logFeedbackError({ error: _error, questionId: step });
