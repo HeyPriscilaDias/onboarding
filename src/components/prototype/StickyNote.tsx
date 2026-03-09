@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { stickyNotesVisibleAtom } from "../../state/prototypeAtoms";
+import { stickyNotesVisibleAtom, addNoteRequestAtom } from "../../state/prototypeAtoms";
 
 interface Note {
   id: string;
@@ -33,6 +33,7 @@ const saveAllNotes = (allNotes: NotesByPage) => {
 
 const StickyNote: React.FC = () => {
   const visible = useRecoilValue(stickyNotesVisibleAtom);
+  const addNoteRequest = useRecoilValue(addNoteRequestAtom);
   const { pathname } = useLocation();
   const [allNotes, setAllNotes] = useState<NotesByPage>(loadAllNotes);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -117,6 +118,14 @@ const StickyNote: React.FC = () => {
     }
   }, [dragging, handleMouseMove, handleMouseUp]);
 
+  const addNoteRequestRef = useRef(addNoteRequest);
+  useEffect(() => {
+    if (addNoteRequest > addNoteRequestRef.current) {
+      addNote();
+    }
+    addNoteRequestRef.current = addNoteRequest;
+  }, [addNoteRequest]);
+
   useEffect(() => {
     if (editing && textareaRef.current) {
       textareaRef.current.focus();
@@ -127,14 +136,6 @@ const StickyNote: React.FC = () => {
 
   return (
     <>
-      {/* Floating add button */}
-      <div style={styles.fab}>
-        <button onClick={addNote} style={styles.addBtn} title="Add sticky note">
-          + Note
-        </button>
-      </div>
-
-      {/* Notes */}
       {notes.map((note) => (
           <div
             key={note.id}
@@ -183,27 +184,6 @@ const StickyNote: React.FC = () => {
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  fab: {
-    position: "fixed",
-    bottom: 20,
-    right: 20,
-    zIndex: 99999,
-    display: "flex",
-    gap: 6,
-    alignItems: "center",
-  },
-  addBtn: {
-    background: "#fef08a",
-    border: "1px solid #d4aa00",
-    borderRadius: 8,
-    padding: "8px 14px",
-    fontSize: 13,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", Monaco, monospace',
-    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-    color: "#555",
-  },
   note: {
     position: "fixed",
     width: 200,

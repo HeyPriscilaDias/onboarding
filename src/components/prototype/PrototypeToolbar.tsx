@@ -8,8 +8,8 @@ import {
   prototypeActiveAtom,
   miniplayerOpenAtom,
   stickyNotesVisibleAtom,
+  addNoteRequestAtom,
   JourneyMoment,
-  RecommendationStage,
 } from "../../state/prototypeAtoms";
 import { createEmptyStudent } from "../../mock/mockData";
 import { saveStudentData } from "../../mock/MockAuthProvider";
@@ -30,11 +30,6 @@ const MOMENT_ROUTES: Record<JourneyMoment, string> = {
   "post-onboarding-gpc": "/student/home",
 };
 
-const REC_STAGES: { id: RecommendationStage; label: string; short: string }[] = [
-  { id: "interest-only", label: "Interest Tags", short: "Interests" },
-  { id: "interest-personality", label: "Interest + Personality", short: "+ Personality" },
-  { id: "interest-personality-gpc", label: "Interest + Personality + GPC", short: "+ GPC" },
-];
 
 const setupStudentForMoment = (studentId: string, moment: JourneyMoment) => {
   const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
@@ -124,13 +119,12 @@ const PrototypeToolbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [journeyMoment, setJourneyMoment] = useRecoilState(journeyMomentAtom);
-  const [recStage, setRecStage] = useRecoilState(recommendationStageAtom);
-  const [prototypeActive, setPrototypeActive] = useRecoilState(prototypeActiveAtom);
+  const [, setRecStage] = useRecoilState(recommendationStageAtom);
+  const [, setPrototypeActive] = useRecoilState(prototypeActiveAtom);
   const [miniplayerOpen, setMiniplayerOpen] = useRecoilState(miniplayerOpenAtom);
   const [stickyNotesVisible, setStickyNotesVisible] = useRecoilState(stickyNotesVisibleAtom);
+  const setAddNoteRequest = useSetRecoilState(addNoteRequestAtom);
   const queryClient = useQueryClient();
-
-  const isHomepage = location.pathname === "/prototype";
 
   const handleMomentSwitch = async (moment: JourneyMoment) => {
     if (moment === "lesson-1") {
@@ -164,9 +158,13 @@ const PrototypeToolbar: React.FC = () => {
   return (
     <div style={styles.bar}>
       <div style={styles.inner}>
-        {/* Left: Current state + Reset */}
+        {/* Left: Home + controls */}
         <div style={styles.leftGroup}>
-          <div style={styles.logo}>PROTOTYPE</div>
+          <button onClick={() => navigate("/prototype")} style={styles.homeBtn} title="Prototype home">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+          </button>
           <button onClick={handleReset} style={styles.resetBtn}>
             Reset
           </button>
@@ -174,19 +172,28 @@ const PrototypeToolbar: React.FC = () => {
             onClick={() => setMiniplayerOpen(!miniplayerOpen)}
             style={{
               ...styles.resetBtn,
-              ...(miniplayerOpen ? { borderColor: "#6366f1", color: "#6366f1" } : {}),
+              ...(miniplayerOpen ? styles.toggleActive : {}),
             }}
           >
-            Curriculum Slides
+            {miniplayerOpen ? "Hide Slides" : "Show Slides"}
           </button>
           <button
             onClick={() => setStickyNotesVisible(!stickyNotesVisible)}
             style={{
               ...styles.resetBtn,
-              ...(stickyNotesVisible ? { borderColor: "#fbbf24", color: "#fbbf24" } : {}),
+              ...(stickyNotesVisible ? styles.toggleActive : {}),
             }}
           >
-            Sticky Notes
+            {stickyNotesVisible ? "Hide Notes" : "Show Notes"}
+          </button>
+          <button
+            onClick={() => {
+              if (!stickyNotesVisible) setStickyNotesVisible(true);
+              setAddNoteRequest((n) => n + 1);
+            }}
+            style={styles.resetBtn}
+          >
+            + Note
           </button>
         </div>
 
@@ -205,30 +212,6 @@ const PrototypeToolbar: React.FC = () => {
               >
                 {MOMENT_LABELS[id]}
               </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Recommendation source info */}
-        <div style={styles.rightGroup}>
-          <span style={styles.groupLabel}>Recommendation source:</span>
-          <div style={styles.recInfo}>
-            {REC_STAGES.map((stage) => (
-              <span
-                key={stage.id}
-                style={{
-                  ...styles.recTag,
-                  ...(recStage === stage.id
-                    ? styles.recTagActive
-                    : REC_STAGES.indexOf(stage) <
-                      REC_STAGES.findIndex((s) => s.id === recStage)
-                    ? styles.recTagIncluded
-                    : {}),
-                }}
-                title={stage.label}
-              >
-                {stage.short}
-              </span>
             ))}
           </div>
         </div>
@@ -267,12 +250,15 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 10,
     flexShrink: 0,
   },
-  logo: {
-    color: "#888",
-    fontWeight: 700,
-    fontSize: 10,
-    letterSpacing: "0.1em",
-    textTransform: "uppercase" as const,
+  homeBtn: {
+    background: "transparent",
+    border: "none",
+    color: "#aaa",
+    cursor: "pointer",
+    padding: "3px 4px",
+    display: "flex",
+    alignItems: "center",
+    borderRadius: 4,
   },
   resetBtn: {
     background: "transparent",
@@ -326,33 +312,9 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#fff",
     fontWeight: 600,
   },
-  rightGroup: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    flexShrink: 0,
-  },
-  recInfo: {
-    display: "flex",
-    alignItems: "center",
-    gap: 4,
-  },
-  recTag: {
-    color: "#555",
-    padding: "3px 8px",
-    borderRadius: 4,
-    fontSize: 11,
-    fontFamily: "inherit",
-    whiteSpace: "nowrap" as const,
-  },
-  recTagActive: {
-    background: "#f59e0b33",
-    color: "#f59e0b",
-    fontWeight: 600,
-    border: "1px solid #f59e0b66",
-  },
-  recTagIncluded: {
-    color: "#f59e0b99",
+  toggleActive: {
+    borderColor: "#6366f1",
+    color: "#6366f1",
   },
 };
 

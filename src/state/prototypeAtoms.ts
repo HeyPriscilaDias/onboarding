@@ -69,3 +69,8 @@ export const stickyNotesVisibleAtom = atom<boolean>({
   default: true,
   effects: [localStorageEffect<boolean>("proto_stickyNotesVisible")],
 });
+
+export const addNoteRequestAtom = atom<number>({
+  key: "addNoteRequestAtom",
+  default: 0,
+});
