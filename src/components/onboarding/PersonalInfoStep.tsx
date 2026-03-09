@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Box, WillowTypography } from "@willow/ui-kit";
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, Autocomplete } from "@mui/material";
 import OnboardingLayout from "./OnboardingLayout";
 import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
 import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
@@ -9,7 +9,7 @@ const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
 const BasicInfoStep: React.FC = () => {
   const {
-    firstName, lastName, city, usState, gradeLevel, gpa,
+    firstName, lastName, usState, setUsState, gradeLevel, gpa,
     handleTextChange, handleContinue, handleBack, isLoading,
   } = useBasicInfoStep();
 
@@ -36,23 +36,6 @@ const BasicInfoStep: React.FC = () => {
 
           <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", sm: "row" } }}>
             <Box sx={{ flex: 1 }}>
-              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>City</WillowTypography>
-              <TextField variant="outlined" name="city" fullWidth value={city} onChange={handleTextChange} />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
-              <TextField
-                select variant="outlined" name="usState" fullWidth value={usState} onChange={handleTextChange}
-              >
-                {US_STATES.map((st) => (
-                  <MenuItem key={st} value={st}>{st}</MenuItem>
-                ))}
-              </TextField>
-            </Box>
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", sm: "row" } }}>
-            <Box sx={{ flex: 1 }}>
               <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>Grade level</WillowTypography>
               <TextField
                 select variant="outlined" name="gradeLevel" fullWidth value={gradeLevel} onChange={handleTextChange}
@@ -66,6 +49,18 @@ const BasicInfoStep: React.FC = () => {
               <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>GPA (optional)</WillowTypography>
               <TextField variant="outlined" name="gpa" fullWidth value={gpa} onChange={handleTextChange} />
             </Box>
+          </Box>
+
+          <Box>
+            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
+            <Autocomplete
+              options={US_STATES}
+              value={usState || null}
+              onChange={(_event, newValue) => setUsState(newValue || "")}
+              renderInput={(params) => (
+                <TextField {...params} variant="outlined" placeholder="Start typing to search..." />
+              )}
+            />
           </Box>
         </Box>
       </Box>

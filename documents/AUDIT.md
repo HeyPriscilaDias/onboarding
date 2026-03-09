@@ -40,7 +40,7 @@ Note: Stage numbers skip 2, 3, and 7 — leftovers from removed steps (Welcome, 
 
 These were flagged in the original audit and have since been resolved:
 
-- ~~Full address / phone / birthday collected~~ — BasicInfoStep now collects only: firstName, lastName, city, state, gradeLevel, GPA (optional)
+- ~~Full address / phone / birthday collected~~ — BasicInfoStep now collects only: firstName, lastName, state (filterable autocomplete, full names), gradeLevel, GPA (optional). City was removed — see design note on item 6.
 - ~~SchoolInfoStep in Lesson 1~~ — Removed from routing. Files still exist but are dead code.
 - ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 14 tags, toggle chips, saves to `student.careerInterestTags`
 - ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route at `/student/onboarding/feedback` still exists.
@@ -86,11 +86,12 @@ These were flagged in the original audit and have since been resolved:
 - **Fix:** Could be a lightweight tooltip tour, a dismissable overlay, or a first-visit banner. Needs design decision.
 - **Files:** New component needed, integrate into `PlatformHomepage.tsx`
 
-#### 6. City/state collected but unused downstream
+#### 6. ~~City/state collected but unused downstream~~ — RESOLVED (city removed, state kept)
 - **Source:** Proposal says city/state are for "location-based data" (presumably local career/program recommendations).
-- **Status:** Fields are collected in BasicInfoStep and saved to `student.address.city` / `student.address.state`, but nothing in the recommendation logic uses them.
-- **Impact:** Low for prototype. The fields exist; wiring them into recommendations is a future concern.
-- **Fix:** No action needed now, but document that location-based filtering is not yet implemented.
+- **Previous status:** Both city and state were collected but unused downstream.
+- **Resolution:** City field removed; only state is now collected. State uses a filterable autocomplete dropdown with full state names (e.g. "California", not "CA").
+- **Design rationale:** City is too granular for a prototype that doesn't yet have location-based filtering. State alone is sufficient for any future regional recommendations (e.g. state-specific career programs, licensing requirements, labor market data). Removing city also reduces friction — one fewer field for students to fill out during onboarding. If city-level precision is ever needed, it can be re-added when the recommendation engine actually consumes it.
+- **Remaining:** State is saved to `student.address.state` but not yet wired into recommendation logic. That remains a future concern (see T9).
 
 #### 7. "My Why / ROI" conflation unresolved
 - **Source:** Proposal Step 5 is "My Why / ROI — Personalized ROI setup."
@@ -169,13 +170,13 @@ Ordered by impact and dependency. Each task is self-contained.
 | ~~T6~~ | ~~Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files)~~ — Done. | — | — |
 | T7 | Remove legacy routes from Routes.tsx | `src/routes/Routes.tsx` | None |
 | T8 | (Future) Add platform orientation/tour for first-time visitors | New component + `PlatformHomepage.tsx` | Design needed |
-| T9 | (Future) Wire city/state into location-based recommendation filtering | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
+| T9 | (Future) Wire state into location-based recommendation filtering (city removed — state only now) | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
 
 ---
 
 ## What the prototype gets right
 
-- **Lesson 1 flow matches the proposal** — Sign up → Basic info (city/state/grade/GPA) → My Why → Career interest tags → Platform landing
+- **Lesson 1 flow matches the proposal** — Sign up → Basic info (state/grade/GPA) → My Why → Career interest tags → Platform landing
 - **Quiz separated into Lesson 2** — Accessible via PrototypeHomepage, not part of Lesson 1
 - **Progressive refinement model** — Three recommendation stages (interest-only → interest+personality → interest+personality+GPC) with corresponding platform states
 - **Prototype testing infrastructure** — PrototypeHomepage with jump-to-moment cards, PrototypeToolbar with stage switcher, auto-login, mock data setup
