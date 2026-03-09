@@ -22,7 +22,7 @@ const DurableSkillsSection: React.FC = () => {
           Durable Skills Assessment
         </WillowTypography>
       </Box>
-      <WillowTypography variant="body-lg" sx={{ color: essentials.white, opacity: 0.9 }}>
+      <WillowTypography variant="body-lg" sx={{ color: essentials.white, opacity: 0.9, fontSize: 14 }}>
         Discover and develop the skills employers value most. Assess your strengths in
         communication, teamwork, and problem-solving.
       </WillowTypography>

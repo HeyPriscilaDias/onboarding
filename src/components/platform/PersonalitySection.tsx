@@ -37,7 +37,7 @@ const PersonalitySection: React.FC = () => {
             Discover your personality type
           </WillowTypography>
         </Box>
-        <WillowTypography variant="body-lg" sx={{ color: essentials.white, opacity: 0.9 }}>
+        <WillowTypography variant="body-lg" sx={{ color: essentials.white, opacity: 0.9, fontSize: 14 }}>
           Take the personality quiz to uncover your unique strengths, communication style, and
           the careers that match who you are. It only takes a few minutes and the results might
           surprise you.
