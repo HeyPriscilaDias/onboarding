@@ -1,50 +1,19 @@
-import React, { memo, useState, useEffect } from "react";
-import { Box, Card, neutral, Slate, essentials, WillowTypography, TextButton, CircularProgress, Checkbox } from "@willow/ui-kit";
-import { FormControlLabel, AppBar, Toolbar } from "@mui/material";
-import { Circle, RadioCheckFill } from "@willow/icons";
-import IncomeConfirmationModal from "./IncomeConfirmationModal";
+import React, { memo, useState } from "react";
+import { Box, WillowTypography, Slate, hexToRgba, Checkbox } from "@willow/ui-kit";
+import { FormControlLabel } from "@mui/material";
+import OnboardingLayout from "./OnboardingLayout";
 import { useUpdatePersonalization } from "../../hooks/useUpdatePersonalization";
-import { useRecoilState } from "recoil";
-import { incomeConfirmationModalAtom } from "../../state/onboardingAtoms";
-import useLogout from "../../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
+import { studentService } from "../../mock/mockServices";
 import type { IncomeBracket } from "../../types";
 
-interface IncomeBracketCardProps {
-  title: string;
-  description: string;
-  bracket: NonNullable<IncomeBracket>;
-  isSelected: boolean;
-  onSelect: (bracket: NonNullable<IncomeBracket>) => void;
-}
-
-const IncomeBracketCard: React.FC<IncomeBracketCardProps> = ({ title, description, bracket, isSelected, onSelect }) => {
-  return (
-    <Card
-      component="button"
-      onClick={(e: React.MouseEvent) => { e.preventDefault(); onSelect(bracket); }}
-      sx={{
-        width: "100%", p: 2, cursor: "pointer",
-        border: isSelected ? "2px solid #2D8A7E" : `2px solid ${neutral[200]}`,
-        backgroundColor: isSelected ? "#E6F7F5" : "transparent",
-        transition: "all 0.2s",
-        "&:hover": { borderColor: isSelected ? "#2D8A7E" : neutral[400], boxShadow: 2 },
-      }}
-    >
-      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-        <Box sx={{ pt: 0.5 }}>
-          {isSelected ? <RadioCheckFill size={24} color="#2D8A7E" /> : <Circle size={24} color={neutral[400]} />}
-        </Box>
-        <Box sx={{ flex: 1, textAlign: "left" }}>
-          <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>{title}</WillowTypography>
-          <WillowTypography variant="body" color="secondary">{description}</WillowTypography>
-        </Box>
-      </Box>
-    </Card>
-  );
-};
+const INCOME_OPTIONS: { label: string; description: string; bracket: NonNullable<IncomeBracket> }[] = [
+  { label: "Lower income", description: "Typically receives free/reduced lunch, SNAP, or government-assisted housing.", bracket: "lower" },
+  { label: "Middle income", description: "Typically pays for most household expenses, may receive some tax credits.", bracket: "middle" },
+  { label: "Higher income", description: "Has savings, can handle unexpected expenses comfortably.", bracket: "higher" },
+];
 
 const PersonalizationStep: React.FC = () => {
   const { student: loggedInStudent } = useCurrentStudentData();
@@ -58,117 +27,104 @@ const PersonalizationStep: React.FC = () => {
   const [preferNotToAnswer, setPreferNotToAnswer] = useState(initialIncomeBracket === null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mutate: updatePersonalization } = useUpdatePersonalization();
-  const [modalState, setModalState] = useRecoilState(incomeConfirmationModalAtom);
-  const { logout } = useLogout();
 
-  useEffect(() => {
-    if (modalState.wentBack) {
-      setPreferNotToAnswer(false);
-      setModalState((prev) => ({ ...prev, wentBack: false }));
-    }
-  }, [modalState.wentBack, setModalState]);
-
-  const handleSelectBracket = (incomeBracket: "lower" | "middle" | "higher") => {
-    setSelectedBracket(incomeBracket);
+  const handleSelectBracket = (bracket: NonNullable<IncomeBracket>) => {
+    setSelectedBracket(bracket);
     setPreferNotToAnswer(false);
-    if (modalState.isOpen && modalState.incomeBracket === null) {
-      setModalState({ isOpen: false, incomeBracket: null });
-    }
   };
 
   const handlePreferNotToAnswer = (checked: boolean) => {
     setPreferNotToAnswer(checked);
     if (checked) {
-      setModalState({ isOpen: true, incomeBracket: null });
       setSelectedBracket(null);
-    } else if (modalState.isOpen && modalState.incomeBracket === null) {
-      setModalState({ isOpen: false, incomeBracket: null });
     }
   };
 
   const handleContinue = async () => {
-    // Prototype mode: default to "middle" if nothing selected
-    if (!selectedBracket && !preferNotToAnswer) {
-      setSelectedBracket("middle");
-    }
-    const bracketToUse = selectedBracket || "middle";
     if (!loggedInStudent?.id) return;
     setIsSubmitting(true);
-    const incomeBracketToSubmit = preferNotToAnswer ? null : (selectedBracket || bracketToUse);
+
+    const incomeBracketToSubmit = preferNotToAnswer ? null : (selectedBracket || "middle");
 
     updatePersonalization(
       { studentId: loggedInStudent.id, incomeBracket: incomeBracketToSubmit },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await studentService.updateStudentGoldenPath(loggedInStudent.id, {
+            onboardingStage: 7,
+            onboardingState: "career-interests",
+          });
+          await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
           setIsSubmitting(false);
-          queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-          if (incomeBracketToSubmit === null) {
-            navigate("/student/home", { replace: true });
-            return;
-          }
-          setModalState({ isOpen: true, incomeBracket: incomeBracketToSubmit });
+          navigate("/student/onboarding/career-interests", { replace: true });
         },
         onError: () => { setIsSubmitting(false); },
       },
     );
   };
 
+  const handleBack = async () => {
+    if (!loggedInStudent?.id) return;
+    await studentService.updateStudentGoldenPath(loggedInStudent.id, {
+      onboardingStage: 5,
+      onboardingState: "my-why",
+    });
+    await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
+    navigate("/student/onboarding/my-why", { replace: true });
+  };
+
   return (
-    <>
-      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "100vh", bgcolor: Slate[25], px: 2, pb: 4 }}>
-        <Box>
-          <AppBar position="sticky" sx={{ bgcolor: "transparent", boxShadow: "none", border: "none", py: 2 }}>
-            <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-              <Box sx={{ height: 48, width: 48 }}>
-                <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow Logo" width="100%" height="100%" />
+    <OnboardingLayout currentStep={4} handleContinue={handleContinue} handleBack={handleBack} isLoading={isSubmitting}>
+      <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
+        <WillowTypography variant="display" color="primary">
+          Which best describes your family's financial situation?
+        </WillowTypography>
+        <WillowTypography variant="body" color="secondary" sx={{ mt: 1.5 }}>
+          This helps Willow personalize college cost and ROI estimates for you. It is not an official financial aid calculator.
+        </WillowTypography>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mt: 4 }}>
+          {INCOME_OPTIONS.map(({ label, description, bracket }) => {
+            const isSelected = selectedBracket === bracket && !preferNotToAnswer;
+            return (
+              <Box
+                key={bracket}
+                component="button"
+                type="button"
+                onClick={() => handleSelectBracket(bracket)}
+                sx={{
+                  bgcolor: isSelected ? Slate[700] : "transparent",
+                  color: isSelected ? "#fff" : Slate[700],
+                  border: `1px solid ${isSelected ? Slate[700] : hexToRgba(Slate[700], 0.2)}`,
+                  borderRadius: "12px",
+                  padding: "14px 20px",
+                  cursor: "pointer",
+                  transition: "background-color 0.2s, color 0.2s",
+                  outline: "none",
+                  fontFamily: "inherit",
+                  textAlign: "left",
+                }}
+              >
+                <WillowTypography variant="body" weight="semibold" sx={{ color: "inherit" }}>
+                  {label}
+                </WillowTypography>
+                <WillowTypography variant="body" sx={{ color: isSelected ? "rgba(255,255,255,0.75)" : "inherit", opacity: isSelected ? 1 : 0.6, mt: 0.5 }}>
+                  {description}
+                </WillowTypography>
               </Box>
-              <TextButton variant="ghost" onClick={logout}>Log Out</TextButton>
-            </Toolbar>
-          </AppBar>
+            );
+          })}
+        </Box>
 
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 0 }}>
-            <Box sx={{ bgcolor: essentials.white, borderRadius: "12px", boxShadow: "0px 2px 8px -1px rgba(16, 24, 40, 0.08)", width: "800px", maxWidth: "800px", padding: "56px", boxSizing: "border-box" }}>
-              <Box component="form" onSubmit={(e) => e.preventDefault()}>
-                <WillowTypography variant="display" color="primary">
-                  Personalize your estimates for college cost and return on investment
-                </WillowTypography>
-                <WillowTypography variant="body" color="secondary" sx={{ mt: 2 }}>
-                  Willow matches you with college and career programs by using your family income to calculate personalized costs and ROI.
-                </WillowTypography>
-                <WillowTypography variant="body" weight="semibold" color="secondary" sx={{ mt: 1.5 }}>
-                  This is for cost estimation only, and is not an official financial aid calculator.
-                </WillowTypography>
-
-                <Box sx={{ mt: 4 }}>
-                  <WillowTypography variant="body-lg" weight="semibold" color="primary" sx={{ mb: 2.5 }}>
-                    Which best describes your family's financial situation?
-                  </WillowTypography>
-                </Box>
-
-                <Box sx={{ mt: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                  <IncomeBracketCard title="Lower income" description="A low income family typically receives free/reduced lunch, SNAP, or government-assisted housing." bracket="lower" isSelected={selectedBracket === "lower"} onSelect={handleSelectBracket} />
-                  <IncomeBracketCard title="Middle income" description="A middle income family typically pays for most household expenses, may receive some tax credits." bracket="middle" isSelected={selectedBracket === "middle"} onSelect={handleSelectBracket} />
-                  <IncomeBracketCard title="Higher income" description="A high income family has savings, can handle unexpected expenses comfortably." bracket="higher" isSelected={selectedBracket === "higher"} onSelect={handleSelectBracket} />
-
-                  <Box sx={{ mt: 2, display: "flex", alignItems: "center" }}>
-                    <FormControlLabel
-                      control={<Checkbox checked={preferNotToAnswer} onChange={(e) => handlePreferNotToAnswer(e.target.checked)} />}
-                      label="I prefer not to answer"
-                      sx={{ color: neutral[600] }}
-                    />
-                  </Box>
-                </Box>
-
-                <TextButton variant="primary" fullWidth onClick={handleContinue} disabled={isSubmitting} sx={{ mt: 4 }}>
-                  {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "Continue"}
-                </TextButton>
-              </Box>
-            </Box>
-          </Box>
+        <Box sx={{ mt: 2 }}>
+          <FormControlLabel
+            control={<Checkbox checked={preferNotToAnswer} onChange={(e) => handlePreferNotToAnswer(e.target.checked)} />}
+            label="I prefer not to answer"
+            sx={{ color: Slate[700], opacity: 0.6 }}
+          />
         </Box>
       </Box>
-      <IncomeConfirmationModal />
-    </>
+    </OnboardingLayout>
   );
 };
 

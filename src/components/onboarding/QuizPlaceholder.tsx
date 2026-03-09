@@ -19,12 +19,12 @@ const QuizPlaceholder: React.FC = () => {
       quizComplete: true,
       pressingChallengesComplete: true,
       personalityType: "Explorer",
-      onboardingState: "personalization",
+      onboardingState: "complete",
       onboardingStage: 8,
     });
     await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
     await refetch();
-    navigate("/student/onboarding/personalization", { replace: true });
+    navigate("/student/home", { replace: true });
   };
 
   return (

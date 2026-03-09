@@ -5,7 +5,9 @@ import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep"
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
 import CareerInterestTagsStep from "../components/onboarding/CareerInterestTagsStep";
-import QuizPlaceholder from "../components/onboarding/QuizPlaceholder";
+import PersonalityQuizStart from "../components/onboarding/quiz/PersonalityQuizStart";
+import PersonalityQuizTake from "../components/onboarding/quiz/PersonalityQuizTake";
+import PersonalityQuizPreview from "../components/onboarding/quiz/PersonalityQuizPreview";
 import PersonalizationStep from "../components/onboarding/PersonalizationStep";
 import StudentHomeRouter from "../components/platform/StudentHomeRouter";
 import ExploreCareersPage from "../components/platform/ExploreCareersPage";
@@ -36,9 +38,10 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerInterestTagsStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 
-      {/* Lesson 2: Personality quiz (separate session) */}
-      <Route path="/student/onboarding/quiz-placeholder" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
-      <Route path="/student/onboarding/personality-quiz/*" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
+      {/* Lesson 2: Personality quiz */}
+      <Route path="/student/onboarding/personality-quiz/start" element={<ProtectedRoute><PersonalityQuizStart /></ProtectedRoute>} />
+      <Route path="/student/onboarding/personality-quiz/take" element={<ProtectedRoute><PersonalityQuizTake /></ProtectedRoute>} />
+      <Route path="/student/onboarding/personality-quiz/preview" element={<ProtectedRoute><PersonalityQuizPreview /></ProtectedRoute>} />
 
       {/* Platform */}
       <Route path="/student/home" element={<ProtectedRoute><StudentHomeRouter /></ProtectedRoute>} />
