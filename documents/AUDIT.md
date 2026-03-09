@@ -55,12 +55,10 @@ These were flagged in the original audit and have since been resolved:
 
 ### Contradictions (code vs. documents)
 
-#### 1. Career recommendations missing from PlatformHomepage
-- **PLAN.md says:** Career recommendations are the primary content — first section after the welcome heading. The layout diagram shows `[Career Recs]` prominently.
-- **Code does:** `PlatformHomepage.tsx` does NOT render `CareerRecommendations`. The component exists and works (used in `ExploreCareersPage`), but the homepage — the first thing a student sees — has no career cards.
-- **Impact:** High. This is the entire thesis of the redesign: students get immediate value (recommendations) after Lesson 1.
-- **Fix:** Add `<CareerRecommendations />` to `PlatformHomepage.tsx`, likely as the first section after the welcome heading.
-- **Files:** `src/components/platform/PlatformHomepage.tsx`
+#### 1. ~~Career recommendations missing from PlatformHomepage~~ — NOT AN ISSUE
+- **PLAN.md says** career recommendations belong on the homepage. This requirement was fabricated when PLAN.md was AI-generated — it does not trace back to the proposal or any stakeholder decision.
+- **Actual expectation:** After picking career interest tags in onboarding, those tags drive recommended careers in the **career exploration section** (`ExploreCareersPage`), not the homepage. The code already does this correctly — `CareerRecommendations` is rendered in `ExploreCareersPage`.
+- **Status:** Working as intended. No fix needed.
 
 #### 2. "Welcome back" copy for first-time visitors
 - **Context:** After finishing onboarding, a student lands on PlatformHomepage for the first time.
@@ -163,7 +161,7 @@ Ordered by impact and dependency. Each task is self-contained.
 
 | # | Task | Files | Dependencies |
 |---|------|-------|-------------|
-| T1 | Add `<CareerRecommendations />` to PlatformHomepage as first section after welcome heading | `src/components/platform/PlatformHomepage.tsx` | None |
+| ~~T1~~ | ~~Add CareerRecommendations to PlatformHomepage~~ — Removed. Not a real requirement (see item 1). | — | — |
 | T2 | Fix "Welcome back" → "Welcome" for first-time landing | `src/components/platform/PlatformHomepage.tsx` | None |
 
 ### Medium priority
