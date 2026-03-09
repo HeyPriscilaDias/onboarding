@@ -6,7 +6,8 @@ import useLogout from "../../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { PageRoute } from "../../types";
 import { useRecoilValue } from "recoil";
-import { prototypeActiveAtom } from "../../state/prototypeAtoms";
+import { prototypeActiveAtom, miniplayerOpenAtom } from "../../state/prototypeAtoms";
+import SlideMiniplayer from "../prototype/SlideMiniplayer";
 
 type OnboardingLayoutProps = {
   currentStep: number;
@@ -22,6 +23,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
   const { logout } = useLogout();
   const navigate = useNavigate();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
+  const miniplayerOpen = useRecoilValue(miniplayerOpenAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
 
   return (
@@ -55,11 +57,6 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
               {currentStep > 1 && (
                 <TextButton variant="ghost" onClick={logout}>
                   Log Out
-                </TextButton>
-              )}
-              {currentStep === 1 && (
-                <TextButton variant="ghost" onClick={() => navigate("/login")}>
-                  Back
                 </TextButton>
               )}
             </Box>
@@ -138,7 +135,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             }}
           >
             <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap", flex: 1 }}>
-              {[1, 2, 3, 4, 5, 6].map((step) => (
+              {[2, 3, 4, 5, 6, 7].map((step) => (
                 <Box
                   key={step}
                   sx={{
@@ -153,7 +150,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             </Box>
             {!mobile ? (
               <Box sx={{ display: "flex", gap: 1, flexShrink: 0 }}>
-                {currentStep > 2 && (
+                {currentStep > 1 && (
                   <TextButton variant="secondary" onClick={handleBack} sx={{ flex: 1 }}>
                     Back
                   </TextButton>
@@ -171,7 +168,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
                     {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
                   </TextButton>
                 )}
-                {currentStep > 2 && (
+                {currentStep > 1 && (
                   <TextButton variant="secondary" onClick={handleBack} fullWidth sx={{ mt: 2 }}>
                     Back
                   </TextButton>
@@ -181,6 +178,8 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           </Box>
         </Box>
       )}
+
+      {prototypeActive && miniplayerOpen && <SlideMiniplayer />}
     </Box>
   );
 };

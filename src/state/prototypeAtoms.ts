@@ -51,3 +51,15 @@ export const prototypeActiveAtom = atom<boolean>({
   default: false,
   effects: [localStorageEffect<boolean>("proto_active")],
 });
+
+export const miniplayerOpenAtom = atom<boolean>({
+  key: "miniplayerOpenAtom",
+  default: false,
+  effects: [localStorageEffect<boolean>("proto_miniplayerOpen")],
+});
+
+export const miniplayerSlideUrlAtom = atom<string>({
+  key: "miniplayerSlideUrlAtom",
+  default: "",
+  effects: [localStorageEffect<string>("proto_miniplayerSlideUrl")],
+});

@@ -6,6 +6,7 @@ import {
   journeyMomentAtom,
   recommendationStageAtom,
   prototypeActiveAtom,
+  miniplayerOpenAtom,
   JourneyMoment,
   RecommendationStage,
 } from "../../state/prototypeAtoms";
@@ -124,6 +125,7 @@ const PrototypeToolbar: React.FC = () => {
   const [journeyMoment, setJourneyMoment] = useRecoilState(journeyMomentAtom);
   const [recStage, setRecStage] = useRecoilState(recommendationStageAtom);
   const [prototypeActive, setPrototypeActive] = useRecoilState(prototypeActiveAtom);
+  const [miniplayerOpen, setMiniplayerOpen] = useRecoilState(miniplayerOpenAtom);
   const queryClient = useQueryClient();
 
   const isHomepage = location.pathname === "/prototype";
@@ -214,6 +216,15 @@ const PrototypeToolbar: React.FC = () => {
           )}
           <button onClick={handleReset} style={styles.resetBtn}>
             Reset
+          </button>
+          <button
+            onClick={() => setMiniplayerOpen(!miniplayerOpen)}
+            style={{
+              ...styles.resetBtn,
+              ...(miniplayerOpen ? { borderColor: "#6366f1", color: "#6366f1" } : {}),
+            }}
+          >
+            Slides
           </button>
         </div>
 
