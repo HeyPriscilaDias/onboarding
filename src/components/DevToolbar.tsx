@@ -8,11 +8,8 @@ import { saveStudentData, getStudentData } from "../mock/MockAuthProvider";
 import { OnboardingState } from "../types";
 
 const STEPS: { label: string; state: OnboardingState; stage: number; route: string }[] = [
-  { label: "Personal Info", state: "personal-info", stage: 2, route: "/student/onboarding/personal-info" },
-  { label: "School Info", state: "school-info", stage: 3, route: "/student/onboarding/school-info" },
-  { label: "My Why", state: "my-why", stage: 4, route: "/student/onboarding/my-why" },
-  { label: "Feedback 1", state: "feedback", stage: 5, route: "/student/onboarding/feedback" },
-  { label: "Feedback 2", state: "feedback", stage: 6, route: "/student/onboarding/feedback" },
+  { label: "Basic Info", state: "basic-info", stage: 4, route: "/student/onboarding/basic-info" },
+  { label: "My Why", state: "my-why", stage: 5, route: "/student/onboarding/my-why" },
   { label: "Quiz (Skip)", state: "quiz-start", stage: 8, route: "/student/onboarding/quiz-placeholder" },
   { label: "Personalization", state: "personalization", stage: 8, route: "/student/onboarding/personalization" },
   { label: "Complete", state: "complete", stage: 8, route: "/student/home" },
@@ -41,7 +38,7 @@ const DevToolbar: React.FC = () => {
     fresh.createdAt = student.createdAt;
     saveStudentData(student.id, fresh);
     await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-    navigate("/student/onboarding/personal-info", { replace: true });
+    navigate("/student/onboarding/basic-info", { replace: true });
   };
 
   const getSavedAccounts = (): { email: string; studentId: string }[] => {

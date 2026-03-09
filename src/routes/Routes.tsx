@@ -7,8 +7,6 @@ import MyWhyStep from "../components/onboarding/MyWhyStep";
 import CareerInterestTagsStep from "../components/onboarding/CareerInterestTagsStep";
 import QuizPlaceholder from "../components/onboarding/QuizPlaceholder";
 import PersonalizationStep from "../components/onboarding/PersonalizationStep";
-import FeedbackStep from "../components/onboarding/FeedbackStep";
-import CompletionPage from "../components/CompletionPage";
 import StudentHomeRouter from "../components/platform/StudentHomeRouter";
 import ExploreCareersPage from "../components/platform/ExploreCareersPage";
 import PrototypeHomepage from "../components/prototype/PrototypeHomepage";
@@ -41,11 +39,6 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/onboarding/quiz-placeholder" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
       <Route path="/student/onboarding/personality-quiz/*" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
-
-      {/* Legacy routes (kept for backward compat with prototype toolbar) */}
-      <Route path="/student/onboarding/personal-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/recommendation-preferences" element={<ProtectedRoute><CompletionPage /></ProtectedRoute>} />
 
       {/* Platform */}
       <Route path="/student/home" element={<ProtectedRoute><StudentHomeRouter /></ProtectedRoute>} />

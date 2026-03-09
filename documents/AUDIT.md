@@ -43,7 +43,7 @@ These were flagged in the original audit and have since been resolved:
 - ~~Full address / phone / birthday collected~~ — BasicInfoStep now collects only: firstName, lastName, state (filterable autocomplete, full names), gradeLevel, GPA (optional). City was removed — see design note on item 6.
 - ~~SchoolInfoStep in Lesson 1~~ — Removed from routing. Files still exist but are dead code.
 - ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 14 tags, toggle chips, saves to `student.careerInterestTags`
-- ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route at `/student/onboarding/feedback` still exists.
+- ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route also removed (see item 16).
 - ~~Quiz in continuous Lesson 1 flow~~ — Quiz is now a separate "Lesson 2" entry point via PrototypeHomepage
 - ~~Flow ends at CompletionPage~~ — CompletionPage deleted. `StudentHomeRouter` now always renders `PlatformHomepage` (no conditional on prototype/journey state).
 - ~~ThankYouStep as extra click~~ — Removed from flow (career interests goes straight to platform). Files still exist as dead code.
@@ -136,11 +136,10 @@ These were flagged in the original audit and have since been resolved:
 #### ~~14. SchoolInfoStep files (orphaned)~~ — DELETED
 #### ~~15. WelcomeStep and MeetAlmaStep files (orphaned)~~ — DELETED
 
-#### 16. Legacy routes in Routes.tsx
-- `/student/onboarding/personal-info` — duplicate of `/student/onboarding/basic-info`
-- `/student/onboarding/feedback` — disconnected FeedbackStep
-- `/student/onboarding/recommendation-preferences` — pointed to now-deleted CompletionPage
-- **Action:** Remove these three legacy routes.
+#### ~~16. Legacy routes in Routes.tsx~~ — DONE
+- Removed all three legacy routes (`personal-info`, `feedback`, `recommendation-preferences`) from `Routes.tsx`.
+- Updated `LoginPage.tsx`, `CompletionPage.tsx`, and `DevToolbar.tsx` to navigate to `/student/onboarding/basic-info` instead of the removed `/student/onboarding/personal-info`.
+- Cleaned up DevToolbar: removed orphaned "School Info", "Feedback 1", "Feedback 2" steps; renamed "Personal Info" to "Basic Info" with correct stage number.
 
 ---
 
@@ -168,7 +167,7 @@ Ordered by impact and dependency. Each task is self-contained.
 | # | Task | Files | Dependencies |
 |---|------|-------|-------------|
 | ~~T6~~ | ~~Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files)~~ — Done. | — | — |
-| T7 | Remove legacy routes from Routes.tsx | `src/routes/Routes.tsx` | None |
+| ~~T7~~ | ~~Remove legacy routes from Routes.tsx~~ — Done. Removed 3 legacy routes, updated all references to use `/basic-info`, cleaned up DevToolbar steps. | — | — |
 | T8 | (Future) Add platform orientation/tour for first-time visitors | New component + `PlatformHomepage.tsx` | Design needed |
 | T9 | (Future) Wire state into location-based recommendation filtering (city removed — state only now) | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
 
