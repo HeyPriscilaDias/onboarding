@@ -18,6 +18,7 @@ const CAREER_TAGS = [
   "Trades & Construction",
   "Agriculture & Environment",
   "Media & Entertainment",
+  "Military & Public Safety",
   "Sports & Fitness",
 ];
 
@@ -77,12 +78,12 @@ const useCareerInterestTagsStep = () => {
     try {
       if (!loggedInStudent?.id) return;
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 5,
-        onboardingState: "my-why",
+        onboardingStage: 6,
+        onboardingState: "personalization",
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/my-why", { replace: true });
+      navigate("/student/onboarding/personalization", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }

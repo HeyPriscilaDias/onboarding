@@ -45,13 +45,13 @@ const useMyWhyStep = () => {
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
         myWhy: mockMyWhy,
         onboardingStage: 6,
-        onboardingState: "career-interests",
+        onboardingState: "personalization",
       });
 
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
       logMyWhySubmitted({ studentId: loggedInStudent.id });
-      navigate("/student/onboarding/career-interests", { replace: true });
+      navigate("/student/onboarding/personalization", { replace: true });
     } catch (error) {
       logMyWhyError({ error });
     } finally {

@@ -136,7 +136,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             }}
           >
             <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap" }}>
-              {[1, 2, 3, 4].map((step) => (
+              {[1, 2, 3, 4, 5].map((step) => (
                 <Box
                   key={step}
                   sx={{

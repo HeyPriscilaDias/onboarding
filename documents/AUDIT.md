@@ -25,14 +25,14 @@ Progress dots: 4 segments, shown on steps 1–4. Navigation: Back goes to previo
 
 ### Stage numbers used in code
 
-| Step | `onboardingStage` on enter | `onboardingStage` on continue |
-|------|---------------------------|-------------------------------|
-| Sign up | 1 | 4 (navigates to basic-info) |
-| Basic info | 4 | 5 (navigates to my-why) |
-| My Why | 5 | 6 (navigates to career-interests) |
-| Career interests | 6 | 8 + `setupComplete: true` (navigates to /student/home) |
+| Step | `currentStep` (UI dots) | `onboardingStage` on back | `onboardingStage` on continue |
+|------|------------------------|---------------------------|-------------------------------|
+| Sign up | 1 | — | 4 (navigates to basic-info) |
+| Basic info | 2 | 1 | 5 (navigates to my-why) |
+| My Why | 3 | 4 | 6 (navigates to career-interests) |
+| Career interests | 4 | 5 | 8 + `setupComplete: true` (navigates to /student/home) |
 
-Note: Stage numbers skip 2, 3, and 7 — leftovers from removed steps (Welcome, Meet Alma, ThankYou). This is cosmetic (the numbers are internal), but worth knowing if you're reading the code.
+Note: `currentStep` (1–4) drives the progress dots and is sequential. `onboardingStage` still skips 2, 3, and 7 — leftovers from removed steps. This is cosmetic (the stage numbers are internal persistence values), but worth knowing if you're reading the code.
 
 ---
 
@@ -41,43 +41,54 @@ Note: Stage numbers skip 2, 3, and 7 — leftovers from removed steps (Welcome, 
 These were flagged in the original audit and have since been resolved:
 
 - ~~Full address / phone / birthday collected~~ — BasicInfoStep now collects only: firstName, lastName, state (filterable autocomplete, full names), gradeLevel, GPA (optional). City was removed — see design note on item 6.
-- ~~SchoolInfoStep in Lesson 1~~ — Removed from routing. Files still exist but are dead code.
-- ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 14 tags, toggle chips, saves to `student.careerInterestTags`
+- ~~SchoolInfoStep in Lesson 1~~ — Removed from routing. Dead code files deleted (T6).
+- ~~Career interest tags missing~~ — CareerInterestTagsStep implemented with 15 tags (including "Military & Public Safety"), toggle chips, saves to `student.careerInterestTags`
 - ~~Feedback/Likert in Lesson 1 flow~~ — Removed from Lesson 1 routing. Legacy route also removed (see item 16).
 - ~~Quiz in continuous Lesson 1 flow~~ — Quiz is now a separate "Lesson 2" entry point via PrototypeHomepage
 - ~~Flow ends at CompletionPage~~ — CompletionPage deleted. `StudentHomeRouter` now always renders `PlatformHomepage` (no conditional on prototype/journey state).
-- ~~ThankYouStep as extra click~~ — Removed from flow (career interests goes straight to platform). Files still exist as dead code.
+- ~~ThankYouStep as extra click~~ — Removed from flow (career interests goes straight to platform). Dead code files deleted (T6).
 - ~~Welcome / Meet Alma screens~~ — Intentionally removed. Deemed unnecessary as standalone onboarding steps; content better as curriculum slides.
+
+---
+
+## RESOLVED ISSUES
+
+Items that were flagged during the audit and have since been addressed.
+
+#### 1. ~~Career recommendations missing from PlatformHomepage~~ — NOT AN ISSUE
+- PLAN.md requirement was fabricated (AI-generated). Career recommendations correctly live in `ExploreCareersPage`, not the homepage.
+
+#### ~~2. "Welcome back" copy for first-time visitors~~ — FIXED
+- Heading now says "Welcome, {firstName}!" (commit `f6f395c`).
+
+#### ~~3. Progress dots include signup step~~ — FIXED
+- Stepper renumbered to 4 sequential steps (1–4) starting at signup. Fixed-width segments. (commits `b72afe2`, `a9f9b3f`).
+
+#### ~~6. City/state collected but unused downstream~~ — RESOLVED
+- City removed; only state collected via filterable autocomplete with full names. State is saved to `student.address.state` but not wired into recommendation logic — out of scope for the prototype (see T9).
+
+#### ~~8. SMART Goals section on homepage~~ — KEEPING
+- Three "Set a SMART Goal" placeholder cards kept intentionally as part of the post-onboarding experience.
+
+#### ~~9. Career Readiness + Durable Skills Assessment placeholders~~ — RESOLVED
+- Career Readiness removed. Durable Skills consolidated into a single card alongside personality quiz (commit `f6f395c`).
+
+#### ~~10. LessonCodeSection on post-onboarding homepage~~ — RESOLVED
+- Reworked into horizontal single-row layout. Serves as entry point for joining subsequent lessons (commit `f6f395c`).
+
+#### ~~11. "Military & Public Safety" tag~~ — FIXED
+- Added back. Tag list now has 15 entries.
+
+#### ~~13–15. Dead code (ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep)~~ — DELETED
+
+#### ~~16. Legacy routes in Routes.tsx~~ — DONE
+- Removed 3 legacy routes, updated all references to `/basic-info`, cleaned up DevToolbar.
 
 ---
 
 ## REMAINING ISSUES
 
-### Contradictions (code vs. documents)
-
-#### 1. ~~Career recommendations missing from PlatformHomepage~~ — NOT AN ISSUE
-- **PLAN.md says** career recommendations belong on the homepage. This requirement was fabricated when PLAN.md was AI-generated — it does not trace back to the proposal or any stakeholder decision.
-- **Actual expectation:** After picking career interest tags in onboarding, those tags drive recommended careers in the **career exploration section** (`ExploreCareersPage`), not the homepage. The code already does this correctly — `CareerRecommendations` is rendered in `ExploreCareersPage`.
-- **Status:** Working as intended. No fix needed.
-
-#### 2. "Welcome back" copy for first-time visitors
-- **Context:** After finishing onboarding, a student lands on PlatformHomepage for the first time.
-- **Code says:** "Welcome back, {firstName}!" (`PlatformHomepage.tsx:25`)
-- **Problem:** They're not "back" — they just arrived. Should say "Welcome, {firstName}!" or vary based on visit count.
-- **Impact:** Low. Copy issue.
-- **Fix:** Change heading text. Consider differentiating first visit vs. return.
-- **Files:** `src/components/platform/PlatformHomepage.tsx`
-
-#### 3. Progress dots include signup step
-- **AUDIT plan said:** "Progress dots: 4 dots (stages 4-7). Stage 1 (sign-in) is excluded from progress visualization."
-- **Code does:** 4 dots starting at step 1. Signup (step 1) shows the first dot filled.
-- **Impact:** Low. Design decision, but contradicts the documented plan.
-- **Fix:** Decide which is correct and align. If signup should be excluded, show dots starting at step 2.
-- **Files:** `src/components/onboarding/OnboardingLayout.tsx`, all step components' `currentStep` props
-
----
-
-### Missing features
+Only items that are still open or deferred.
 
 #### 5. Platform overview / orientation after onboarding
 - **Source:** Jaime transcript — "we might as well tell them what they're clicking around in."
@@ -86,60 +97,11 @@ These were flagged in the original audit and have since been resolved:
 - **Fix:** Could be a lightweight tooltip tour, a dismissable overlay, or a first-visit banner. Needs design decision.
 - **Files:** New component needed, integrate into `PlatformHomepage.tsx`
 
-#### 6. ~~City/state collected but unused downstream~~ — RESOLVED (city removed, state kept)
-- **Source:** Proposal says city/state are for "location-based data" (presumably local career/program recommendations).
-- **Previous status:** Both city and state were collected but unused downstream.
-- **Resolution:** City field removed; only state is now collected. State uses a filterable autocomplete dropdown with full state names (e.g. "California", not "CA").
-- **Design rationale:** City is too granular for a prototype that doesn't yet have location-based filtering. State alone is sufficient for any future regional recommendations (e.g. state-specific career programs, licensing requirements, labor market data). Removing city also reduces friction — one fewer field for students to fill out during onboarding. If city-level precision is ever needed, it can be re-added when the recommendation engine actually consumes it.
-- **Remaining:** State is saved to `student.address.state` but not yet wired into recommendation logic. That remains a future concern (see T9).
-
 #### 7. "My Why / ROI" conflation unresolved
 - **Source:** Proposal Step 5 is "My Why / ROI — Personalized ROI setup."
 - **Status:** MyWhyStep is just an essay question. Income bracket (the ROI piece) is only in PersonalizationStep, which is a Lesson 2 step.
 - **Impact:** Low. The proposal may have intended these as separate or combined; neither document clarifies.
 - **Fix:** No action needed unless stakeholders want ROI in Lesson 1.
-
----
-
-### Unfounded design decisions (in code but not in any document)
-
-#### 8. SMART Goals section on homepage
-- `PlatformHomepage.tsx` renders three "Set a SMART Goal" placeholder cards.
-- No document mentions goals as part of the post-onboarding experience.
-- **Action needed:** Either add design rationale to PLAN.md or remove from PlatformHomepage.
-
-#### 9. Career Readiness + Durable Skills Assessment placeholders
-- Two placeholder cards on PlatformHomepage: "Career Readiness" and "Durable Skills Assessment."
-- Neither is mentioned in PLAN.md or any proposal document.
-- **Action needed:** Either add design rationale to PLAN.md or remove from PlatformHomepage.
-
-#### 10. LessonCodeSection on post-onboarding homepage
-- A "Today's lesson code" card with input boxes appears on the homepage.
-- No document explains why lesson code entry belongs on the post-onboarding landing. The student just finished Lesson 1 — when would they use this?
-- **Action needed:** Either justify placement (e.g., it's how students join Lesson 2) and document it, or relocate/remove.
-
-#### 11. "Military & Public Safety" tag removed without explanation
-- AUDIT plan listed 15 career tags including "Military & Public Safety."
-- Implementation has 14 tags — that one is missing. No documented rationale.
-- **Action needed:** Either add it back or document why it was dropped.
-
-#### 12. Alma sidebar takes ~25% of viewport with zero functionality
-- MockAlmaSidebar is 324px wide on every platform page. Non-functional (visual only).
-- For a prototype meant to demonstrate the recommendation model, dedicating a quarter of the screen to a chat placeholder is a trade-off.
-- **Action needed:** This is acceptable if the goal is visual fidelity to the real product. But if screen real estate matters for demonstrating recommendations, consider making it collapsible or narrower.
-
----
-
-### Dead code to clean up
-
-#### ~~13. ThankYouStep files (orphaned)~~ — DELETED
-#### ~~14. SchoolInfoStep files (orphaned)~~ — DELETED
-#### ~~15. WelcomeStep and MeetAlmaStep files (orphaned)~~ — DELETED
-
-#### ~~16. Legacy routes in Routes.tsx~~ — DONE
-- Removed all three legacy routes (`personal-info`, `feedback`, `recommendation-preferences`) from `Routes.tsx`.
-- Updated `LoginPage.tsx`, `CompletionPage.tsx`, and `DevToolbar.tsx` to navigate to `/student/onboarding/basic-info` instead of the removed `/student/onboarding/personal-info`.
-- Cleaned up DevToolbar: removed orphaned "School Info", "Feedback 1", "Feedback 2" steps; renamed "Personal Info" to "Basic Info" with correct stage number.
 
 ---
 
@@ -152,15 +114,15 @@ Ordered by impact and dependency. Each task is self-contained.
 | # | Task | Files | Dependencies |
 |---|------|-------|-------------|
 | ~~T1~~ | ~~Add CareerRecommendations to PlatformHomepage~~ — Removed. Not a real requirement (see item 1). | — | — |
-| T2 | Fix "Welcome back" → "Welcome" for first-time landing | `src/components/platform/PlatformHomepage.tsx` | None |
+| ~~T2~~ | ~~Fix "Welcome back" → "Welcome" for first-time landing~~ — Done (commit `f6f395c`). | — | — |
 
 ### Medium priority
 
 | # | Task | Files | Dependencies |
 |---|------|-------|-------------|
-| T3 | Decide: keep or remove SMART Goals, Career Readiness, Durable Skills, LessonCode from PlatformHomepage. If keeping, add rationale to PLAN.md. If removing, delete the JSX. | `src/components/platform/PlatformHomepage.tsx`, `documents/PLAN.md` | Design decision needed |
-| T4 | Decide: add "Military & Public Safety" back to tag list, or document why it was dropped | `src/hooks/onboarding/useCareerInterestTagsStep.ts` | Design decision needed |
-| T5 | Decide: should progress dots include signup step or start at basic-info? Align code with decision. | `src/components/onboarding/OnboardingLayout.tsx`, all step components | Design decision needed |
+| ~~T3~~ | ~~Homepage cards resolved~~ — Career Readiness/Durable Skills/LessonCode reworked (commit `f6f395c`). SMART Goals kept intentionally. | — | — |
+| ~~T4~~ | ~~Add "Military & Public Safety" back to tag list~~ — Done. 15 tags now. | — | — |
+| ~~T5~~ | ~~Progress dots renumbered to 4 sequential steps including signup~~ — Done (commits `b72afe2`, `a9f9b3f`). | — | — |
 
 ### Low priority
 
@@ -169,7 +131,7 @@ Ordered by impact and dependency. Each task is self-contained.
 | ~~T6~~ | ~~Delete dead code: ThankYouStep, SchoolInfoStep, WelcomeStep, MeetAlmaStep (8 files)~~ — Done. | — | — |
 | ~~T7~~ | ~~Remove legacy routes from Routes.tsx~~ — Done. Removed 3 legacy routes, updated all references to use `/basic-info`, cleaned up DevToolbar steps. | — | — |
 | T8 | (Future) Add platform orientation/tour for first-time visitors | New component + `PlatformHomepage.tsx` | Design needed |
-| T9 | (Future) Wire state into location-based recommendation filtering (city removed — state only now) | `src/hooks/useStaticCareerData.ts` | Data mapping needed |
+| ~~T9~~ | ~~Wire state into location-based recommendation filtering~~ — Out of scope for this prototype. State is collected and persisted, which is sufficient to demonstrate the data capture. Actual filtering logic belongs in the production app, not the prototype. | — | — |
 
 ---
 

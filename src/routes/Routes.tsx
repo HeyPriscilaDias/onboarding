@@ -34,11 +34,11 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerInterestTagsStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 
       {/* Lesson 2: Personality quiz (separate session) */}
       <Route path="/student/onboarding/quiz-placeholder" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
       <Route path="/student/onboarding/personality-quiz/*" element={<ProtectedRoute><QuizPlaceholder /></ProtectedRoute>} />
-      <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 
       {/* Platform */}
       <Route path="/student/home" element={<ProtectedRoute><StudentHomeRouter /></ProtectedRoute>} />
