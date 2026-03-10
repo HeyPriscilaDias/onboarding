@@ -51,7 +51,7 @@ const PersonalizationStep: React.FC = () => {
       {
         onSuccess: async () => {
           await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-            onboardingStage: 7,
+            onboardingStage: 9,
             onboardingState: "career-interests",
           });
           await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
@@ -66,15 +66,15 @@ const PersonalizationStep: React.FC = () => {
   const handleBack = async () => {
     if (!loggedInStudent?.id) return;
     await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-      onboardingStage: 5,
-      onboardingState: "my-why",
+      onboardingStage: 7,
+      onboardingState: "feedback",
     });
     await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-    navigate("/student/onboarding/my-why", { replace: true });
+    navigate("/student/onboarding/feedback", { replace: true });
   };
 
   return (
-    <OnboardingLayout currentStep={4} handleContinue={handleContinue} handleBack={handleBack} isLoading={isSubmitting}>
+    <OnboardingLayout currentStep={5} handleContinue={handleContinue} handleBack={handleBack} isLoading={isSubmitting}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
         <WillowTypography variant="display" color="primary">
           Which best describes your family's financial situation?

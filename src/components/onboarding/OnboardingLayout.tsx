@@ -71,7 +71,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: currentStep <= 5 ? "calc(100vh - 96px - 120px - 40px)" : "calc(100vh - 96px)",
+          height: currentStep <= 6 ? "calc(100vh - 96px - 120px - 40px)" : "calc(100vh - 96px)",
           py: 0,
         }}
       >
@@ -111,7 +111,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
         )}
       </Box>
 
-      {currentStep <= 5 && (
+      {currentStep <= 6 && (
         <Box
           sx={{
             position: "fixed",
@@ -136,11 +136,11 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             }}
           >
             <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap" }}>
-              {[1, 2, 3, 4, 5].map((step) => (
+              {[1, 2, 3, 4, 5, 6].map((step) => (
                 <Box
                   key={step}
                   sx={{
-                    width: mobile ? 60 : 100,
+                    width: mobile ? 48 : 80,
                     flexShrink: 0,
                     height: 8,
                     borderRadius: "4px",

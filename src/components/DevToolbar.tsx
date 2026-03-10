@@ -10,10 +10,11 @@ import { OnboardingState } from "../types";
 const STEPS: { label: string; state: OnboardingState; stage: number; route: string }[] = [
   { label: "Basic Info", state: "basic-info", stage: 4, route: "/student/onboarding/basic-info" },
   { label: "My Why", state: "my-why", stage: 5, route: "/student/onboarding/my-why" },
-  { label: "Personalization", state: "personalization", stage: 6, route: "/student/onboarding/personalization" },
-  { label: "Career Interests", state: "career-interests", stage: 7, route: "/student/onboarding/career-interests" },
-  { label: "Quiz (Skip)", state: "quiz-start", stage: 8, route: "/student/onboarding/quiz-placeholder" },
-  { label: "Complete", state: "complete", stage: 8, route: "/student/home" },
+  { label: "Feedback", state: "feedback", stage: 6, route: "/student/onboarding/feedback" },
+  { label: "Personalization", state: "personalization", stage: 8, route: "/student/onboarding/personalization" },
+  { label: "Career Interests", state: "career-interests", stage: 9, route: "/student/onboarding/career-interests" },
+  { label: "Quiz (Skip)", state: "quiz-start", stage: 10, route: "/student/onboarding/quiz-placeholder" },
+  { label: "Complete", state: "complete", stage: 10, route: "/student/home" },
 ];
 
 const DevToolbar: React.FC = () => {

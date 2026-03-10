@@ -4,6 +4,7 @@ import LoginPage from "../components/auth/LoginPage";
 import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep";
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
+import FeedbackStep from "../components/onboarding/FeedbackStep";
 import CareerInterestTagsStep from "../components/onboarding/CareerInterestTagsStep";
 import PersonalityQuizStart from "../components/onboarding/quiz/PersonalityQuizStart";
 import PersonalityQuizTake from "../components/onboarding/quiz/PersonalityQuizTake";
@@ -35,6 +36,7 @@ const AppRoutes: React.FC = () => {
       {/* Lesson 1: Onboarding flow */}
       <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerInterestTagsStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 

@@ -59,7 +59,7 @@ const useCareerInterestTagsStep = () => {
 
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
         careerInterestTags: tagsToSave,
-        onboardingStage: 7,
+        onboardingStage: 9,
         onboardingState: "onboarding-complete",
       });
 
@@ -77,7 +77,7 @@ const useCareerInterestTagsStep = () => {
     try {
       if (!loggedInStudent?.id) return;
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 6,
+        onboardingStage: 8,
         onboardingState: "personalization",
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });

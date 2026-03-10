@@ -25,6 +25,7 @@ const useBasicInfoStep = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [city, setCity] = useState("");
   const [usState, setUsState] = useState("");
   const [gradeLevel, setGradeLevel] = useState("");
   const [gpa, setGpa] = useState("");
@@ -35,6 +36,7 @@ const useBasicInfoStep = () => {
     if (loggedInStudent && !hasInitialized) {
       setFirstName(loggedInStudent.firstName || "");
       setLastName(loggedInStudent.lastName || "");
+      setCity(loggedInStudent.address?.city || "");
       setUsState(loggedInStudent.address?.state || "");
       setGradeLevel(loggedInStudent.gradeLevel || "");
       setGpa(loggedInStudent.gpaValue ? String(loggedInStudent.gpaValue) : "");
@@ -46,6 +48,7 @@ const useBasicInfoStep = () => {
     const { name, value } = event.target;
     if (name === "firstName") setFirstName(value);
     else if (name === "lastName") setLastName(value);
+    else if (name === "city") setCity(value);
     else if (name === "gradeLevel") setGradeLevel(value);
     else if (name === "gpa") setGpa(value);
   }, []);
@@ -53,12 +56,14 @@ const useBasicInfoStep = () => {
   const handleContinue = useCallback(async () => {
     const finalFirstName = firstName || "Jane";
     const finalLastName = lastName || "Doe";
+    const finalCity = city || "Chicago";
     const finalUsState = usState || "Illinois";
     const finalGradeLevel = gradeLevel || "9th Grade";
     const finalGpa = gpa || "3.5";
 
     if (!firstName) setFirstName(finalFirstName);
     if (!lastName) setLastName(finalLastName);
+    if (!city) setCity(finalCity);
     if (!usState) setUsState(finalUsState);
     if (!gradeLevel) setGradeLevel(finalGradeLevel);
     if (!gpa) setGpa(finalGpa);
@@ -68,7 +73,7 @@ const useBasicInfoStep = () => {
       await studentService.updateStudentGoldenPath(loggedInStudent!.id, {
         firstName: finalFirstName,
         lastName: finalLastName,
-        address: { state: finalUsState, lat: 0, lon: 0 },
+        address: { city: finalCity, state: finalUsState, lat: 0, lon: 0 },
         gradeLevel: finalGradeLevel,
         gpaValue: parseFloat(finalGpa) || null,
         onboardingStage: 5,
@@ -82,7 +87,7 @@ const useBasicInfoStep = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [firstName, lastName, usState, gradeLevel, gpa, loggedInStudent, queryClient, refetch, navigate]);
+  }, [firstName, lastName, city, usState, gradeLevel, gpa, loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(async () => {
     try {
@@ -102,6 +107,7 @@ const useBasicInfoStep = () => {
   return {
     firstName,
     lastName,
+    city,
     usState,
     setUsState,
     gradeLevel,

@@ -9,7 +9,7 @@ const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
 const BasicInfoStep: React.FC = () => {
   const {
-    firstName, lastName, usState, setUsState, gradeLevel, gpa,
+    firstName, lastName, city, usState, setUsState, gradeLevel, gpa,
     handleTextChange, handleContinue, handleBack, isLoading,
   } = useBasicInfoStep();
 
@@ -51,16 +51,22 @@ const BasicInfoStep: React.FC = () => {
             </Box>
           </Box>
 
-          <Box>
-            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
-            <Autocomplete
-              options={US_STATES}
-              value={usState || null}
-              onChange={(_event, newValue) => setUsState(newValue || "")}
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" placeholder="Start typing to search..." />
-              )}
-            />
+          <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", sm: "row" } }}>
+            <Box sx={{ flex: 1 }}>
+              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>City</WillowTypography>
+              <TextField variant="outlined" name="city" fullWidth value={city} onChange={handleTextChange} />
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
+              <Autocomplete
+                options={US_STATES}
+                value={usState || null}
+                onChange={(_event, newValue) => setUsState(newValue || "")}
+                renderInput={(params) => (
+                  <TextField {...params} variant="outlined" placeholder="Start typing to search..." />
+                )}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>

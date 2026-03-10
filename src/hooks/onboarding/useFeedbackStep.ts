@@ -19,8 +19,9 @@ const useFeedbackStep = () => {
 
   const studentId = useMemo(() => loggedInStudent?.id, [loggedInStudent?.id]);
   const personalFeedback = useMemo(() => loggedInStudent?.personalFeedback, [loggedInStudent?.personalFeedback]);
-  const onboardingStage = useMemo(() => loggedInStudent?.onboardingStage || 5, [loggedInStudent?.onboardingStage]);
-  const currentStep = onboardingStage;
+  const onboardingStage = useMemo(() => loggedInStudent?.onboardingStage || 6, [loggedInStudent?.onboardingStage]);
+
+  const isFirstQuestion = onboardingStage === 6;
 
   useEffect(() => {
     if (personalFeedback) {
@@ -31,32 +32,38 @@ const useFeedbackStep = () => {
   }, [personalFeedback]);
 
   const processFeedbackSubmission = useCallback(
-    async (step: number, answer: number) => {
+    async (stage: number, answer: number) => {
       try {
-        const feedbackEntry = createFeedbackEntry(step, answer);
-        const updatedFeedback = getUpdatedFeedback(personalFeedback, feedbackEntry, step);
+        const feedbackEntry = createFeedbackEntry(stage, answer);
+        const updatedFeedback = getUpdatedFeedback(personalFeedback, feedbackEntry, stage);
 
         if (!studentId) return;
 
-        const nextStage = step + 1;
-        // In test mode, step 6 goes to thank-you instead of quiz
-        const nextOnboardingState = step === 5 ? "feedback" : "quiz-start";
-
-        await studentService.updateStudentGoldenPath(studentId, {
-          personalFeedback: updatedFeedback,
-          onboardingStage: nextStage,
-          onboardingState: nextOnboardingState,
-        });
+        if (stage === 6) {
+          // First question done → advance to second question
+          await studentService.updateStudentGoldenPath(studentId, {
+            personalFeedback: updatedFeedback,
+            onboardingStage: 7,
+            onboardingState: "feedback",
+          });
+        } else {
+          // Second question done → advance to personalization
+          await studentService.updateStudentGoldenPath(studentId, {
+            personalFeedback: updatedFeedback,
+            onboardingStage: 8,
+            onboardingState: "personalization",
+          });
+        }
 
         await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
         await refetch();
-        logFeedbackSubmitted({ studentId, questionId: step });
+        logFeedbackSubmitted({ studentId, questionId: stage });
 
-        if (step === 6) {
-          navigate("/student/home", { replace: true });
+        if (stage === 7) {
+          navigate("/student/onboarding/personalization", { replace: true });
         }
       } catch (_error) {
-        logFeedbackError({ error: _error, questionId: step });
+        logFeedbackError({ error: _error, questionId: stage });
       }
     },
     [studentId, personalFeedback, logFeedbackSubmitted, logFeedbackError, queryClient, refetch, navigate],
@@ -64,15 +71,15 @@ const useFeedbackStep = () => {
 
   const submitFeedback = useCallback(async () => {
     // Prototype mode: use mock answer (5) if none selected
-    let currentAnswer = currentStep === 5 ? clarity : preparedness;
+    let currentAnswer = isFirstQuestion ? clarity : preparedness;
     if (currentAnswer === null) {
       currentAnswer = 5;
-      if (currentStep === 5) setClarity(5);
+      if (isFirstQuestion) setClarity(5);
       else setPreparedness(5);
     }
-    await processFeedbackSubmission(currentStep, currentAnswer);
+    await processFeedbackSubmission(onboardingStage, currentAnswer);
     return true;
-  }, [currentStep, clarity, preparedness, processFeedbackSubmission]);
+  }, [isFirstQuestion, onboardingStage, clarity, preparedness, processFeedbackSubmission]);
 
   const handleContinue = useCallback(async () => {
     try {
@@ -88,24 +95,29 @@ const useFeedbackStep = () => {
   const handleBack = useCallback(async () => {
     try {
       if (!studentId) return;
-      const previousStage = currentStep === 6 ? 5 : 4;
-      const previousOnboardingState = currentStep === 6 ? "feedback" : "my-why";
 
-      await studentService.updateStudentGoldenPath(studentId, {
-        onboardingStage: previousStage,
-        onboardingState: previousOnboardingState,
-      });
-
-      await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-      await refetch();
-
-      if (currentStep === 5) {
+      if (isFirstQuestion) {
+        // Back from first question → go to my-why
+        await studentService.updateStudentGoldenPath(studentId, {
+          onboardingStage: 5,
+          onboardingState: "my-why",
+        });
+        await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
+        await refetch();
         navigate("/student/onboarding/my-why", { replace: true });
+      } else {
+        // Back from second question → go to first question
+        await studentService.updateStudentGoldenPath(studentId, {
+          onboardingStage: 6,
+          onboardingState: "feedback",
+        });
+        await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
+        await refetch();
       }
     } catch (_error) {
       console.error("Error updating onboarding stage:", _error);
     }
-  }, [currentStep, studentId, queryClient, refetch, navigate]);
+  }, [isFirstQuestion, studentId, queryClient, refetch, navigate]);
 
   return {
     clarity,
@@ -116,7 +128,7 @@ const useFeedbackStep = () => {
     setError,
     handleContinue,
     handleBack,
-    currentStep,
+    isFirstQuestion,
     isLoading,
   };
 };

@@ -9,7 +9,7 @@ const FeedbackStep: React.FC = () => {
   const { mobile } = useWindowDimensions();
   const {
     clarity, setClarity, preparedness, setPreparedness,
-    error, setError, handleBack, handleContinue, currentStep, isLoading,
+    error, setError, handleBack, handleContinue, isFirstQuestion, isLoading,
   } = useFeedbackStep();
 
   const renderButtons = (value: number | null, setter: (value: number) => void) => {
@@ -39,7 +39,6 @@ const FeedbackStep: React.FC = () => {
     );
   };
 
-  const isFirstQuestion = currentStep === 5;
   const currentQuestionText = isFirstQuestion
     ? "How clear are you on what you want your career and life after high school to be like?"
     : "How prepared do you feel for life after high school?";
@@ -50,7 +49,7 @@ const FeedbackStep: React.FC = () => {
   const currentSetter = isFirstQuestion ? setClarity : setPreparedness;
 
   return (
-    <OnboardingLayout currentStep={currentStep} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading}>
+    <OnboardingLayout currentStep={4} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading}>
       <Box component="form" sx={{ textAlign: "left" }}>
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
           <WillowTypography variant="display" color="primary">{currentQuestionText}</WillowTypography>

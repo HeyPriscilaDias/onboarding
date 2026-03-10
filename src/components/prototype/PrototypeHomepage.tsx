@@ -38,7 +38,7 @@ const JOURNEY_MOMENTS: {
       const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
       Object.assign(data, {
         onboardingState: "quiz-start",
-        onboardingStage: 8,
+        onboardingStage: 10,
         setupComplete: true,
         quizComplete: false,
         firstName: "Test",
@@ -62,7 +62,7 @@ const JOURNEY_MOMENTS: {
       const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
       Object.assign(data, {
         onboardingState: "complete",
-        onboardingStage: 8,
+        onboardingStage: 10,
         setupComplete: true,
         quizComplete: false,
         pressingChallengesComplete: false,
@@ -88,7 +88,7 @@ const JOURNEY_MOMENTS: {
       const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
       Object.assign(data, {
         onboardingState: "complete",
-        onboardingStage: 8,
+        onboardingStage: 10,
         setupComplete: true,
         quizComplete: true,
         pressingChallengesComplete: false,
@@ -114,7 +114,7 @@ const JOURNEY_MOMENTS: {
       const data = JSON.parse(localStorage.getItem(`mock_student_${studentId}`) || "{}");
       Object.assign(data, {
         onboardingState: "complete",
-        onboardingStage: 8,
+        onboardingStage: 10,
         setupComplete: true,
         quizComplete: true,
         pressingChallengesComplete: true,

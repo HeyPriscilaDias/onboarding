@@ -8,7 +8,7 @@ const CareerInterestTagsStep: React.FC = () => {
     useCareerInterestTagsStep();
 
   return (
-    <OnboardingLayout currentStep={5} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading} continueLabel="Start exploring">
+    <OnboardingLayout currentStep={6} handleContinue={handleContinue} handleBack={handleBack} isLoading={isLoading} continueLabel="Start exploring">
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%", maxWidth: 500, mx: "auto" }}>
         <WillowTypography variant="display" color="primary">
           What kind of careers interest you?

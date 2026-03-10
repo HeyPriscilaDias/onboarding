@@ -20,7 +20,7 @@ const QuizPlaceholder: React.FC = () => {
       pressingChallengesComplete: true,
       personalityType: "Explorer",
       onboardingState: "complete",
-      onboardingStage: 8,
+      onboardingStage: 10,
     });
     await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
     await refetch();
