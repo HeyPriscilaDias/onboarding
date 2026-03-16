@@ -17,9 +17,13 @@ type OnboardingLayoutProps = {
   isLoading?: boolean;
   disableContinue?: boolean;
   continueLabel?: string;
+  /** When true, removes the white card wrapper and renders children full-bleed */
+  fullBleed?: boolean;
+  /** Override the outer background color (useful for immersive dark modes) */
+  bgOverride?: string;
 };
 
-const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false, continueLabel = "Continue" }: OnboardingLayoutProps) => {
+const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false, continueLabel = "Continue", fullBleed = false, bgOverride }: OnboardingLayoutProps) => {
   const { mobile } = useWindowDimensions();
   const { logout } = useLogout();
   const navigate = useNavigate();
@@ -33,7 +37,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        bgcolor: hexToRgba(ui.mint, 0.25),
+        bgcolor: bgOverride || hexToRgba(ui.mint, 0.25),
         px: 2,
         pt: `${toolbarOffset}px`,
         position: "relative",
@@ -75,22 +79,28 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           py: 0,
         }}
       >
-        <Box
-          sx={{
-            bgcolor: essentials.white,
-            borderRadius: "12px",
-            boxShadow: "0px 2px 8px -1px rgba(16, 24, 40, 0.08), 0px 2px 8px -1px rgba(16, 24, 40, 0.08)",
-            width: "100%",
-            maxWidth: 700,
-            maxHeight: "80vh",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box sx={{ px: 7, py: 7, overflow: "auto", flex: 1 }}>
+        {fullBleed ? (
+          <Box sx={{ width: "100%", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", overflow: "auto" }}>
             {children}
           </Box>
-        </Box>
+        ) : (
+          <Box
+            sx={{
+              bgcolor: essentials.white,
+              borderRadius: "12px",
+              boxShadow: "0px 2px 8px -1px rgba(16, 24, 40, 0.08), 0px 2px 8px -1px rgba(16, 24, 40, 0.08)",
+              width: "100%",
+              maxWidth: 700,
+              maxHeight: "80vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box sx={{ px: 7, py: 7, overflow: "auto", flex: 1 }}>
+              {children}
+            </Box>
+          </Box>
+        )}
 
         {currentStep === 1 && (
           <Box sx={{ mt: 3, textAlign: "center" }}>
@@ -144,7 +154,9 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
                     flexShrink: 0,
                     height: 8,
                     borderRadius: "4px",
-                    bgcolor: step <= currentStep ? Slate[700] : hexToRgba(Slate[700], 0.15),
+                    bgcolor: step <= currentStep
+                      ? (fullBleed ? essentials.white : Slate[700])
+                      : hexToRgba(fullBleed ? essentials.white : Slate[700], 0.15),
                   }}
                 />
               ))}
@@ -152,12 +164,12 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             {!mobile ? (
               <Box sx={{ display: "flex", gap: 1, flexShrink: 0 }}>
                 {currentStep > 1 && (
-                  <TextButton variant="secondary" onClick={handleBack} sx={{ flex: 1 }}>
+                  <TextButton variant={fullBleed ? "on-dark" : "secondary"} onClick={handleBack} sx={{ flex: 1 }}>
                     Back
                   </TextButton>
                 )}
                 {handleContinue && (
-                  <TextButton variant="primary" onClick={handleContinue} disabled={isLoading || disableContinue} sx={{ flex: 2, minWidth: 100, whiteSpace: "nowrap" }}>
+                  <TextButton variant={fullBleed ? "on-dark" : "primary"} onClick={handleContinue} disabled={isLoading || disableContinue} sx={{ flex: 2, minWidth: 100, whiteSpace: "nowrap" }}>
                     {isLoading ? <CircularProgress size={20} color="inherit" /> : continueLabel}
                   </TextButton>
                 )}
