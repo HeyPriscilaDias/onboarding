@@ -59,6 +59,26 @@ const CareerRecommendations: React.FC = () => {
         {recLabel}
       </WillowTypography>
 
+      {/* Nudge to take personality quiz for better matches */}
+      {recStage === "interest-only" && (
+        <Box
+          sx={{
+            bgcolor: "#f0f0ff",
+            borderRadius: "8px",
+            px: 2.5,
+            py: 1.5,
+            mb: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <WillowTypography variant="body" sx={{ color: "#6366f1", fontWeight: 500, fontSize: 13 }}>
+            Take the personality quiz for personalized matches
+          </WillowTypography>
+        </Box>
+      )}
+
       {/* Horizontal scrollable cards */}
       <Box sx={{ position: "relative" }}>
         {/* Left arrow */}

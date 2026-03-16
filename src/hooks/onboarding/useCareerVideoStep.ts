@@ -7,7 +7,7 @@ import CAREER_VIDEOS from "../../mock/careerVideoData";
 
 type Reaction = "like" | "dislike";
 
-const MIN_REACTIONS = 5;
+const MIN_REACTIONS = 0;
 
 const useCareerVideoStep = () => {
   const navigate = useNavigate();
@@ -44,7 +44,10 @@ const useCareerVideoStep = () => {
       next.set(currentVideo.id, "like");
       return next;
     });
-  }, [currentVideo]);
+    if (currentIndex < totalVideos - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  }, [currentVideo, currentIndex, totalVideos]);
 
   const handleDislike = useCallback(() => {
     if (!currentVideo) return;
@@ -53,7 +56,10 @@ const useCareerVideoStep = () => {
       next.set(currentVideo.id, "dislike");
       return next;
     });
-  }, [currentVideo]);
+    if (currentIndex < totalVideos - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  }, [currentVideo, currentIndex, totalVideos]);
 
   const handleNext = useCallback(() => {
     if (currentIndex < totalVideos - 1) {

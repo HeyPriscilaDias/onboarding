@@ -17,9 +17,38 @@ const SuperpowersSection: React.FC = () => {
     recStage !== "interest-only" ? typeKey : undefined
   );
 
-  // Nothing to show until quiz is completed
+  // Empty state — quiz not yet taken
   if (recStage === "interest-only" || !personalityData) {
-    return null;
+    return (
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 3, gap: 1 }}>
+          <Star size={24} color={neutral[400]} />
+          <WillowTypography
+            variant="heading"
+            sx={{ color: neutral[400], fontWeight: 700 }}
+          >
+            Your super powers
+          </WillowTypography>
+        </Box>
+        <Box
+          sx={{
+            border: `2px dashed ${neutral[300]}`,
+            borderRadius: "12px",
+            py: 5,
+            px: 3,
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <WillowTypography variant="body" sx={{ color: neutral[500] }}>
+            Take the personality quiz to unlock your superpowers
+          </WillowTypography>
+        </Box>
+      </Box>
+    );
   }
 
   // Populated state

@@ -53,9 +53,9 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-lesson1",
-    title: "After Lesson 1",
+    title: "Homepage: Quiz Pending",
     description:
-      "Interest-tag-based career recommendations. Empty states for personality results and superpowers with prompts to take the quiz.",
+      "Onboarding checklist with Career Interests complete, Personality Quiz / Survey / AI Agreement still pending. Interest-only career recommendations with personality empty states.",
     route: "/student/home",
     recStage: "interest-only",
     setupStudent: (studentId: string) => {
@@ -79,9 +79,9 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-lesson2",
-    title: "After Lesson 2",
+    title: "Homepage: Quiz Complete",
     description:
-      "Full recommendations powered by interest tags + personality type. Populated personality results and superpowers sections.",
+      "Checklist shows Personality Quiz + Career Interests done, Survey still pending. Full recommendations powered by interest tags + personality type with populated superpowers.",
     route: "/student/home",
     recStage: "interest-personality",
     setupStudent: (studentId: string) => {
@@ -105,9 +105,9 @@ const JOURNEY_MOMENTS: {
   },
   {
     id: "post-onboarding-gpc",
-    title: "After GPC Unit",
+    title: "Homepage: All Complete",
     description:
-      "The full picture — recommendations refined by interest tags + personality type + GPC ratings. Most complete view of the personalized experience.",
+      "All checklist items done. Recommendations refined by interest tags + personality type + GPC ratings. Most complete view of the personalized experience.",
     route: "/student/home",
     recStage: "interest-personality-gpc",
     setupStudent: (studentId: string) => {
@@ -130,6 +130,10 @@ const JOURNEY_MOMENTS: {
         gradeLevel: "11th Grade",
         myWhy: "I want to find a career that lets me help people and be creative.",
         careerInterestTags: ["Healthcare", "Technology", "Science"],
+        personalFeedback: [
+          { questionText: "How clear are you on what you want your career and life after high school to be like?", score: 7, submittedOn: new Date().toISOString(), questionId: 1 },
+          { questionText: "How prepared do you feel for life after high school?", score: 6, submittedOn: new Date().toISOString(), questionId: 2 },
+        ],
       });
       localStorage.setItem(`mock_student_${studentId}`, JSON.stringify(data));
     },

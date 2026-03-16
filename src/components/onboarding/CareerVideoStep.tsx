@@ -9,7 +9,7 @@
  */
 import React, { memo, useRef, useEffect, useState } from "react";
 import { Box, WillowTypography, Slate, hexToRgba, essentials, ui } from "@willow/ui-kit";
-import { ThumbsUp, ThumbsDown, ArrowRight, ArrowLeft } from "@willow/icons";
+import { ThumbsUp, ThumbsDown } from "@willow/icons";
 import OnboardingLayout from "./OnboardingLayout";
 import useCareerVideoStep from "../../hooks/onboarding/useCareerVideoStep";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
@@ -19,20 +19,16 @@ const CareerVideoStep: React.FC = () => {
     currentVideo,
     currentIndex,
     totalVideos,
-    totalReactions,
     canProceed,
     isLastVideo,
     currentReaction,
     isLoading,
     handleLike,
     handleDislike,
-    handleNext,
-    handlePrevious,
     handleSkip,
     handleContinue,
     handleBack,
     nextVideoUrl,
-    MIN_REACTIONS,
   } = useCareerVideoStep();
 
   const { mobile } = useWindowDimensions();
@@ -63,8 +59,6 @@ const CareerVideoStep: React.FC = () => {
     const t = setTimeout(() => setTransitioning(false), 300);
     return () => clearTimeout(t);
   }, [currentIndex]);
-
-  const reactionsRemaining = Math.max(0, MIN_REACTIONS - totalReactions);
 
   // Shared reaction button styles
   const reactionBtnSx = (active: boolean, activeColor: string) => ({
@@ -164,65 +158,6 @@ const CareerVideoStep: React.FC = () => {
               </Box>
             )}
 
-            {/* Navigation arrows on the video */}
-            {currentIndex > 0 && (
-              <Box
-                component="button"
-                onClick={handlePrevious}
-                sx={{
-                  position: "absolute",
-                  left: 12,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  bgcolor: hexToRgba(essentials.black, 0.35),
-                  backdropFilter: "blur(8px)",
-                  border: `1px solid ${hexToRgba(essentials.white, 0.1)}`,
-                  borderRadius: "50%",
-                  width: 40,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  color: essentials.white,
-                  transition: "all 0.2s ease",
-                  "&:hover": {
-                    bgcolor: hexToRgba(essentials.black, 0.55),
-                  },
-                }}
-              >
-                <ArrowLeft size={18} color={essentials.white} />
-              </Box>
-            )}
-            {!isLastVideo && (
-              <Box
-                component="button"
-                onClick={handleNext}
-                sx={{
-                  position: "absolute",
-                  right: 12,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  bgcolor: hexToRgba(essentials.black, 0.35),
-                  backdropFilter: "blur(8px)",
-                  border: `1px solid ${hexToRgba(essentials.white, 0.1)}`,
-                  borderRadius: "50%",
-                  width: 40,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  color: essentials.white,
-                  transition: "all 0.2s ease",
-                  "&:hover": {
-                    bgcolor: hexToRgba(essentials.black, 0.55),
-                  },
-                }}
-              >
-                <ArrowRight size={18} color={essentials.white} />
-              </Box>
-            )}
           </Box>
 
           {/* Right — Editorial info panel */}
@@ -399,34 +334,6 @@ const CareerVideoStep: React.FC = () => {
               </Box>
             </Box>
 
-            {/* Reactions remaining */}
-            {!canProceed && (
-              <Box
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 1,
-                  px: 2,
-                  py: 1,
-                  borderRadius: "12px",
-                  bgcolor: hexToRgba(essentials.white, 0.04),
-                  border: `1px solid ${hexToRgba(essentials.white, 0.06)}`,
-                  alignSelf: "flex-start",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    bgcolor: hexToRgba(ui.mint, 0.5),
-                  }}
-                />
-                <WillowTypography variant="caption" sx={{ color: hexToRgba(essentials.white, 0.4) }}>
-                  {reactionsRemaining} more reaction{reactionsRemaining !== 1 ? "s" : ""} to continue
-                </WillowTypography>
-              </Box>
-            )}
           </Box>
         </Box>
       )}
