@@ -5,13 +5,14 @@ import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep"
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
 import FeedbackStep from "../components/onboarding/FeedbackStep";
-import CareerInterestTagsStep from "../components/onboarding/CareerInterestTagsStep";
+import CareerVideoStep from "../components/onboarding/CareerVideoStep";
 import PersonalityQuizStart from "../components/onboarding/quiz/PersonalityQuizStart";
 import PersonalityQuizTake from "../components/onboarding/quiz/PersonalityQuizTake";
 import PersonalityQuizPreview from "../components/onboarding/quiz/PersonalityQuizPreview";
 import PersonalizationStep from "../components/onboarding/PersonalizationStep";
 import StudentHomeRouter from "../components/platform/StudentHomeRouter";
 import ExploreCareersPage from "../components/platform/ExploreCareersPage";
+import PersonalityTypePage from "../components/portfolio/PersonalityTypePage";
 import PrototypeHomepage from "../components/prototype/PrototypeHomepage";
 import { useAuth } from "../mock/MockAuthProvider";
 
@@ -37,7 +38,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
-      <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerInterestTagsStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerVideoStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 
       {/* Lesson 2: Personality quiz */}
@@ -48,6 +49,7 @@ const AppRoutes: React.FC = () => {
       {/* Platform */}
       <Route path="/student/home" element={<ProtectedRoute><StudentHomeRouter /></ProtectedRoute>} />
       <Route path="/student/explore-careers" element={<ProtectedRoute><ExploreCareersPage /></ProtectedRoute>} />
+      <Route path="/student/portfolio/personality-type" element={<ProtectedRoute><PersonalityTypePage /></ProtectedRoute>} />
 
       {/* Default: go to prototype homepage */}
       <Route path="/" element={<Navigate to="/prototype" replace />} />

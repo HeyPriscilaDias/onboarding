@@ -87,7 +87,7 @@ const usePersonalityQuizTake = () => {
         await refetch();
       }
 
-      navigate("/student/onboarding/personality-quiz/preview", { replace: true });
+      navigate("/student/portfolio/personality-type", { replace: true });
     } catch (error) {
       console.error("Error submitting quiz:", error);
       setSubmitting(false);

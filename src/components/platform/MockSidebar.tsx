@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const NAV_ITEMS = [
   { id: "home", label: "Home", Icon: Home, route: "/student/home" },
   { id: "lessons", label: "Lessons", Icon: BookOpen, route: null },
-  { id: "portfolio", label: "Portfolio", Icon: Award, route: null },
+  { id: "portfolio", label: "Portfolio", Icon: Award, route: "/student/portfolio/personality-type" },
   { id: "careers", label: "Careers", Icon: Careers, route: "/student/explore-careers" },
   { id: "settings", label: "Preferences", Icon: Settings, route: null },
 ];
