@@ -3,7 +3,7 @@ import { Stack, TextField, MenuItem, Autocomplete, AppBar, Toolbar } from "@mui/
 import { Box, WillowTypography, TextInput, TextButton, CircularProgress } from "@willow/ui-kit";
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
-import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
+import useSchoolContextStep from "../../hooks/onboarding/useSchoolContextStep";
 import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
 import useLogout from "../../hooks/useLogout";
 
@@ -15,8 +15,8 @@ const DOT_BG_STYLE = {
 
 const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
-const BasicInfoStep: React.FC = () => {
-  const { firstName, lastName, gradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
+const SchoolContextStep: React.FC = () => {
+  const { gradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useSchoolContextStep();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
   const { logout } = useLogout();
@@ -51,22 +51,13 @@ const BasicInfoStep: React.FC = () => {
         </Box>
 
         <WillowTypography variant="display" sx={{ textAlign: "center", mb: 0.75 }}>
-          Tell us about yourself
+          Tell us about your school
         </WillowTypography>
         <WillowTypography variant="body" color="secondary" sx={{ textAlign: "center", mb: 4 }}>
-          We'll use this to personalize your experience and find opportunities near you.
+          This helps us find the best opportunities near you.
         </WillowTypography>
 
         <Stack spacing={2} sx={{ width: "100%", maxWidth: 360 }}>
-          <Stack direction="row" spacing={2}>
-            <Box sx={{ flex: 1 }}>
-              <TextInput label="First name" name="firstName" value={firstName} onChange={handleTextChange} />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <TextInput label="Last name" name="lastName" value={lastName} onChange={handleTextChange} />
-            </Box>
-          </Stack>
-
           <Box>
             <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>Grade level</WillowTypography>
             <TextField select variant="outlined" name="gradeLevel" fullWidth value={gradeLevel} onChange={handleTextChange} size="small">
@@ -76,22 +67,19 @@ const BasicInfoStep: React.FC = () => {
             </TextField>
           </Box>
 
-          <Stack direction="row" spacing={2}>
-            <Box sx={{ flex: 1 }}>
-              <TextInput label="City" name="city" value={city} onChange={handleTextChange} />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
-              <Autocomplete
-                options={US_STATES}
-                value={usState || null}
-                onChange={(_event, newValue) => setUsState(newValue || "")}
-                renderInput={(params) => (
-                  <TextField {...params} variant="outlined" placeholder="Start typing to search..." size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
+          <TextInput label="City" name="city" value={city} onChange={handleTextChange} />
+
+          <Box>
+            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
+            <Autocomplete
+              options={US_STATES}
+              value={usState || null}
+              onChange={(_event, newValue) => setUsState(newValue || "")}
+              renderInput={(params) => (
+                <TextField {...params} variant="outlined" placeholder="Start typing to search..." size="small" />
+              )}
+            />
+          </Box>
 
           <TextButton variant="primary" onClick={handleContinue} disabled={isLoading} fullWidth sx={{ mt: 1 }}>
             {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
@@ -105,4 +93,4 @@ const BasicInfoStep: React.FC = () => {
   );
 };
 
-export default memo(BasicInfoStep);
+export default memo(SchoolContextStep);
