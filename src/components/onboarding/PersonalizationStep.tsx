@@ -50,13 +50,9 @@ const PersonalizationStep: React.FC = () => {
       { studentId: loggedInStudent.id, incomeBracket: incomeBracketToSubmit },
       {
         onSuccess: async () => {
-          await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-            onboardingStage: 9,
-            onboardingState: "career-interests",
-          });
           await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
           setIsSubmitting(false);
-          navigate("/student/onboarding/career-interests", { replace: true });
+          navigate("/student/home", { replace: true });
         },
         onError: () => { setIsSubmitting(false); },
       },

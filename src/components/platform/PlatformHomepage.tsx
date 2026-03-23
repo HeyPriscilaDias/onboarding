@@ -3,7 +3,6 @@ import { Box, WillowTypography } from "@willow/ui-kit";
 import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
 import PlatformLayout from "./PlatformLayout";
 import OnboardingChecklist from "./OnboardingChecklist";
-import SuperpowersSection from "./SuperpowersSection";
 import GpcPrompt from "./GpcPrompt";
 import LessonCodeSection from "./LessonCodeSection";
 
@@ -25,9 +24,6 @@ const PlatformHomepage: React.FC = () => {
 
       {/* Onboarding checklist */}
       <OnboardingChecklist />
-
-      {/* Superpowers */}
-      <SuperpowersSection />
     </PlatformLayout>
   );
 };

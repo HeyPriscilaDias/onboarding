@@ -98,12 +98,6 @@ const useFeedbackStep = () => {
 
       if (isFirstQuestion) {
         // Back from first question → go to my-why
-        await studentService.updateStudentGoldenPath(studentId, {
-          onboardingStage: 5,
-          onboardingState: "my-why",
-        });
-        await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-        await refetch();
         navigate("/student/onboarding/my-why", { replace: true });
       } else {
         // Back from second question → go to first question

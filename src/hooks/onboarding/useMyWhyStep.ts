@@ -62,13 +62,7 @@ const useMyWhyStep = () => {
   const handleBack = useCallback(async () => {
     try {
       if (!loggedInStudent?.id) return;
-      await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 4,
-        onboardingState: "basic-info",
-      });
-      await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-      await refetch();
-      navigate("/student/onboarding/basic-info", { replace: true });
+      navigate("/student/home", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, WillowTypography } from "@willow/ui-kit";
 import { Slate, neutral, essentials } from "@willow/ui-kit";
-import { PersonalityType, Careers, BookOpen, Award } from "@willow/icons";
+import { PersonalityType, Careers, BookOpen, Award, Settings } from "@willow/icons";
 import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
 
 type ChecklistItem = {
@@ -20,6 +20,11 @@ const OnboardingChecklist: React.FC = () => {
 
   const items: ChecklistItem[] = [
     {
+      label: "Account setup",
+      icon: <Settings size={20} color={essentials.white} />,
+      done: true,
+    },
+    {
       label: "Personality Quiz",
       icon: <PersonalityType size={20} color={student?.quizComplete ? essentials.white : Slate[500]} />,
       done: !!student?.quizComplete,
@@ -33,16 +38,14 @@ const OnboardingChecklist: React.FC = () => {
     },
     {
       label: "Survey",
-      icon: <BookOpen size={20} color={(student?.personalFeedback?.length ?? 0) > 0 ? essentials.white : Slate[500]} />,
-      done: (student?.personalFeedback?.length ?? 0) > 0,
-      onClick: () => navigate("/student/onboarding/feedback"),
+      icon: <BookOpen size={20} color={!!student?.myWhy && (student?.personalFeedback?.length ?? 0) > 0 ? essentials.white : Slate[500]} />,
+      done: !!student?.myWhy && (student?.personalFeedback?.length ?? 0) > 0,
+      onClick: () => navigate("/student/onboarding/my-why"),
     },
     {
       label: "AI Use Agreement",
-      icon: <Award size={20} color={neutral[400]} />,
+      icon: <Award size={20} color={Slate[500]} />,
       done: false,
-      disabled: true,
-      disabledLabel: "Coming soon",
     },
   ];
 

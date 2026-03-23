@@ -106,13 +106,7 @@ const useCareerVideoStep = () => {
   const handleBack = useCallback(async () => {
     try {
       if (!loggedInStudent?.id) return;
-      await studentService.updateStudentGoldenPath(loggedInStudent.id, {
-        onboardingStage: 8,
-        onboardingState: "personalization",
-      });
-      await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-      await refetch();
-      navigate("/student/onboarding/personalization", { replace: true });
+      navigate("/student/home", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }

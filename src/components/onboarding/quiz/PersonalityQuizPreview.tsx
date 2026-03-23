@@ -34,12 +34,10 @@ const PersonalityQuizPreview: React.FC = () => {
     await studentService.updateStudentGoldenPath(loggedInStudent.id, {
       quizComplete: true,
       pressingChallengesComplete: true,
-      onboardingState: "personalization" as const,
-      onboardingStage: 8,
     });
     await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
     await refetch();
-    navigate("/student/onboarding/personalization", { replace: true });
+    navigate("/student/home", { replace: true });
   }, [loggedInStudent, queryClient, refetch, navigate]);
 
   return (
