@@ -25,10 +25,9 @@ const useBasicInfoStep = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [gradeLevel, setGradeLevel] = useState("");
   const [city, setCity] = useState("");
   const [usState, setUsState] = useState("");
-  const [gradeLevel, setGradeLevel] = useState("");
-  const [gpa, setGpa] = useState("");
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,10 +35,9 @@ const useBasicInfoStep = () => {
     if (loggedInStudent && !hasInitialized) {
       setFirstName(loggedInStudent.firstName || "");
       setLastName(loggedInStudent.lastName || "");
+      setGradeLevel(loggedInStudent.gradeLevel || "");
       setCity(loggedInStudent.address?.city || "");
       setUsState(loggedInStudent.address?.state || "");
-      setGradeLevel(loggedInStudent.gradeLevel || "");
-      setGpa(loggedInStudent.gpaValue ? String(loggedInStudent.gpaValue) : "");
       setHasInitialized(true);
     }
   }, [loggedInStudent, hasInitialized]);
@@ -48,46 +46,40 @@ const useBasicInfoStep = () => {
     const { name, value } = event.target;
     if (name === "firstName") setFirstName(value);
     else if (name === "lastName") setLastName(value);
-    else if (name === "city") setCity(value);
     else if (name === "gradeLevel") setGradeLevel(value);
-    else if (name === "gpa") setGpa(value);
+    else if (name === "city") setCity(value);
   }, []);
 
   const handleContinue = useCallback(async () => {
     const finalFirstName = firstName || "Jane";
     const finalLastName = lastName || "Doe";
+    const finalGradeLevel = gradeLevel || "9th Grade";
     const finalCity = city || "Chicago";
     const finalUsState = usState || "Illinois";
-    const finalGradeLevel = gradeLevel || "9th Grade";
-    const finalGpa = gpa || "3.5";
 
     if (!firstName) setFirstName(finalFirstName);
     if (!lastName) setLastName(finalLastName);
+    if (!gradeLevel) setGradeLevel(finalGradeLevel);
     if (!city) setCity(finalCity);
     if (!usState) setUsState(finalUsState);
-    if (!gradeLevel) setGradeLevel(finalGradeLevel);
-    if (!gpa) setGpa(finalGpa);
 
     try {
       setIsLoading(true);
       await studentService.updateStudentGoldenPath(loggedInStudent!.id, {
         firstName: finalFirstName,
         lastName: finalLastName,
-        address: { city: finalCity, state: finalUsState, lat: 0, lon: 0 },
         gradeLevel: finalGradeLevel,
-        gpaValue: parseFloat(finalGpa) || null,
-        onboardingStage: 5,
-        onboardingState: "my-why",
+        address: { city: finalCity, state: finalUsState, lat: 0, lon: 0 },
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/home", { replace: true });
+      navigate("/student/onboarding/gpa", { replace: true });
     } catch (error) {
       console.error("Error saving basic info:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [firstName, lastName, city, usState, gradeLevel, gpa, loggedInStudent, queryClient, refetch, navigate]);
+  }, [firstName, lastName, gradeLevel, city, usState, loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(async () => {
     try {
@@ -107,11 +99,10 @@ const useBasicInfoStep = () => {
   return {
     firstName,
     lastName,
+    gradeLevel,
     city,
     usState,
     setUsState,
-    gradeLevel,
-    gpa,
     handleTextChange,
     handleContinue,
     handleBack,

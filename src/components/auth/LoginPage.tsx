@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
   const { currentAuthUser } = useAuth();
   React.useEffect(() => {
     if (currentAuthUser) {
-      navigate("/student/onboarding/basic-info", { replace: true });
+      navigate("/signup", { replace: true });
     }
   }, [currentAuthUser, navigate]);
 

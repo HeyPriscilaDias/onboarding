@@ -2,7 +2,9 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../components/auth/LoginPage";
 import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep";
+import PasswordStep from "../components/onboarding/PasswordStep";
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
+import GpaStep from "../components/onboarding/GpaStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
 import FeedbackStep from "../components/onboarding/FeedbackStep";
 import CareerVideoStep from "../components/onboarding/CareerVideoStep";
@@ -29,9 +31,11 @@ const AppRoutes: React.FC = () => {
       {/* Auth routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<EmailAndPasswordStep />} />
+      <Route path="/signup/password" element={<PasswordStep />} />
 
       {/* Lesson 1: Onboarding flow */}
       <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/gpa" element={<ProtectedRoute><GpaStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerVideoStep /></ProtectedRoute>} />
