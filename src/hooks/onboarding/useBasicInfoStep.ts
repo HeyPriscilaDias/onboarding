@@ -100,6 +100,7 @@ const useBasicInfoStep = () => {
     firstName,
     lastName,
     gradeLevel,
+    setGradeLevel,
     city,
     usState,
     setUsState,

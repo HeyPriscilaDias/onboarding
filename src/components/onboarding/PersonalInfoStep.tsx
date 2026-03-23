@@ -1,6 +1,6 @@
 import React, { memo } from "react";
-import { Stack, TextField, MenuItem, Autocomplete, AppBar, Toolbar } from "@mui/material";
-import { Box, WillowTypography, TextInput, TextButton, CircularProgress } from "@willow/ui-kit";
+import { TextField, Autocomplete, AppBar, Toolbar } from "@mui/material";
+import { Box, Stack, WillowTypography, TextInput, TextButton, CircularProgress, Select } from "@willow/ui-kit";
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
@@ -16,7 +16,7 @@ const DOT_BG_STYLE = {
 const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
 const BasicInfoStep: React.FC = () => {
-  const { firstName, lastName, gradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
+  const { firstName, lastName, gradeLevel, setGradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
   const { logout } = useLogout();
@@ -67,14 +67,13 @@ const BasicInfoStep: React.FC = () => {
             </Box>
           </Stack>
 
-          <Box>
-            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>Grade level</WillowTypography>
-            <TextField select variant="outlined" name="gradeLevel" fullWidth value={gradeLevel} onChange={handleTextChange} size="small">
-              {GRADE_LEVELS.map((grade) => (
-                <MenuItem key={grade} value={grade}>{grade}</MenuItem>
-              ))}
-            </TextField>
-          </Box>
+          <Select
+            label="Grade level"
+            fullWidth
+            value={gradeLevel}
+            onChange={(e) => setGradeLevel(e.target.value as string)}
+            options={GRADE_LEVELS.map((g) => ({ value: g, label: g }))}
+          />
 
           <Stack direction="row" spacing={2}>
             <Box sx={{ flex: 1 }}>
@@ -87,7 +86,21 @@ const BasicInfoStep: React.FC = () => {
                 value={usState || null}
                 onChange={(_event, newValue) => setUsState(newValue || "")}
                 renderInput={(params) => (
-                  <TextField {...params} variant="outlined" placeholder="Start typing to search..." size="small" />
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="Start typing to search..."
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "8px",
+                        fontFamily: "'Inter', sans-serif",
+                        "& .MuiOutlinedInput-input": { padding: "8px 12px" },
+                        "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+                        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main", borderWidth: "2px" },
+                      },
+                    }}
+                  />
                 )}
               />
             </Box>
