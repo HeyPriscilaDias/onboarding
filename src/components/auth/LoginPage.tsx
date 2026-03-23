@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack, AppBar, Toolbar, Link } from "@mui/material";
+import { Stack, Link } from "@mui/material";
 import { Box, Alert, WillowTypography, TextInput, TextButton, essentials, hexToRgba, ui, Slate } from "@willow/ui-kit";
 import { Eye, EyeOff } from "@willow/icons";
 import { useAuth } from "../../mock/MockAuthProvider";
@@ -44,14 +44,10 @@ const LoginPage: React.FC = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", bgcolor: hexToRgba(ui.mint, 0.25), px: 2, pt: `${toolbarOffset}px`, position: "relative" }}>
-      <Box>
-        <AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none", py: 2, border: "none" }}>
-          <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Box sx={{ height: 48, width: 48 }}>
-              <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow Logo" width="100%" height="100%" />
-            </Box>
-          </Toolbar>
-        </AppBar>
+      <Box sx={{ py: 2 }}>
+        <Box sx={{ height: 48, width: 48 }}>
+          <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow Logo" width="100%" height="100%" />
+        </Box>
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1 }}>

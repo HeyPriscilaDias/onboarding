@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, Link } from "@mui/material";
+import { Link } from "@mui/material";
 import { Box, CircularProgress, essentials, hexToRgba, TextButton, ui, WillowTypography, Slate } from "@willow/ui-kit";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import useLogout from "../../hooks/useLogout";
@@ -46,30 +46,17 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
         position: "relative",
       }}
     >
-      <Box>
-        <AppBar
-          position="static"
-          sx={{
-            bgcolor: "transparent",
-            boxShadow: "none",
-            py: 2,
-            border: "none",
-            "&:hover": { bgcolor: "transparent", border: "none" },
-          }}
-        >
-          <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Box sx={{ width: 116, height: "auto" }}>
-              <img src="/static/images/branding/willow-logotype.svg" alt="Willow" width="100%" />
-            </Box>
-            <Box>
-              {currentStep > 1 && (
-                <TextButton variant="ghost" onClick={logout}>
-                  Log Out
-                </TextButton>
-              )}
-            </Box>
-          </Toolbar>
-        </AppBar>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 2 }}>
+        <Box sx={{ width: 116, height: "auto" }}>
+          <img src="/static/images/branding/willow-logotype.svg" alt="Willow" width="100%" />
+        </Box>
+        <Box>
+          {currentStep > 1 && (
+            <TextButton variant="ghost" onClick={logout}>
+              Log Out
+            </TextButton>
+          )}
+        </Box>
       </Box>
 
       <Box
