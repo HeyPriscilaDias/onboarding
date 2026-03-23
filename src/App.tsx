@@ -37,7 +37,9 @@ const App: React.FC = () => {
             <MockAuthProvider>
               <PrototypeToolbar />
               <StickyNote />
-              <AppRoutes />
+              <div style={{ paddingTop: 44 }}>
+                <AppRoutes />
+              </div>
             </MockAuthProvider>
           </BrowserRouter>
         </ThemeProvider>

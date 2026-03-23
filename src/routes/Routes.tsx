@@ -13,7 +13,6 @@ import PersonalizationStep from "../components/onboarding/PersonalizationStep";
 import StudentHomeRouter from "../components/platform/StudentHomeRouter";
 import ExploreCareersPage from "../components/platform/ExploreCareersPage";
 import PersonalityTypePage from "../components/portfolio/PersonalityTypePage";
-import PrototypeHomepage from "../components/prototype/PrototypeHomepage";
 import { useAuth } from "../mock/MockAuthProvider";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,9 +26,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* Prototype testing layer */}
-      <Route path="/prototype" element={<PrototypeHomepage />} />
-
       {/* Auth routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<EmailAndPasswordStep />} />
@@ -51,9 +47,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/explore-careers" element={<ProtectedRoute><ExploreCareersPage /></ProtectedRoute>} />
       <Route path="/student/portfolio/personality-type" element={<ProtectedRoute><PersonalityTypePage /></ProtectedRoute>} />
 
-      {/* Default: go to prototype homepage */}
-      <Route path="/" element={<Navigate to="/prototype" replace />} />
-      <Route path="*" element={<Navigate to="/prototype" replace />} />
+      {/* Default */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
