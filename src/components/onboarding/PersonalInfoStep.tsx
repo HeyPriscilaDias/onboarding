@@ -46,7 +46,7 @@ const BasicInfoStep: React.FC = () => {
 
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, px: 2 }}>
-        <Box sx={{ width: "100%", maxWidth: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box sx={{ width: "100%", maxWidth: 380, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
         </Box>
