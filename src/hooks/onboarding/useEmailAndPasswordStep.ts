@@ -27,7 +27,7 @@ const useEmailAndPasswordStep = () => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      navigate("/signup/password", { replace: true });
+      navigate("/student/onboarding/password", { replace: true });
     } finally {
       setIsLoading(false);
     }

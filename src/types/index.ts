@@ -31,7 +31,7 @@ export enum FRLStatus {
 }
 
 export enum PageRoute {
-  LOGIN = "/login",
+  LOGIN = "/student/onboarding/signup",
   STUDENT_HOME = "/student/home",
   STUDENT_SIGNUP = "/student-signup",
 }

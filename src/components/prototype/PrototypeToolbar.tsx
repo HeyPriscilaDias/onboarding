@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   journeyMomentAtom,
@@ -12,7 +12,6 @@ import {
 
 const PrototypeToolbar: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [, setJourneyMoment] = useRecoilState(journeyMomentAtom);
   const [, setRecStage] = useRecoilState(recommendationStageAtom);
   const [, setPrototypeActive] = useRecoilState(prototypeActiveAtom);
@@ -24,9 +23,7 @@ const PrototypeToolbar: React.FC = () => {
     setJourneyMoment(null);
     setRecStage("interest-only");
     setPrototypeActive(false);
-    if (location.pathname !== "/prototype") {
-      navigate("/prototype");
-    }
+    navigate("/student/onboarding/signup");
   };
 
   return (

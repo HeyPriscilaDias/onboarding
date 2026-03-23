@@ -27,7 +27,7 @@ const usePasswordStep = () => {
   }, [isLoading, createEmailUser, emailSignIn, navigate]);
 
   const handleBack = useCallback(() => {
-    navigate("/signup", { replace: true });
+    navigate("/student/onboarding/signup", { replace: true });
   }, [navigate]);
 
   return { isLoading, handleContinue, handleBack };

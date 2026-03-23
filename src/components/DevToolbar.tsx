@@ -1,46 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentStudentData } from "../hooks/useCurrentStudent";
-import { studentService } from "../mock/mockServices";
 import { createEmptyStudent } from "../mock/mockData";
-import { saveStudentData, getStudentData } from "../mock/MockAuthProvider";
-import { OnboardingState } from "../types";
-
-const STEPS: { label: string; state: OnboardingState; stage: number; route: string }[] = [
-  { label: "Basic Info", state: "basic-info", stage: 4, route: "/student/onboarding/basic-info" },
-  { label: "My Why", state: "my-why", stage: 5, route: "/student/onboarding/my-why" },
-  { label: "Feedback", state: "feedback", stage: 6, route: "/student/onboarding/feedback" },
-  { label: "Personalization", state: "personalization", stage: 8, route: "/student/onboarding/personalization" },
-  { label: "Career Interests", state: "career-interests", stage: 9, route: "/student/onboarding/career-interests" },
-  { label: "Quiz (Skip)", state: "quiz-start", stage: 10, route: "/student/onboarding/quiz-placeholder" },
-  { label: "Complete", state: "complete", stage: 10, route: "/student/home" },
-];
+import { saveStudentData } from "../mock/MockAuthProvider";
 
 const DevToolbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { student } = useCurrentStudentData();
 
-  const jumpToStep = async (step: typeof STEPS[number]) => {
-    if (!student?.id) return;
-    await studentService.updateStudentGoldenPath(student.id, {
-      onboardingState: step.state,
-      onboardingStage: step.stage,
-    });
-    await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-    navigate(step.route, { replace: true });
-  };
-
-  const resetOnboarding = async () => {
+  const resetOnboarding = () => {
     if (!student?.id) return;
     const fresh = createEmptyStudent(student.email);
     fresh.id = student.id;
     fresh.createdAt = student.createdAt;
     saveStudentData(student.id, fresh);
-    await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
-    navigate("/student/onboarding/basic-info", { replace: true });
+    window.location.replace("/student/onboarding/signup");
   };
 
   const getSavedAccounts = (): { email: string; studentId: string }[] => {
@@ -111,33 +84,6 @@ const DevToolbar: React.FC = () => {
               <div><span style={{ color: "#f90" }}>Not logged in</span></div>
             )}
           </div>
-
-          {/* Jump to Step - only when logged in */}
-          {student && (
-            <div style={{ marginBottom: 8 }}>
-              <div style={{ color: "#888", marginBottom: 4 }}>Jump to Step:</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {STEPS.map((step, i) => (
-                  <button
-                    key={i}
-                    onClick={() => jumpToStep(step)}
-                    style={{
-                      background: student.onboardingState === step.state && student.onboardingStage === step.stage ? "#1a3a3a" : "#222",
-                      color: "#ddd",
-                      border: "1px solid #444",
-                      borderRadius: 3,
-                      padding: "3px 6px",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      fontSize: 10,
-                    }}
-                  >
-                    {step.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Reset - only when logged in */}
           {student && (

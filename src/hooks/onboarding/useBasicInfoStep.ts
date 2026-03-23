@@ -90,7 +90,7 @@ const useBasicInfoStep = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/signup", { replace: true });
+      navigate("/student/onboarding/signup", { replace: true });
     } catch (error) {
       console.error("Error navigating back:", error);
     }

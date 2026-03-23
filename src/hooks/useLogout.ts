@@ -11,7 +11,7 @@ const useLogout = () => {
   const logout = useCallback(() => {
     authLogout();
     queryClient.clear();
-    navigate("/login");
+    navigate("/student/onboarding/signup");
   }, [authLogout, queryClient, navigate]);
 
   return { logout };

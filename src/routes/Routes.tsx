@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "../components/auth/LoginPage";
 import EmailAndPasswordStep from "../components/onboarding/EmailAndPasswordStep";
 import PasswordStep from "../components/onboarding/PasswordStep";
 import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
@@ -21,7 +20,7 @@ import { useAuth } from "../mock/MockAuthProvider";
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentAuthUser } = useAuth();
   if (!currentAuthUser) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/student/onboarding/signup" replace />;
   }
   return <>{children}</>;
 };
@@ -30,9 +29,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Auth routes */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<EmailAndPasswordStep />} />
-      <Route path="/signup/password" element={<PasswordStep />} />
+      <Route path="/student/onboarding/signup" element={<EmailAndPasswordStep />} />
+      <Route path="/student/onboarding/password" element={<PasswordStep />} />
 
       {/* Lesson 1: Onboarding flow */}
       <Route path="/student/onboarding/basic-info" element={<ProtectedRoute><PersonalInfoStep /></ProtectedRoute>} />
@@ -54,8 +52,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/portfolio/personality-type" element={<ProtectedRoute><PersonalityTypePage /></ProtectedRoute>} />
 
       {/* Default */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/student/onboarding/signup" replace />} />
+      <Route path="*" element={<Navigate to="/student/onboarding/signup" replace />} />
     </Routes>
   );
 };

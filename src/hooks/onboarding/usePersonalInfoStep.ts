@@ -209,7 +209,7 @@ const usePersonalInfoStep = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/signup", { replace: true });
+      navigate("/student/onboarding/signup", { replace: true });
     } catch (error) {
       console.error("Error updating onboarding stage:", error);
     }
