@@ -138,28 +138,13 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
             sx={{
               display: "flex",
               flexDirection: mobile ? "column" : "row",
-              justifyContent: mobile ? "center" : "space-between",
+              justifyContent: "flex-end",
               alignItems: "center",
               gap: mobile ? 2 : 8,
               width: "100%",
               maxWidth: 700,
             }}
           >
-            <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start", flexWrap: "nowrap", ...(!mobile && { flex: 1 }) }}>
-              {[1, 2, 3, 4, 5, 6].map((step) => (
-                <Box
-                  key={step}
-                  sx={{
-                    ...(mobile ? { width: 48, flexShrink: 0 } : { flex: 1 }),
-                    height: 8,
-                    borderRadius: "4px",
-                    bgcolor: step <= currentStep
-                      ? (fullBleed ? essentials.white : Slate[700])
-                      : hexToRgba(fullBleed ? essentials.white : Slate[700], 0.15),
-                  }}
-                />
-              ))}
-            </Box>
             {!mobile ? (
               <Box sx={{ display: "flex", gap: 1, flexShrink: 0, width: 200, justifyContent: "flex-end" }}>
                 {currentStep > 1 && (
