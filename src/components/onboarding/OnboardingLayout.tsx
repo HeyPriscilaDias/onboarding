@@ -93,7 +93,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
               borderRadius: "12px",
               boxShadow: "0px 2px 8px -1px rgba(16, 24, 40, 0.08), 0px 2px 8px -1px rgba(16, 24, 40, 0.08)",
               width: "100%",
-              maxWidth: 700,
+              maxWidth: 500,
               maxHeight: "80vh",
               display: "flex",
               flexDirection: "column",
@@ -145,7 +145,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
               alignItems: "center",
               gap: mobile ? 2 : 8,
               width: "100%",
-              maxWidth: 700,
+              maxWidth: 500,
             }}
           >
             {!mobile ? (

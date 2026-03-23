@@ -15,7 +15,8 @@ const GpaStep: React.FC = () => {
 
   return (
     <OnboardingLayout currentStep={2} fullBleed bgStyle={DOT_BG_STYLE}>
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, py: 6 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, py: 6, px: 2 }}>
+        <Box sx={{ width: "100%", maxWidth: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
         </Box>
@@ -27,7 +28,7 @@ const GpaStep: React.FC = () => {
           This is optional — it helps us tailor scholarship and program recommendations for you.
         </WillowTypography>
 
-        <Stack spacing={2} sx={{ width: "100%", maxWidth: 360 }}>
+        <Stack spacing={2} sx={{ width: "100%" }}>
           <TextInput label="GPA (optional)" name="gpa" value={gpa} onChange={handleTextChange} placeholder="e.g. 3.5" />
           <TextButton variant="primary" onClick={handleContinue} disabled={isLoading} fullWidth sx={{ mt: 1 }}>
             {isLoading ? <CircularProgress size={20} color="inherit" /> : "Finish setup"}
@@ -36,6 +37,7 @@ const GpaStep: React.FC = () => {
             Back
           </TextButton>
         </Stack>
+        </Box>
       </Box>
     </OnboardingLayout>
   );

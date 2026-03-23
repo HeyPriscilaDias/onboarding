@@ -35,6 +35,7 @@ const PasswordStep: React.FC = () => {
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1, px: 2 }}>
+        <Box sx={{ width: "100%", maxWidth: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
         </Box>
@@ -46,7 +47,7 @@ const PasswordStep: React.FC = () => {
           You'll use this to sign in to your account.
         </WillowTypography>
 
-        <Stack spacing={1.5} sx={{ width: "100%", maxWidth: 360 }}>
+        <Stack spacing={1.5} sx={{ width: "100%" }}>
           <TextInput label="Password" type="password" value="test123" disabled />
           <TextInput label="Confirm password" type="password" value="test123" disabled />
 
@@ -57,6 +58,7 @@ const PasswordStep: React.FC = () => {
             Back
           </TextButton>
         </Stack>
+        </Box>
       </Box>
     </Box>
   );

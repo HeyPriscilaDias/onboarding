@@ -73,7 +73,7 @@ const useBasicInfoStep = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/gpa", { replace: true });
+      navigate("/student/onboarding/school-info", { replace: true });
     } catch (error) {
       console.error("Error saving basic info:", error);
     } finally {

@@ -1,10 +1,9 @@
 import React, { memo } from "react";
-import { Stack, TextField, MenuItem, Autocomplete, AppBar, Toolbar } from "@mui/material";
+import { Stack, TextField, MenuItem, AppBar, Toolbar } from "@mui/material";
 import { Box, WillowTypography, TextInput, TextButton, CircularProgress } from "@willow/ui-kit";
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useSchoolContextStep from "../../hooks/onboarding/useSchoolContextStep";
-import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
 import useLogout from "../../hooks/useLogout";
 
 const DOT_BG_STYLE = {
@@ -16,7 +15,7 @@ const DOT_BG_STYLE = {
 const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
 const SchoolContextStep: React.FC = () => {
-  const { gradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useSchoolContextStep();
+  const { gradeLevel, handleTextChange, handleContinue, handleBack, isLoading } = useSchoolContextStep();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
   const { logout } = useLogout();
@@ -46,6 +45,7 @@ const SchoolContextStep: React.FC = () => {
 
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, px: 2 }}>
+        <Box sx={{ width: "100%", maxWidth: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
         </Box>
@@ -57,7 +57,7 @@ const SchoolContextStep: React.FC = () => {
           This helps us find the best opportunities near you.
         </WillowTypography>
 
-        <Stack spacing={2} sx={{ width: "100%", maxWidth: 360 }}>
+        <Stack spacing={2} sx={{ width: "100%" }}>
           <Box>
             <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>Grade level</WillowTypography>
             <TextField select variant="outlined" name="gradeLevel" fullWidth value={gradeLevel} onChange={handleTextChange} size="small">
@@ -67,20 +67,6 @@ const SchoolContextStep: React.FC = () => {
             </TextField>
           </Box>
 
-          <TextInput label="City" name="city" value={city} onChange={handleTextChange} />
-
-          <Box>
-            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
-            <Autocomplete
-              options={US_STATES}
-              value={usState || null}
-              onChange={(_event, newValue) => setUsState(newValue || "")}
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" placeholder="Start typing to search..." size="small" />
-              )}
-            />
-          </Box>
-
           <TextButton variant="primary" onClick={handleContinue} disabled={isLoading} fullWidth sx={{ mt: 1 }}>
             {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
           </TextButton>
@@ -88,6 +74,7 @@ const SchoolContextStep: React.FC = () => {
             Back
           </TextButton>
         </Stack>
+        </Box>
       </Box>
     </Box>
   );

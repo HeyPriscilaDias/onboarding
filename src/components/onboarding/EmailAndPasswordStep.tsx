@@ -52,6 +52,7 @@ const EmailAndPasswordStep: React.FC = () => {
 
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1, px: 2 }}>
+        <Box sx={{ width: "100%", maxWidth: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* Icon */}
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
@@ -66,7 +67,7 @@ const EmailAndPasswordStep: React.FC = () => {
         </WillowTypography>
 
         {/* Form */}
-        <Stack spacing={1.5} sx={{ width: "100%", maxWidth: 360 }}>
+        <Stack spacing={1.5} sx={{ width: "100%" }}>
           <ButtonBase
             sx={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5,
@@ -105,6 +106,7 @@ const EmailAndPasswordStep: React.FC = () => {
             {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}
           </TextButton>
         </Stack>
+        </Box>
       </Box>
     </Box>
   );
