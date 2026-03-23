@@ -33,8 +33,8 @@ const EmailAndPasswordStep: React.FC = () => {
         flexDirection: "column",
         minHeight: "100vh",
         backgroundColor: "#F5F5F6",
-        backgroundImage: "radial-gradient(circle, #C9C9CC 1px, transparent 1px)",
-        backgroundSize: "22px 22px",
+        backgroundImage: "radial-gradient(circle, #D4D4D6 1px, transparent 1px)",
+        backgroundSize: "20px 20px",
         pt: `${toolbarOffset}px`,
         position: "relative",
       }}
@@ -71,7 +71,7 @@ const EmailAndPasswordStep: React.FC = () => {
             sx={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5,
               border: "1px solid #E0E0E0", borderRadius: "8px", py: 1.5, px: 2,
-              bgcolor: "white", width: "100%", "&:hover": { bgcolor: "#FAFAFA" },
+              bgcolor: "#FFFFFF", width: "100%", "&:hover": { bgcolor: "#FAFAFA" },
             }}
           >
             <GoogleIcon />
@@ -82,7 +82,7 @@ const EmailAndPasswordStep: React.FC = () => {
             sx={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5,
               border: "1px solid #E0E0E0", borderRadius: "8px", py: 1.5, px: 2,
-              bgcolor: "white", width: "100%", "&:hover": { bgcolor: "#FAFAFA" },
+              bgcolor: "#FFFFFF", width: "100%", "&:hover": { bgcolor: "#FAFAFA" },
             }}
           >
             <CleverIcon />
@@ -93,7 +93,7 @@ const EmailAndPasswordStep: React.FC = () => {
             <WillowTypography variant="body-sm" color="secondary">or</WillowTypography>
           </Divider>
 
-          <TextInput label="Email" value="test@prototype.com" disabled />
+          <TextInput label="Your school email" placeholder="name@yourschool.com" disabled />
 
           <TextButton
             variant="primary"

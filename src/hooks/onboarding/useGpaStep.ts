@@ -30,7 +30,7 @@ const useGpaStep = () => {
       await studentService.updateStudentGoldenPath(loggedInStudent!.id, {
         gpaValue: parseFloat(gpa) || null,
         onboardingStage: 5,
-        onboardingState: "my-why",
+        onboardingState: "account-setup-complete",
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
@@ -43,7 +43,7 @@ const useGpaStep = () => {
   }, [gpa, loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(() => {
-    navigate("/student/onboarding/school-context", { replace: true });
+    navigate("/student/onboarding/school-info", { replace: true });
   }, [navigate]);
 
   return { gpa, handleTextChange, handleContinue, handleBack, isLoading };
