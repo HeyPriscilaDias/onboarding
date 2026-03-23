@@ -20,30 +20,30 @@ const OnboardingChecklist: React.FC = () => {
 
   const items: ChecklistItem[] = [
     {
-      label: "Account setup",
+      label: "Set up your account",
       icon: <Settings size={20} color={essentials.white} />,
       done: true,
     },
     {
-      label: "Personality Quiz",
+      label: "Take the Personality Quiz",
       icon: <PersonalityType size={20} color={student?.quizComplete ? essentials.white : Slate[500]} />,
       done: !!student?.quizComplete,
       onClick: () => navigate("/student/onboarding/personality-quiz/start"),
     },
     {
-      label: "Career Interests",
+      label: "Set up your career interests",
       icon: <Careers size={20} color={(student?.careerInterestTags?.length ?? 0) > 0 ? essentials.white : Slate[500]} />,
       done: (student?.careerInterestTags?.length ?? 0) > 0,
       onClick: () => navigate("/student/onboarding/career-interests"),
     },
     {
-      label: "Survey",
+      label: "Complete the Lorem Ipsum survey",
       icon: <BookOpen size={20} color={!!student?.myWhy && (student?.personalFeedback?.length ?? 0) > 0 ? essentials.white : Slate[500]} />,
       done: !!student?.myWhy && (student?.personalFeedback?.length ?? 0) > 0,
       onClick: () => navigate("/student/onboarding/my-why"),
     },
     {
-      label: "AI Use Agreement",
+      label: "Complete the AI User Agreement",
       icon: <Award size={20} color={Slate[500]} />,
       done: false,
     },
