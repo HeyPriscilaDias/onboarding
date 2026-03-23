@@ -21,9 +21,11 @@ type OnboardingLayoutProps = {
   fullBleed?: boolean;
   /** Override the outer background color (useful for immersive dark modes) */
   bgOverride?: string;
+  /** Override the full background style (e.g. dot patterns, gradients) */
+  bgStyle?: Record<string, string>;
 };
 
-const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false, continueLabel = "Continue", fullBleed = false, bgOverride }: OnboardingLayoutProps) => {
+const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, isLoading = false, disableContinue = false, continueLabel = "Continue", fullBleed = false, bgOverride, bgStyle }: OnboardingLayoutProps) => {
   const { mobile } = useWindowDimensions();
   const { logout } = useLogout();
   const navigate = useNavigate();
@@ -37,7 +39,8 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        bgcolor: bgOverride || hexToRgba(ui.mint, 0.25),
+        bgcolor: bgStyle ? undefined : (bgOverride || hexToRgba(ui.mint, 0.25)),
+        ...(bgStyle || {}),
         px: 2,
         pt: `${toolbarOffset}px`,
         position: "relative",
@@ -55,8 +58,8 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           }}
         >
           <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Box sx={{ height: 48, width: 48 }}>
-              <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow Logo" width="100%" height="100%" />
+            <Box sx={{ width: 116, height: "auto" }}>
+              <img src="/static/images/branding/willow-logotype.svg" alt="Willow" width="100%" />
             </Box>
             <Box>
               {currentStep > 1 && (
@@ -147,7 +150,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
           >
             {!mobile ? (
               <Box sx={{ display: "flex", gap: 1, flexShrink: 0, width: 200, justifyContent: "flex-end" }}>
-                {currentStep > 1 && (
+                {handleBack && (
                   <TextButton variant={fullBleed ? "on-dark" : "secondary"} onClick={handleBack} sx={{ flex: 1 }}>
                     Back
                   </TextButton>
@@ -165,7 +168,7 @@ const OnboardingLayout = ({ currentStep, children, handleContinue, handleBack, i
                     {isLoading ? <CircularProgress size={20} color="inherit" /> : continueLabel}
                   </TextButton>
                 )}
-                {currentStep > 1 && (
+                {handleBack && (
                   <TextButton variant="secondary" onClick={handleBack} fullWidth sx={{ mt: 2 }}>
                     Back
                   </TextButton>
