@@ -5,12 +5,8 @@ import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
 import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
+import AccountSetupHeader, { ACCOUNT_SETUP_BG } from "./AccountSetupHeader";
 
-const DOT_BG_STYLE = {
-  backgroundColor: "#F5F5F6",
-  backgroundImage: "radial-gradient(circle, #C9C9CC 1px, transparent 1px)",
-  backgroundSize: "22px 22px",
-};
 
 const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
@@ -25,11 +21,13 @@ const BasicInfoStep: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        ...DOT_BG_STYLE,
+        ...ACCOUNT_SETUP_BG,
         pt: `${toolbarOffset}px`,
         position: "relative",
       }}
     >
+      <AccountSetupHeader />
+
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, px: 2 }}>
         <Box sx={{ width: "100%", maxWidth: 380, display: "flex", flexDirection: "column", alignItems: "center" }}>

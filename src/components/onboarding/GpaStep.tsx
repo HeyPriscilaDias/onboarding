@@ -1,21 +1,31 @@
 import React, { memo } from "react";
 import { Stack } from "@mui/material";
 import { Box, WillowTypography, TextInput, TextButton, CircularProgress } from "@willow/ui-kit";
-import OnboardingLayout from "./OnboardingLayout";
+import { useRecoilValue } from "recoil";
+import { prototypeActiveAtom } from "../../state/prototypeAtoms";
+import AccountSetupHeader, { ACCOUNT_SETUP_BG } from "./AccountSetupHeader";
 import useGpaStep from "../../hooks/onboarding/useGpaStep";
 
-const DOT_BG_STYLE = {
-  backgroundColor: "#F5F5F6",
-  backgroundImage: "radial-gradient(circle, #C9C9CC 1px, transparent 1px)",
-  backgroundSize: "22px 22px",
-};
 
 const GpaStep: React.FC = () => {
   const { gpa, handleTextChange, handleContinue, handleBack, isLoading } = useGpaStep();
+  const prototypeActive = useRecoilValue(prototypeActiveAtom);
+  const toolbarOffset = prototypeActive ? 44 : 0;
 
   return (
-    <OnboardingLayout currentStep={2} fullBleed bgStyle={DOT_BG_STYLE}>
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, py: 6, px: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        ...ACCOUNT_SETUP_BG,
+        pt: `${toolbarOffset}px`,
+        position: "relative",
+      }}
+    >
+      <AccountSetupHeader />
+
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, px: 2 }}>
         <Box sx={{ width: "100%", maxWidth: 380, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Box sx={{ mb: 2.5, width: 56, height: 56 }}>
           <img src="/static/images/branding/willow-bare-icon.svg" alt="Willow" width="100%" height="100%" />
@@ -39,7 +49,7 @@ const GpaStep: React.FC = () => {
         </Stack>
         </Box>
       </Box>
-    </OnboardingLayout>
+    </Box>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { memo } from "react";
-import { Stack, AppBar, Toolbar, Divider, ButtonBase } from "@mui/material";
+import { Stack, Divider, ButtonBase } from "@mui/material";
 import { Box, WillowTypography, TextInput, TextButton, CircularProgress } from "@willow/ui-kit";
+import AccountSetupHeader, { ACCOUNT_SETUP_BG } from "./AccountSetupHeader";
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useEmailAndPasswordStep from "../../hooks/onboarding/useEmailAndPasswordStep";
@@ -32,23 +33,12 @@ const EmailAndPasswordStep: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        backgroundColor: "#F5F5F6",
-        backgroundImage: "radial-gradient(circle, #D4D4D6 1px, transparent 1px)",
-        backgroundSize: "20px 20px",
+        ...ACCOUNT_SETUP_BG,
         pt: `${toolbarOffset}px`,
         position: "relative",
       }}
     >
-      {/* Header - absolutely positioned so content centres in the full viewport */}
-      <Box sx={{ position: "absolute", top: `${toolbarOffset}px`, left: 0, right: 0, px: 2, zIndex: 1 }}>
-        <AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none", py: 2, border: "none" }}>
-          <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Box sx={{ width: 116, height: "auto" }}>
-              <img src="/static/images/branding/willow-logotype.svg" alt="Willow" width="100%" />
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <AccountSetupHeader />
 
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1, px: 2 }}>
