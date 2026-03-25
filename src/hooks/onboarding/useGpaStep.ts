@@ -43,7 +43,7 @@ const useGpaStep = () => {
   }, [gpa, loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(() => {
-    navigate("/student/onboarding/school-info", { replace: true });
+    navigate("/student/onboarding/basic-info", { replace: true });
   }, [navigate]);
 
   return { gpa, handleTextChange, handleContinue, handleBack, isLoading };

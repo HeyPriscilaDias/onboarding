@@ -152,7 +152,7 @@ const usePersonalInfoStep = () => {
 
   const handleContinue = useCallback(async () => {
     // Prototype mode: fill mock data for missing fields
-    const mockFirstName = firstName || "Jane";
+    const mockFirstName = firstName || "Jessica";
     const mockLastName = lastName || "Doe";
     const mockBirthday = birthday || new Date(2010, 0, 15).toISOString();
     const mockAddress = address.address

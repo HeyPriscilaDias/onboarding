@@ -51,7 +51,7 @@ const useBasicInfoStep = () => {
   }, []);
 
   const handleContinue = useCallback(async () => {
-    const finalFirstName = firstName || "Jane";
+    const finalFirstName = firstName || "Jessica";
     const finalLastName = lastName || "Doe";
     const finalGradeLevel = gradeLevel || "9th Grade";
     const finalCity = city || "Chicago";
@@ -73,7 +73,7 @@ const useBasicInfoStep = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/school-info", { replace: true });
+      navigate("/student/onboarding/gpa", { replace: true });
     } catch (error) {
       console.error("Error saving basic info:", error);
     } finally {
@@ -90,7 +90,7 @@ const useBasicInfoStep = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/signup", { replace: true });
+      navigate("/student/onboarding/password", { replace: true });
     } catch (error) {
       console.error("Error navigating back:", error);
     }
