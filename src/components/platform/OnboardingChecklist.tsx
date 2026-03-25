@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, WillowTypography } from "@willow/ui-kit";
 import { neutral, essentials, Slate } from "@willow/ui-kit";
-import { PersonalityType, Careers, BookOpen, Award, Settings } from "@willow/icons";
+import { PersonalityType, Careers, BookOpen, Award, Settings, CheckCircle, CircleDashed } from "@willow/icons";
 import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
 
 const OnboardingChecklist: React.FC = () => {
@@ -101,40 +101,9 @@ const OnboardingChecklist: React.FC = () => {
               >
                 {/* Status indicator */}
                 {item.done ? (
-                  <Box
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      bgcolor: "#10b981",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                      <path d="M2.5 7L5.5 10L11.5 4" stroke={essentials.white} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Box>
+                  <CheckCircle size={24} color="#10b981" />
                 ) : (
-                  <Box
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      border: `2px solid ${neutral[300]}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: neutral[400],
-                    }}
-                  >
-                    {i + 1}
-                  </Box>
+                  <CircleDashed size={24} color={neutral[300]} />
                 )}
 
                 <WillowTypography

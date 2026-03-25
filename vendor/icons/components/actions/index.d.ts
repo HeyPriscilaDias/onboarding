@@ -26,6 +26,7 @@ export { default as Errands } from './Errands.js';
 export { default as Edit } from './Edit.js';
 export { default as Download } from './Download.js';
 export { default as Copy } from './Copy.js';
+export { default as CircleDashed } from './CircleDashed.js';
 export { default as Circle } from './Circle.js';
 export { default as CheckCircle } from './CheckCircle.js';
 export { default as Check } from './Check.js';
