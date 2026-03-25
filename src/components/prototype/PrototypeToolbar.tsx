@@ -9,6 +9,7 @@ import {
   stickyNotesVisibleAtom,
   addNoteRequestAtom,
 } from "../../state/prototypeAtoms";
+import { aiUseAgreementCompleteAtom } from "../../state/onboardingAtoms";
 
 const PrototypeToolbar: React.FC = () => {
   const navigate = useNavigate();
@@ -18,11 +19,13 @@ const PrototypeToolbar: React.FC = () => {
   const [miniplayerOpen, setMiniplayerOpen] = useRecoilState(miniplayerOpenAtom);
   const [stickyNotesVisible, setStickyNotesVisible] = useRecoilState(stickyNotesVisibleAtom);
   const setAddNoteRequest = useSetRecoilState(addNoteRequestAtom);
+  const setAiAgreementComplete = useSetRecoilState(aiUseAgreementCompleteAtom);
 
   const handleReset = () => {
     setJourneyMoment(null);
     setRecStage("interest-only");
     setPrototypeActive(false);
+    setAiAgreementComplete(false);
     navigate("/student/onboarding/signup");
   };
 
