@@ -10,6 +10,9 @@ import {
   addNoteRequestAtom,
 } from "../../state/prototypeAtoms";
 import { aiUseAgreementCompleteAtom } from "../../state/onboardingAtoms";
+import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
+import { createEmptyStudent } from "../../mock/mockData";
+import { saveStudentData } from "../../mock/MockAuthProvider";
 
 const PrototypeToolbar: React.FC = () => {
   const navigate = useNavigate();
@@ -20,13 +23,23 @@ const PrototypeToolbar: React.FC = () => {
   const [stickyNotesVisible, setStickyNotesVisible] = useRecoilState(stickyNotesVisibleAtom);
   const setAddNoteRequest = useSetRecoilState(addNoteRequestAtom);
   const setAiAgreementComplete = useSetRecoilState(aiUseAgreementCompleteAtom);
+  const { student } = useCurrentStudentData();
 
   const handleReset = () => {
     setJourneyMoment(null);
     setRecStage("interest-only");
     setPrototypeActive(false);
     setAiAgreementComplete(false);
-    navigate("/student/onboarding/signup");
+
+    // Reset mock student data (quiz, career interests, survey, etc.)
+    if (student?.id) {
+      const fresh = createEmptyStudent(student.email);
+      fresh.id = student.id;
+      fresh.createdAt = student.createdAt;
+      saveStudentData(student.id, fresh);
+    }
+
+    window.location.replace("/student/onboarding/signup");
   };
 
   return (
