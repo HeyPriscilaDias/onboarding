@@ -1,11 +1,10 @@
 import React, { memo } from "react";
-import { TextField, Autocomplete, AppBar, Toolbar } from "@mui/material";
+import { TextField, Autocomplete } from "@mui/material";
 import { Box, Stack, WillowTypography, TextInput, TextButton, CircularProgress, Select } from "@willow/ui-kit";
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
 import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
-import useLogout from "../../hooks/useLogout";
 
 const DOT_BG_STYLE = {
   backgroundColor: "#F5F5F6",
@@ -19,7 +18,6 @@ const BasicInfoStep: React.FC = () => {
   const { firstName, lastName, gradeLevel, setGradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
-  const { logout } = useLogout();
 
   return (
     <Box
@@ -32,18 +30,6 @@ const BasicInfoStep: React.FC = () => {
         position: "relative",
       }}
     >
-      {/* Header - absolutely positioned so content centres in the full viewport */}
-      <Box sx={{ position: "absolute", top: `${toolbarOffset}px`, left: 0, right: 0, px: 2, zIndex: 1 }}>
-        <AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none", py: 2, border: "none" }}>
-          <Toolbar sx={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-            <Box sx={{ width: 116, height: "auto" }}>
-              <img src="/static/images/branding/willow-logotype.svg" alt="Willow" width="100%" />
-            </Box>
-            <TextButton variant="ghost" onClick={logout}>Log Out</TextButton>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
       {/* Content */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", flex: 1, px: 2 }}>
         <Box sx={{ width: "100%", maxWidth: 380, display: "flex", flexDirection: "column", alignItems: "center" }}>
