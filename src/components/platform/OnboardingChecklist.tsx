@@ -56,17 +56,10 @@ const OnboardingChecklist: React.FC = () => {
   const firstIncomplete = items.findIndex((i) => !i.done);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(firstIncomplete >= 0 ? firstIncomplete : null);
 
+  const progressPercent = (completedCount / items.length) * 100;
+
   return (
     <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2.5 }}>
-        <WillowTypography variant="heading" color="primary">
-          Get started
-        </WillowTypography>
-        <WillowTypography variant="body" sx={{ color: neutral[500] }}>
-          {completedCount} of {items.length} complete
-        </WillowTypography>
-      </Box>
-
       <Box
         sx={{
           borderRadius: "12px",
@@ -74,6 +67,39 @@ const OnboardingChecklist: React.FC = () => {
           overflow: "hidden",
         }}
       >
+        <Box sx={{ px: 2.5, pt: 2.5, pb: 2 }}>
+          <WillowTypography variant="heading" color="primary">
+            Get started
+          </WillowTypography>
+          <WillowTypography variant="body" sx={{ color: neutral[500], mt: 0.5 }}>
+            Great job setting up your account! Let's finish getting you ready.
+          </WillowTypography>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mt: 2 }}>
+            <Box
+              sx={{
+                flex: 1,
+                height: 6,
+                borderRadius: 3,
+                backgroundColor: neutral[200],
+                overflow: "hidden",
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${progressPercent}%`,
+                  height: "100%",
+                  borderRadius: 3,
+                  backgroundColor: Slate[500],
+                  transition: "width 0.4s ease",
+                }}
+              />
+            </Box>
+            <WillowTypography variant="caption" sx={{ color: neutral[500], whiteSpace: "nowrap" }}>
+              {completedCount} of {items.length}
+            </WillowTypography>
+          </Box>
+        </Box>
         {items.map((item, i) => {
           const isExpanded = expandedIndex === i;
           return (
@@ -139,7 +165,14 @@ const OnboardingChecklist: React.FC = () => {
               </Box>
 
               {/* Expanded content */}
-              {isExpanded && (
+              <Box
+                sx={{
+                  maxHeight: isExpanded ? 200 : 0,
+                  opacity: isExpanded ? 1 : 0,
+                  overflow: "hidden",
+                  transition: "max-height 0.3s ease, opacity 0.25s ease",
+                }}
+              >
                 <Box
                   sx={{
                     px: 2.5,
@@ -178,7 +211,7 @@ const OnboardingChecklist: React.FC = () => {
                     </Box>
                   )}
                 </Box>
-              )}
+              </Box>
             </Box>
           );
         })}
