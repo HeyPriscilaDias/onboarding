@@ -1,8 +1,6 @@
 import React from "react";
 import { Box, WillowTypography } from "@willow/ui-kit";
 import { neutral, essentials } from "@willow/ui-kit";
-import { useRecoilValue } from "recoil";
-import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import MockSidebar from "./MockSidebar";
 import MockAlmaSidebar from "./MockAlmaSidebar";
 
@@ -13,17 +11,12 @@ type Props = {
 };
 
 const PlatformLayout: React.FC<Props> = ({ children, activePage = "home", breadcrumb = "Home" }) => {
-  const prototypeActive = useRecoilValue(prototypeActiveAtom);
-  const toolbarOffset = prototypeActive ? 44 : 0;
-
   return (
     <Box
       sx={{
         display: "flex",
-        height: `calc(100vh - ${toolbarOffset}px)`,
-        pt: `${toolbarOffset}px`,
         position: "fixed",
-        top: 0,
+        top: 44,
         left: 0,
         right: 0,
         bottom: 0,
