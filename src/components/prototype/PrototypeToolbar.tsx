@@ -39,7 +39,8 @@ const PrototypeToolbar: React.FC = () => {
       saveStudentData(student.id, fresh);
     }
 
-    window.location.replace("/student/onboarding/signup");
+    navigate("/student/onboarding/signup");
+    window.location.reload();
   };
 
   return (
