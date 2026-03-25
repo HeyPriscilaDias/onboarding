@@ -1,13 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, WillowTypography } from "@willow/ui-kit";
+import { Box, WillowTypography, Modal, Button } from "@willow/ui-kit";
 import { neutral, essentials, Slate } from "@willow/ui-kit";
-import { PersonalityType, Careers, BookOpen, Award, Settings, CheckCircle, CircleDashed } from "@willow/icons";
+import { PersonalityType, Careers, BookOpen, Award, Settings, CheckCircle, CircleDashed, Eye, Target, AlertTriangle } from "@willow/icons";
 import { useCurrentStudentData } from "../../hooks/useCurrentStudent";
+import { useRecoilState } from "recoil";
+import { aiUseAgreementCompleteAtom } from "../../state/onboardingAtoms";
+
+const agreementPoints = [
+  {
+    icon: <Eye size={20} color={Slate[600]} />,
+    title: "Your counselor can see your chats",
+    body: "Everything you write to Alma is visible to your school staff. Think of it like talking in class — keep it respectful.",
+  },
+  {
+    icon: <Target size={20} color={Slate[600]} />,
+    title: "Alma is for college & career help only",
+    body: "Use Alma to explore careers, plan for college, and get guidance on your next steps. That's what she's here for!",
+  },
+  {
+    icon: <AlertTriangle size={20} color={Slate[600]} />,
+    title: "Inappropriate content gets flagged",
+    body: "If you write something inappropriate, it gets flagged automatically — and that could mean real consequences at school.",
+  },
+];
 
 const OnboardingChecklist: React.FC = () => {
   const navigate = useNavigate();
   const { student } = useCurrentStudentData();
+  const [agreementComplete, setAgreementComplete] = useRecoilState(aiUseAgreementCompleteAtom);
+  const [agreementModalOpen, setAgreementModalOpen] = useState(false);
 
   const items = [
     {
@@ -46,8 +68,8 @@ const OnboardingChecklist: React.FC = () => {
       label: "Complete the AI User Agreement",
       description: "Review and accept the terms for using AI-powered features in Willow. Quick and straightforward.",
       icon: <Award size={20} />,
-      done: false,
-      onClick: undefined,
+      done: agreementComplete,
+      onClick: () => setAgreementModalOpen(true),
       time: "~2 min",
     },
   ];
@@ -216,6 +238,57 @@ const OnboardingChecklist: React.FC = () => {
           );
         })}
       </Box>
+      {/* AI Use Agreement Modal */}
+      <Modal open={agreementModalOpen} onClose={() => setAgreementModalOpen(false)} maxWidth="sm" fullWidth>
+        <Box sx={{ p: 4, display: "flex", flexDirection: "column", gap: 3 }}>
+          <Box>
+            <WillowTypography variant="heading" color="primary">
+              Before you chat with Alma
+            </WillowTypography>
+            <WillowTypography variant="body" sx={{ color: neutral[500], mt: 0.5 }}>
+              Just a few things to know — this'll take 30 seconds.
+            </WillowTypography>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {agreementPoints.map((point) => (
+              <Box
+                key={point.title}
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  p: 2,
+                  borderRadius: "10px",
+                  bgcolor: neutral[50],
+                }}
+              >
+                <Box sx={{ flexShrink: 0, mt: 0.25 }}>
+                  {point.icon}
+                </Box>
+                <Box>
+                  <WillowTypography variant="body" weight="semibold" color="primary">
+                    {point.title}
+                  </WillowTypography>
+                  <WillowTypography variant="body" sx={{ color: neutral[600], mt: 0.25, lineHeight: 1.5 }}>
+                    {point.body}
+                  </WillowTypography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+
+          <Button
+            variant="primary"
+            onClick={() => {
+              setAgreementComplete(true);
+              setAgreementModalOpen(false);
+            }}
+            sx={{ alignSelf: "stretch" }}
+          >
+            I agree — let's go!
+          </Button>
+        </Box>
+      </Modal>
     </Box>
   );
 };
