@@ -4,18 +4,21 @@ import { useCurrentStudent } from "../useCurrentStudent";
 import { studentService } from "../../mock/mockServices";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const US_STATES = [
-  "Alabama", "Alaska", "Arizona", "Arkansas", "California",
-  "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
-  "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
-  "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
-  "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
-  "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
-  "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
-  "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
-  "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
-  "District of Columbia",
+const MOCK_CITIES = [
+  "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ",
+  "Philadelphia, PA", "San Antonio, TX", "San Diego, CA", "Dallas, TX", "San Jose, CA",
+  "Austin, TX", "Jacksonville, FL", "Fort Worth, TX", "Columbus, OH", "Charlotte, NC",
+  "Indianapolis, IN", "San Francisco, CA", "Seattle, WA", "Denver, CO", "Nashville, TN",
+  "Oklahoma City, OK", "El Paso, TX", "Washington, DC", "Boston, MA", "Las Vegas, NV",
+  "Portland, OR", "Memphis, TN", "Louisville, KY", "Baltimore, MD", "Milwaukee, WI",
+  "Albuquerque, NM", "Tucson, AZ", "Fresno, CA", "Sacramento, CA", "Mesa, AZ",
+  "Kansas City, MO", "Atlanta, GA", "Omaha, NE", "Colorado Springs, CO", "Raleigh, NC",
+  "Long Beach, CA", "Virginia Beach, VA", "Miami, FL", "Oakland, CA", "Minneapolis, MN",
+  "Tampa, FL", "Tulsa, OK", "Arlington, TX", "New Orleans, LA", "Cleveland, OH",
+  "Honolulu, HI", "Anchorage, AK", "Springfield, IL", "Springfield, MO", "Springfield, MA",
+  "Portland, ME", "Birmingham, AL", "Salt Lake City, UT", "Detroit, MI", "Pittsburgh, PA",
+  "St. Louis, MO", "Cincinnati, OH", "Orlando, FL", "Newark, NJ", "Buffalo, NY",
+  "Madison, WI", "Boise, ID", "Des Moines, IA", "Little Rock, AR", "Richmond, VA",
 ];
 
 const useBasicInfoStep = () => {
@@ -26,8 +29,7 @@ const useBasicInfoStep = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gradeLevel, setGradeLevel] = useState("");
-  const [city, setCity] = useState("");
-  const [usState, setUsState] = useState("");
+  const [location, setLocation] = useState("");
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,10 +72,12 @@ const useBasicInfoStep = () => {
         lastName: finalLastName,
         gradeLevel: finalGradeLevel,
         address: { city: finalCity, state: finalUsState, lat: 0, lon: 0 },
+        onboardingStage: 5,
+        onboardingState: "account-setup-complete",
       });
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/onboarding/gpa", { replace: true });
+      navigate("/student/home", { replace: true });
     } catch (error) {
       console.error("Error saving basic info:", error);
     } finally {

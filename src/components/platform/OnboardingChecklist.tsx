@@ -34,7 +34,7 @@ const OnboardingChecklist: React.FC = () => {
   const items = [
     {
       label: "Set up your account",
-      description: "Add your basic info, school details, and GPA to personalize your Willow experience.",
+      description: "Add your basic info and school details to personalize your Willow experience.",
       icon: <Settings size={20} />,
       done: true,
       onClick: undefined,
@@ -244,9 +244,6 @@ const OnboardingChecklist: React.FC = () => {
           <Box>
             <WillowTypography variant="heading" color="primary">
               Before you chat with Alma
-            </WillowTypography>
-            <WillowTypography variant="body" sx={{ color: neutral[500], mt: 0.5 }}>
-              Just a few things to know — this'll take 30 seconds.
             </WillowTypography>
           </Box>
 
