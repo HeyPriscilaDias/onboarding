@@ -4,14 +4,13 @@ import { Box, Stack, WillowTypography, TextInput, TextButton, CircularProgress, 
 import { useRecoilValue } from "recoil";
 import { prototypeActiveAtom } from "../../state/prototypeAtoms";
 import useBasicInfoStep from "../../hooks/onboarding/useBasicInfoStep";
-import { US_STATES } from "../../hooks/onboarding/useBasicInfoStep";
 import AccountSetupHeader, { ACCOUNT_SETUP_BG } from "./AccountSetupHeader";
 
 
 const GRADE_LEVELS = ["9th Grade", "10th Grade", "11th Grade", "12th Grade"];
 
 const BasicInfoStep: React.FC = () => {
-  const { firstName, lastName, gradeLevel, setGradeLevel, city, usState, setUsState, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
+  const { firstName, lastName, gradeLevel, setGradeLevel, location, setLocation, locationOptions, handleTextChange, handleContinue, handleBack, isLoading } = useBasicInfoStep();
   const prototypeActive = useRecoilValue(prototypeActiveAtom);
   const toolbarOffset = prototypeActive ? 44 : 0;
 
@@ -60,36 +59,35 @@ const BasicInfoStep: React.FC = () => {
             options={GRADE_LEVELS.map((g) => ({ value: g, label: g }))}
           />
 
-          <Stack direction="row" spacing={2}>
-            <Box sx={{ flex: 1 }}>
-              <TextInput label="City" name="city" value={city} onChange={handleTextChange} />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>State</WillowTypography>
-              <Autocomplete
-                options={US_STATES}
-                value={usState || null}
-                onChange={(_event, newValue) => setUsState(newValue || "")}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    placeholder="Start typing to search..."
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "8px",
-                        fontFamily: "'Inter', sans-serif",
-                        "& .MuiOutlinedInput-input": { padding: "8px 12px" },
-                        "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
-                        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main", borderWidth: "2px" },
-                      },
-                    }}
-                  />
-                )}
-              />
-            </Box>
-          </Stack>
+          <Box>
+            <WillowTypography variant="body" weight="semibold" color="primary" sx={{ mb: 1 }}>City</WillowTypography>
+            <Autocomplete
+              freeSolo
+              options={locationOptions}
+              value={location || null}
+              onChange={(_event, newValue) => setLocation(newValue || "")}
+              onInputChange={(_event, newValue, reason) => {
+                if (reason === "input") setLocation(newValue);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  placeholder="Start typing your city..."
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "8px",
+                      fontFamily: "'Inter', sans-serif",
+                      "& .MuiOutlinedInput-input": { padding: "8px 12px" },
+                      "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+                      "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main", borderWidth: "2px" },
+                    },
+                  }}
+                />
+              )}
+            />
+          </Box>
 
           <TextButton variant="primary" onClick={handleContinue} disabled={isLoading} fullWidth sx={{ mt: 1 }}>
             {isLoading ? <CircularProgress size={20} color="inherit" /> : "Continue"}

@@ -38,8 +38,9 @@ const useBasicInfoStep = () => {
       setFirstName(loggedInStudent.firstName || "");
       setLastName(loggedInStudent.lastName || "");
       setGradeLevel(loggedInStudent.gradeLevel || "");
-      setCity(loggedInStudent.address?.city || "");
-      setUsState(loggedInStudent.address?.state || "");
+      const savedCity = loggedInStudent.address?.city || "";
+      const savedState = loggedInStudent.address?.state || "";
+      setLocation(savedCity && savedState ? `${savedCity}, ${savedState}` : "");
       setHasInitialized(true);
     }
   }, [loggedInStudent, hasInitialized]);
@@ -49,21 +50,22 @@ const useBasicInfoStep = () => {
     if (name === "firstName") setFirstName(value);
     else if (name === "lastName") setLastName(value);
     else if (name === "gradeLevel") setGradeLevel(value);
-    else if (name === "city") setCity(value);
   }, []);
 
   const handleContinue = useCallback(async () => {
     const finalFirstName = firstName || "Jessica";
     const finalLastName = lastName || "Doe";
     const finalGradeLevel = gradeLevel || "9th Grade";
-    const finalCity = city || "Chicago";
-    const finalUsState = usState || "Illinois";
+    const finalLocation = location || "Chicago, IL";
 
     if (!firstName) setFirstName(finalFirstName);
     if (!lastName) setLastName(finalLastName);
     if (!gradeLevel) setGradeLevel(finalGradeLevel);
-    if (!city) setCity(finalCity);
-    if (!usState) setUsState(finalUsState);
+    if (!location) setLocation(finalLocation);
+
+    const [finalCity, finalState] = finalLocation.includes(", ")
+      ? finalLocation.split(", ")
+      : [finalLocation, ""];
 
     try {
       setIsLoading(true);
@@ -71,7 +73,7 @@ const useBasicInfoStep = () => {
         firstName: finalFirstName,
         lastName: finalLastName,
         gradeLevel: finalGradeLevel,
-        address: { city: finalCity, state: finalUsState, lat: 0, lon: 0 },
+        address: { city: finalCity, state: finalState, lat: 0, lon: 0 },
         onboardingStage: 5,
         onboardingState: "account-setup-complete",
       });
@@ -83,7 +85,7 @@ const useBasicInfoStep = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [firstName, lastName, gradeLevel, city, usState, loggedInStudent, queryClient, refetch, navigate]);
+  }, [firstName, lastName, gradeLevel, location, loggedInStudent, queryClient, refetch, navigate]);
 
   const handleBack = useCallback(async () => {
     try {
@@ -105,9 +107,9 @@ const useBasicInfoStep = () => {
     lastName,
     gradeLevel,
     setGradeLevel,
-    city,
-    usState,
-    setUsState,
+    location,
+    setLocation,
+    locationOptions: MOCK_CITIES,
     handleTextChange,
     handleContinue,
     handleBack,
