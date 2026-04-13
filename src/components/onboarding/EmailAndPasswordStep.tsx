@@ -84,7 +84,7 @@ const EmailAndPasswordStep: React.FC = () => {
             <WillowTypography variant="body-sm" color="secondary">or</WillowTypography>
           </Divider>
 
-          <TextInput label="Your school email" placeholder="name@yourschool.com" disabled />
+          <TextInput label="Your email" placeholder="your-email@example.com" disabled />
 
           <TextButton
             variant="primary"
