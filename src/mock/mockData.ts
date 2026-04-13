@@ -61,6 +61,7 @@ export const createEmptyStudent = (email: string): StudentRecord => ({
   programTypeForRecommendations: "",
   bookmarkedACareer: false,
   careerInterestTags: [],
+  careerFreeTextResponse: "",
   personalFeedback: [],
   active: true,
   status: "onboarding",

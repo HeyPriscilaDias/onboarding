@@ -89,13 +89,12 @@ const useCareerVideoStep = () => {
 
       await studentService.updateStudentGoldenPath(loggedInStudent.id, {
         careerInterestTags: tagsToSave,
-        onboardingStage: 9,
-        onboardingState: "onboarding-complete",
+        onboardingState: "career-interests",
       });
 
       await queryClient.invalidateQueries({ queryKey: ["student", "profile"] });
       await refetch();
-      navigate("/student/home", { replace: true });
+      navigate("/student/onboarding/gpc-interests", { replace: true });
     } catch (error) {
       console.error("Error saving career interests:", error);
     } finally {

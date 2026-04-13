@@ -6,6 +6,7 @@ import PersonalInfoStep from "../components/onboarding/PersonalInfoStep";
 import MyWhyStep from "../components/onboarding/MyWhyStep";
 import FeedbackStep from "../components/onboarding/FeedbackStep";
 import CareerVideoStep from "../components/onboarding/CareerVideoStep";
+import GpcInterestStep from "../components/onboarding/GpcInterestStep";
 import PersonalityQuizStart from "../components/onboarding/quiz/PersonalityQuizStart";
 import PersonalityQuizTake from "../components/onboarding/quiz/PersonalityQuizTake";
 import PersonalityQuizPreview from "../components/onboarding/quiz/PersonalityQuizPreview";
@@ -35,6 +36,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/student/onboarding/my-why" element={<ProtectedRoute><MyWhyStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/feedback" element={<ProtectedRoute><FeedbackStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/career-interests" element={<ProtectedRoute><CareerVideoStep /></ProtectedRoute>} />
+      <Route path="/student/onboarding/gpc-interests" element={<ProtectedRoute><GpcInterestStep /></ProtectedRoute>} />
       <Route path="/student/onboarding/personalization" element={<ProtectedRoute><PersonalizationStep /></ProtectedRoute>} />
 
       {/* Lesson 2: Personality quiz */}

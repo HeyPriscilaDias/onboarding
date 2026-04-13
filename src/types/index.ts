@@ -123,6 +123,7 @@ export type Student = {
   programTypeForRecommendations: string;
   bookmarkedACareer: boolean;
   careerInterestTags: string[];
+  careerFreeTextResponse?: string;
   personalFeedback: PersonalFeedback[];
   active?: boolean;
   incomeBracket?: "lower" | "middle" | "higher" | null;
