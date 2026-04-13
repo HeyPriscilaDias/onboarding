@@ -22,6 +22,19 @@ const usePersonalityQuizTake = () => {
   const navigate = useNavigate();
 
   const questions = MOCK_QUIZ_QUESTIONS;
+
+  // Resume from saved position if the student is returning mid-quiz
+  useEffect(() => {
+    if (loggedInStudent?.lastQuestionId) {
+      const savedIndex = questions.findIndex((q) => q.id === loggedInStudent.lastQuestionId);
+      if (savedIndex > 0) {
+        setCurrentQuestionIndex(savedIndex);
+      }
+    }
+    // Only run on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const currentQuestion: QuestionRecord | null = questions[currentQuestionIndex] ?? null;
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
@@ -66,8 +79,19 @@ const usePersonalityQuizTake = () => {
     }
 
     if (!isLastQuestion) {
+      const nextIndex = currentQuestionIndex + 1;
+      const nextQuestion = questions[nextIndex];
+
+      // Persist in-progress state so the checklist can show "Resume"
+      if (loggedInStudent?.id && nextQuestion) {
+        studentService.updateStudentGoldenPath(loggedInStudent.id, {
+          onboardingState: "quiz-in-progress" as const,
+          lastQuestionId: nextQuestion.id,
+        });
+      }
+
       prevQuestionIndexRef.current = null;
-      setCurrentQuestionIndex((prev) => prev + 1);
+      setCurrentQuestionIndex(nextIndex);
       setSelectedOptions([]);
       return;
     }

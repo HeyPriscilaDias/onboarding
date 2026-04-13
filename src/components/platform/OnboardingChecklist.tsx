@@ -45,7 +45,13 @@ const OnboardingChecklist: React.FC = () => {
       description: "Answer a series of fun questions to discover your unique learning style, strengths, and preferences.",
       icon: <PersonalityType size={20} />,
       done: !!student?.quizComplete,
-      onClick: () => navigate("/student/onboarding/personality-quiz/start"),
+      inProgress: student?.onboardingState === "quiz-in-progress",
+      onClick: () =>
+        navigate(
+          student?.onboardingState === "quiz-in-progress"
+            ? "/student/onboarding/personality-quiz/take"
+            : "/student/onboarding/personality-quiz/start"
+        ),
       time: "~15 min",
     },
     {
@@ -229,7 +235,7 @@ const OnboardingChecklist: React.FC = () => {
                         "&:hover": { opacity: 0.9 },
                       }}
                     >
-                      Start →
+                      {item.inProgress ? "Resume →" : "Start →"}
                     </Box>
                   )}
                 </Box>
